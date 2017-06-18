@@ -41,6 +41,7 @@ $route = $_GET['route'] ?? '/';
 $router = new RouteCollector();
 
 $router->controller('/', App\Controllers\IndexController::class);
+$router->controller('/products', App\Controllers\ProductController::class);
 
 $dispatcher = new Phroute\Phroute\Dispatcher($router->getData());
 $response = $dispatcher->dispatch($_SERVER['REQUEST_METHOD'], $route);
