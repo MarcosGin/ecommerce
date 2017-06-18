@@ -1,0 +1,42 @@
+.top-nav{background-color:#414042;text-align:right}
+.top-nav .link-nav{font-size:13px;color:#9ea0a2;display:inline-block;line-height:26px;height:26px;transition:all 0.8s}
+.top-nav .link-nav:hover{color:#6cc9f1}
+.top-nav .link-nav:first-child{margin-right:10px}
+.nav{min-height:100px;display:flex}
+.nav .center{display:flex;background:white;min-height:60px;align-items:center;justify-content:space-between}
+.nav .logo{min-width:230px;max-width:250px;height:50px}
+.nav .logo img{max-width:100%;height:100%}
+.nav nav{min-width:330px;width:400px;display:flex}
+.nav .menu-bar{display:none}
+.nav nav .item{width:25%;margin:0.5%;cursor:pointer;transition:all 0.3s;color:#717171;border-bottom:2px solid transparent}
+.nav nav .item a{display:block;height:60px;line-height:60px;text-align:center}
+.nav nav .item a .fa{display:none}
+.nav nav .actived{border-bottom-color:#5FB2F9;font-size:18px;color:#5FB2F9}
+.nav nav .item:hover{border-bottom:2px solid#5FB2F9;font-size:18px;color:#5FB2F9}
+.nav .buscador{margin-left:20px;width:320px;position:relative}
+.nav .buscador .icon-buscador{position:absolute;top:0;right:0;width:30px;height:32px;border:none;background:transparent;outline:none;cursor:pointer;color:#9e9696}
+.nav .buscador .icon-buscador:hover{color:#5FB2F9}
+.nav .buscador .typeahead-span{width:100%} .nav .buscador .typeahead, .tt-query, .tt-hint{border:1px solid#b3b5b6;background-color:#e6e6e6;font-size:14px;outline:none;width:100%;padding:15px;height:30px}
+.nav .buscador .tt-dropdown-menu{background-color:#e6e6e6;margin-top:5px;border:1px solid rgba(0,0,0,0.2);box-shadow:0 5px 10px rgba(0,0,0,0.2);width:100%;max-height:300px;overflow:auto}
+.nav .buscador .tt-suggestion{font-size:14px;line-height:24px;padding:3px 10px;border-bottom:1px solid#bbb9b9;text-transform:lowercase;color:#8E8B8B}
+.nav .buscador .tt-suggestion .tt-is-under-cursor{background-color:#5FB2F9;color:#FFFFFF}
+.nav .buscador .tt-suggestion:last-child{border-bottom:none}
+.carrito{background:#585353;margin-left:20px;height:30px;border-radius:3px;width:95px}
+.carrito a{display:block;padding:5px;text-align:right;line-height:20px;font-size:14px;color:#fff}
+@media(max-width:840px){
+.nav .center{flex-wrap:wrap}
+.nav nav{order:1;margin:0 auto}
+.buscador{max-width:200px}}@media(max-width:630px){
+	.nav .logo{width:50%;min-width:auto!important}
+	.buscador{width:50%!important;max-width:250px;margin-left:0!important}}
+	@media(max-width:535px){
+		.nav .menu-bar, .nav .despliegue{background:#525050;color:#fff;width:100%;margin-top:20px;display:block;cursor:pointer;border-radius:3px;padding-bottom:1px}
+		.nav .icon-bars{padding:7px 10px;height:30px}
+		.nav nav{width:100%;display:none}
+		.nav .despliegue .item{width:100%;margin:0;transition:all 500ms ease;border-bottom:1px solid#f9f9f9;color:#fff}
+		.nav .despliegue .item:last-child{border-bottom:none}
+		.nav .despliegue .item a{text-align:left;font-size:14px;height:40px;padding:0 10px;line-height:40px}
+		.nav .despliegue .item a .fa{display:inline-block;width:15px;text-align:center}
+		.nav .despliegue .actived{border-color:#5FB2F9;color:#72BAF7}
+		.nav .despliegue .item:hover{border-bottom:1px solid#5FB2F9;color:#72BAF7;font-size:14px}
+		.nav .despliegue .item:last-child:hover{border-bottom:none}}

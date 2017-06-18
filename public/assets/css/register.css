@@ -1,0 +1,20 @@
+.register{display:flex;flex-wrap:wrap;justify-content:space-between;max-width:425px}
+.completereg{margin:0 auto; width:100%; max-width:500px; color:#444;}
+.register .input{width:100%;margin-bottom:15px}
+.register .input-50{width:49%}
+.register .selects{width:100%;display:flex;justify-content:space-between;height:35px;margin-bottom:15px}
+.register .select{position:relative}
+.register .select .icon-selects{position:absolute;top:9px;right:5px;z-index:-1;background-color:white}
+.register .selects .dia, .register .selects .año{width:19%}
+.register .selects .mes{width:58%}
+.register .selects select{width:100%;height:100%;line-height:35px;padding:0px 3px;transition:border-color.3s ease;border:1px solid#d5d5d5;border-radius:0.3em;background-color:transparent;color:#535353;font-size:1em;outline:none;-moz-appearance:none;-webkit-appearance:none;z-index:80;cursor:pointer}
+.register .termines{position:relative;width:100%;font-size:13px;margin-bottom:15px}
+.register .gender{line-height:40px;font-size:13px;width:100%;max-width:200px;margin:0 auto;display:flex;justify-content:space-between}
+.register .gender .gendercont{position:relative}
+.register .gender .gendercont input{display:none}
+.register .gender .gendercont label{cursor:pointer;padding:5px;border-radius:3px;border:1px solid transparent;background-color:#61abd8;color:#fff}
+.register .gender .gendercont input:checked ~ label{border-color:#0084d4;background-color:#1d94dc}
+.register input::-webkit-input-placeholder{color:#535353}
+.register input:-moz-placeholder{color:#535353}
+.register input::-moz-placeholder{color:#535353}
+.register input:-ms-input-placeholder{color:#535353}
