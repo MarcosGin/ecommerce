@@ -1,0 +1,36 @@
+<div class="top-nav">
+    <div class="center">
+
+        <a href="{{ 'adm' | url }}" class="link-nav" style="float:left;"><i class="fa fa-user"></i> Administración</a>
+
+        <a href="{{ 'profile' | url }}" class="link-nav"><i class="fa fa-user"></i> Mi cuenta</a>
+
+        <a href="{{ 'account/logout/token' | url }}" class="link-nav"><i class="fa fa-sign-out"></i> Cerrar sesión  </a>
+
+        <a href="{{ 'account/login' | url }}" class="link-nav"><i class="fa fa-sign-in"></i> Iniciar sesión</a>
+
+        <a href="{{ 'account/register' | url }}" class="link-nav"><i class="fa fa-user-plus"></i> Registrarse</a>
+
+    </div>
+</div>
+<header class="nav">
+    <div class="center">
+        <div class="logo"><img src="assets/img/logo.png"></div>
+            <nav>
+                <div class="item "><a href="{{ 'index' | url }}"><i class="fa fa-home"></i> Inicio</a></div>
+                <div class="item "><a href="{{ 'productos' | url }}"><i class="fa fa-tag"></i> Productos</a></div>
+                <div class="item "><a href="{{ 'empresa' | url }}"><i class="fa fa-group"></i> Empresa</a></div>
+                <div class="item "><a href="{{ 'contacto' | url }}"><i class="fa fa-question-circle"></i> Contacto</a></div>
+            </nav>
+    <div class="buscador">
+        <form action="{{ 'productos' | url }}" method="get">
+            <input type="text" name="busq" class="typeahead tt-query" autocomplete="off" spellcheck="false" placeholder="Buscar producto">
+            <button type="submit" class="icon-buscador"><i class="fa fa-search"></i></button>
+        </form>
+    </div>
+    <div class="carrito">
+        <a href="{{ 'carrito' | url }}"> $ 0.00 <i class="fa fa-shopping-cart"></i></a>
+    </div>
+    <div class="menu-bar"><div class="icon-bars"><i class="fa fa-bars"></i></div></div>
+    </div>
+</header>

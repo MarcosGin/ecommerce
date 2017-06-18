@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+
+    <title>MundoTecnologia</title>
+    <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+    <meta charset="utf-8">
+    <link rel="icon" href="img/favicon.ico">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/estilos.css">
+    <link rel="stylesheet" href="assets/css/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/css/header.css">
+    <link rel="stylesheet" href="assets/css/responsiveslides.css">
+    <link rel="stylesheet" href="assets/css/themes.css">
+
+<body>
+<div class="container">
+    {% include('partials/menu.twig') %}
+
+    {% block slider %}{% endblock %}
+</div>
+</div>
+<footer class="footer-pag">
+    <div class="center"><div class="footer-cont">
+            <div class="info"><p>Todos los derechos reservados a sus respectivos dueños.</p>
+                <p>MundoTecnologia &copy; 2016.</p>
+                <p>Crated By: Marcos Gin</p></div>
+            <div class="iconsSocial">
+                <a href="http://facebook.com" target="_blank"><i class="fa fa-facebook-official"></i></a>
+                <a href="http://twitter.com" target="_blank"><i class="fa fa-twitter-square"></i></a>
+                <a href="http://google.com" target="_blank"><i class="fa fa-google-plus"></i></a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script type="text/javascript" src="assets/js/jquery-3.1.0.min.js"></script>
+<script type="text/javascript" src="assets/js/typeahead.min.js"></script>
+<script type="text/javascript" src="assets/js/search.js"></script>
+<script type="text/javascript" src="assets/js/menu.js"></script>
+
+<!--Index-->
+<script type="text/javascript" src="assets/js/responsiveslides.js"></script>
+<script type="text/javascript" src="assets/js/confSlider.js"></script>
+
+
+</body>
+</html>
