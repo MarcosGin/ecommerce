@@ -7,8 +7,6 @@
  */
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+class Mark {
 
-class Mark extends Model {
-    protected $table = 'marcas';
 }

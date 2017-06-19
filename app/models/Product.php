@@ -7,8 +7,28 @@
  */
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 
-class Product extends Model{
-    protected $table = 'productos';
+use App\Database\DB;
+
+class Product {
+    private $name;
+    private $desc;
+    private $price;
+    private $category_id;
+    private $mark_id;
+    private $portada;
+    private $carpet;
+    private $created_at;
+    private $updated_at;
+
+    public function getAll(){
+        $dbObj = DB::getInstance();
+        $query = $dbObj->getQuery("SELECT * FROM productos");
+        $query->execute();
+        $data = $query->fetchall();
+        return $data;
+    }
+
+
+
 }

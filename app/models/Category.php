@@ -7,12 +7,9 @@
  */
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 
-class Category extends Model {
-    protected $table = 'categories';
+class Category{
+    private $name;
+    private $icon;
 
-    public function marks() {
-        return $this->hasMany('App\Models\Mark');
-    }
 }

@@ -7,16 +7,13 @@
  */
 namespace App\Controllers;
 
-use App\Models\Category;
-use App\Models\Mark;
 use App\Models\Product;
 
 class ProductController extends BaseController{
 
     public function getIndex() {
-        $products = Product::query()->orderby('id', 'asc')->get();
-        $categories = Category::query()->get();
-        $marks = Category::find(2)->marks;
-        return $marks;
+       $products = new Product();
+       $data = $products->getAll();
+        return $this->render('products.twig', ['products' => $data]);
     }
 }
