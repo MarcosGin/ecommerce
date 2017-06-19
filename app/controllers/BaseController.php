@@ -9,12 +9,15 @@ class BaseController {
     public function __construct() {
         $loader = new Twig_Loader_Filesystem('../views');
         $this->templateEngine = new \Twig_Environment($loader, [
-            'debug' => true,
+            'debug' => false,
             'cache' => false
         ]);
 
         $this->templateEngine->addFilter(new \Twig_SimpleFilter('url', function ($path) {
             return  BASE_URL . $path;
+        }));
+        $this->templateEngine->addFilter(new \Twig_SimpleFilter('url_image', function ($path) {
+            return  BASE_IMAGE . $path;
         }));
     }
     public function render($fileName, $data= []) {

@@ -26,6 +26,22 @@ class Product {
         $query = $dbObj->getQuery("SELECT * FROM productos");
         $query->execute();
         $data = $query->fetchall();
+        if(!$data){
+            throw new \Exception('Not Found Products!.');
+        }
+        return $data;
+    }
+
+    public function getProductForMark($id){
+        $dbObj = DB::getInstance();
+        $query = $dbObj->getQuery("SELECT * FROM productos WHERE category_id = :id");
+        $query->execute([
+            'id' => $id,
+        ]);
+        $data = $query->fetchall();
+        if(!$data){
+            throw new \Exception ("Not Found Products!");
+        }
         return $data;
     }
 

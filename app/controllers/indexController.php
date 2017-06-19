@@ -10,7 +10,7 @@ namespace App\Controllers;
 
 class IndexController extends BaseController{
 
-    public function getIndex(){
+    public function anyIndex(){
         return $this->render('index.twig', []);
     }
 }
