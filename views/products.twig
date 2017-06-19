@@ -10,12 +10,12 @@
                 <ul class="ul-master">
                     <div class="li">
                         <li class='li-active'>
-                        <span class="fa2"><i class="fa fa-star-o"></i></span><a href="/productos">Todos</a></li>
+                        <span class="fa2"><i class="fa fa-star-o"></i></span><a href="{{ 'products' | url }}">Todos</a></li>
                     </div>
                     {% for category in categories %}
                         <div class="li">
                             <li>
-                                <span class="fa2"><i class="fa {{ category.icon }}"></i></span><a href="?bq=1">{{ category.name }}</a>
+                                <span class="fa2"><i class="fa {{ category.icon }}"></i></span><a href="{{ ('products/search/' ~ category.id) | url}}">{{ category.name }}</a>
                             </li>
                             <ul class="sub-ul">
                                  {% for mark in marks %}

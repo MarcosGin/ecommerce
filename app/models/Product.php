@@ -25,7 +25,7 @@ class Product {
         $dbObj = DB::getInstance();
         $query = $dbObj->getQuery("SELECT * FROM productos");
         $query->execute();
-        $data = $query->fetchall();
+        $data = $query->fetchall(\PDO::FETCH_ASSOC);
         if(!$data){
             throw new \Exception('Not Found Products!.');
         }
@@ -38,7 +38,7 @@ class Product {
         $query->execute([
             'id' => $id,
         ]);
-        $data = $query->fetchall();
+        $data = $query->fetchall(\PDO::FETCH_ASSOC);
         if(!$data){
             throw new \Exception ("Not Found Products!");
         }

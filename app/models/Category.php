@@ -17,7 +17,7 @@ class Category{
         $dbObj = DB::getInstance();
         $query = $dbObj->getQuery("SELECT * FROM categories");
         $query->execute();
-        $data = $query->fetchAll();
+        $data = $query->fetchAll(\PDO::FETCH_ASSOC);
         return $data;
     }
 
@@ -25,7 +25,7 @@ class Category{
         $dbObj = DB::getInstance();
         $query = $dbObj->getQuery("SELECT * FROM catmarc");
         $query->execute();
-        $data = $query->fetchAll();
+        $data = $query->fetchAll(\PDO::FETCH_ASSOC);
         return $data;
     }
 }
