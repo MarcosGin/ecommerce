@@ -14,8 +14,9 @@ use Phroute\Phroute\RouteCollector;
 //Url directory
 $baseDir = str_replace(basename($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']);
 $baseUrl = 'http://' . $_SERVER['HTTP_HOST'] . $baseDir;
+$baseImage = $baseUrl . 'assets/img/products/';
 define('BASE_URL', $baseUrl);
-
+define('BASE_IMAGE', $baseImage);
 
 //Routes
 $route = $_GET['route'] ?? '/';
