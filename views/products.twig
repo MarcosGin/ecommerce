@@ -12,26 +12,32 @@
                         <li class='li-active'>
                         <span class="fa2"><i class="fa fa-star-o"></i></span><a href="/productos">Todos</a></li>
                     </div>
-                    <div class="li">
-                        <li>
-                            <span class="fa2"><i class="fa fa-star"></i></span><a href="?bq=1">Celular</a>
-                        </li>
-                                <ul class="sub-ul">
-                                    <li>
-                                        <a href='?bq=1'>LG</a>
-                                    </li>
-                                </ul>
-                    </div>
+                    {% for category in categories %}
+                        <div class="li">
+                            <li>
+                                <span class="fa2"><i class="fa {{ category.icon }}"></i></span><a href="?bq=1">{{ category.name }}</a>
+                            </li>
+                            <ul class="sub-ul">
+                                 {% for mark in marks %}
+                                     <li>
+                                        <a href='?bq={{ mark.id }}'>{{ mark.name }}</a>
+                                      </li>
+                                     {% endfor %}
+                            </ul>
+                        </div>
+                    {% endfor %}
+
                 </ul>
             </section>
             <div class="asides">
                 <aside>
-                      <div class="side-post">
+                    {% for product in products %}
+                        <div class="side-post">
                             <div class="cont-img">
-                                <a href=''><img src="assets/img/products/57f09a7483399/580cc770b17f8_1.jpg" alt="img" title=""></a>
+                                <a href=''><img src="assets/img/products/{{ product.carpet }}/{{ product.portada }}" alt="img" title=""></a>
                             </div>
                             <div class="cont-info">
-                                <p class="side-tittle">Product 1</p>
+                                <p class="side-tittle">{{ product.nombre }}</p>
                                 <div class="side-info">
                                     <div>
                                         <button class="button-white">
@@ -39,7 +45,7 @@
                                         </button>
                                     </div>
                                     <div>
-                                        <button class="button-violet">$ 1.000</button>
+                                        <button class="button-violet">$ {{ product.precio }}</button>
                                     </div>
                                 </div>
                                 <button type="submit" class="button">
@@ -48,6 +54,8 @@
 
                             </div>
                         </div>
+                    {% endfor %}
+
                 </aside>
                 <aside>
                       <div class="list-cont">
