@@ -27,9 +27,13 @@ class ProductController extends BaseController{
         $categories = $this->categories->getCategories();
         return $this->render('products.twig', ['products' => $products, 'categories' => $categories]);
     }
-    public function getSearch($param = null, $param2= null){
+    public function getSearch($param = null, $param2= null) {
         $products = $this->product->getProductForSearch($param, $param2);
         $categories = $this->categories->getCategories();
         return $this->render('products.twig', ['products' => $products, 'categories' => $categories, 'param' => $param, 'param2' => $param]);
+    }
+    public function getProfile($param = null) {
+        $product = $this->product->getProduct($param);
+        return $this->render('product-profile.twig', ['product' => $product]);
     }
 }

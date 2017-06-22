@@ -31,6 +31,18 @@ class Product {
         }
         return $data;
     }
+    public function getProduct($name){
+        $dbObj = DB::getInstance();
+        $query = $dbObj->getQuery("SELECT * FROM productos WHERE nombre =:id");
+        $query->execute([
+           'nombre' =>  $name,
+        ]);
+        $data =$query->fetchAll(\PDO::FETCH_ASSOC);
+        if(!$data){
+            throw new \Exception('Not Found Product!');
+        }
+        return $data;
+    }
 
     public function getProductForCategory($id){
         $dbObj = DB::getInstance();
