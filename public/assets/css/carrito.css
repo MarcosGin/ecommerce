@@ -1,0 +1,27 @@
+.carritoCont{display:flex;justify-content:space-between;flex-wrap:wrap;}
+.tittle-carrito{color:#444;font-size:19px;margin-bottom:15px;padding:5px}
+.tabCont-carrito{width:69%}
+.agreed{max-width:350px;margin:0 auto}
+.agree,.agreed{padding:5px;color:#444;text-align:center}
+.agree{font-size:14px}
+.agree a,.agreed a{color:#6AB5EF}
+.bill-cont{width:25%}.bill{border:1px solid#444;min-height:240px;color:#444}
+.msg-error{color:#F99393;font-size:14px;padding:15px}
+.bill-tittle{width:100%;text-align:center;font-size:18px;padding:15px}
+.bill-buy{margin-top:15px;padding:0 15px}
+.bill-buy button{width:100%;padding:5px;text-align:center;background:#4AB4F8;color:#fff;font-size:17px;border:1px solid#3AAFF2;cursor:pointer;height:50px;transition:background-color 500ms ease-in-out}
+.bill-buy button:hover{background-color:#62C1FE}
+.buy,.sub-buy{display:flex;justify-content:space-between;width:100%;margin:0 auto;margin-bottom:50px}
+.sub-buy{color:#ccc;font-size:14px;margin-bottom:10px;padding-bottom:5px;border-bottom:1px solid#444}
+.table-carrito{color:#444;width:100%}
+.table-carrito tr:first-child{border:1px solid#444}
+.table-carrito tr th:first-child{text-align:left;width:50%}
+.table-carrito tr td:first-child, .table-carrito tr td:nth-child(2){text-align:left}
+.table-carrito tr th{text-align:center;padding:5px;font-size:13px}
+.table-carrito tr td{text-align:center;padding:10px 0}
+.carritoImg{width:100px} .carritoImg img{max-width:100%}
+.table-carrito .priceinpu{width:100%;max-width:50px;height:30px;font-size:17px;padding:5px;outline:none}
+.table-carrito .priceinpu::-webkit-inner-spin-button{}{color:red}
+@media(max-width:620px){
+.tabCont-carrito,.bill-cont{width: 100%;}
+}

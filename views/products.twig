@@ -1,0 +1,73 @@
+{% extends 'layout.twig' %}
+
+{% block container %}
+    <div class="containerCentral">
+        <div class="productos-cont">
+            <section class="section-right">
+                <div class="section-h3">
+                    <h3>Categorias</h3>
+                </div>
+                <ul class="ul-master">
+                    <div class="li {% if not param %} li-active {% endif %}">
+                        <li>
+                        <span class="fa2"><i class="fa fa-star-o"></i></span><a href="{{ 'products' | url }}">Todos</a></li>
+                    </div>
+                    {% for category in categories %}
+                        <div class="li {% if category.id == param %} li-active {% endif %}">
+                            <li>
+                                <span class="fa2"><i class="fa {{ category.icon }}"></i></span><a href="{{ ('products/search/' ~ category.id) | url}}">{{ category.name }}</a>
+                            </li>
+
+                            <ul class="sub-ul">
+                                 {% for mark in category.marks %}
+                                     <li>
+                                        <a href="{{ ('products/search/' ~ category.id ~ '/' ~ mark.id) | url }}">{{ mark.name }}</a>
+                                      </li>
+                                     {% endfor %}
+
+                            </ul>
+                        </div>
+                    {% endfor %}
+
+                </ul>
+            </section>
+            <div class="asides">
+                {%  if errors %}
+                    <div class="">{{ errors }}</div>
+                    {% endif %}
+                <aside>
+                    {% for product in products %}
+                        <div class="side-post">
+                            <div class="cont-img">
+                                <a href=''><img src="{{  (product.carpet ~ '/' ~ product.portada)  | url_image }}" alt="img" title=""></a>
+                            </div>
+                            <div class="cont-info">
+                                <p class="side-tittle">{{ product.nombre }}</p>
+                                <div class="side-info">
+                                    <div>
+                                        <button class="button-white">
+                                            <a href="">Ver más</a>
+                                        </button>
+                                    </div>
+                                    <div>
+                                        <button class="button-violet">$ {{ product.precio }}</button>
+                                    </div>
+                                </div>
+                                <button type="submit" class="button">
+                                    <a href=""><i class="fa fa-shopping-cart"></i> Comprar</a>
+                                </button>
+
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                </aside>
+                <aside>
+                      <div class="list-cont">
+                            <a class='list-a list-active'>1</a>
+                      </div>
+                </aside>
+            </div>
+        </div>
+    </div>
+{% endblock %}
