@@ -7,6 +7,16 @@
  */
 namespace App\Models;
 
-class Mark {
+use App\Database\DB;
 
+class Mark {
+    private $name;
+
+    public function getAll(){
+        $dbObj = DB::getInstance();
+        $query = $dbObj->getQuery("SELECT * FROM marcas");
+        $query->execute();
+        $data = $query->fetchAll(\PDO::FETCH_OBJ);
+        return $data;
+    }
 }

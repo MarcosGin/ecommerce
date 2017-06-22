@@ -8,21 +8,23 @@
                     <h3>Categorias</h3>
                 </div>
                 <ul class="ul-master">
-                    <div class="li">
-                        <li class='li-active'>
+                    <div class="li {% if not param %} li-active {% endif %}">
+                        <li>
                         <span class="fa2"><i class="fa fa-star-o"></i></span><a href="{{ 'products' | url }}">Todos</a></li>
                     </div>
                     {% for category in categories %}
-                        <div class="li">
+                        <div class="li {% if category.id == param %} li-active {% endif %}">
                             <li>
                                 <span class="fa2"><i class="fa {{ category.icon }}"></i></span><a href="{{ ('products/search/' ~ category.id) | url}}">{{ category.name }}</a>
                             </li>
+
                             <ul class="sub-ul">
-                                 {% for mark in marks %}
+                                 {% for mark in category.marks %}
                                      <li>
-                                        <a href='?bq={{ mark.id }}'>{{ mark.name }}</a>
+                                        <a href="{{ ('products/search/' ~ category.id ~ '/' ~ mark.id) | url }}">{{ mark.name }}</a>
                                       </li>
                                      {% endfor %}
+
                             </ul>
                         </div>
                     {% endfor %}
