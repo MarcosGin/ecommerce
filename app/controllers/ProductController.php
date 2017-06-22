@@ -10,6 +10,7 @@ namespace App\Controllers;
 use App\Models\Category;
 use App\Models\Mark;
 use App\Models\Product;
+use Sirius\Validation\Validator;
 
 class ProductController extends BaseController{
     private $product;
@@ -33,7 +34,13 @@ class ProductController extends BaseController{
         return $this->render('products.twig', ['products' => $products, 'categories' => $categories, 'param' => $param, 'param2' => $param]);
     }
     public function getProfile($param = null) {
-        $product = $this->product->getProduct($param);
-        return $this->render('product-profile.twig', ['product' => $product]);
+        $products = $this->product->getProduct($param);
+        $product_comment = $this->product->getComments($products[0]->id);
+        $imgs_max = $this->product->getImgs($products[0]->carpet);
+        $imgs_min = $this->product->getImgs($products[0]->carpet, "min");
+        return $this->render('product-profile.twig', ['products' => $products, 'comments' => $product_comment, 'imgs_max' => $imgs_max, 'imgs_min' => $imgs_min]);
+    }
+    public function postProfile(){
+       //Hacer
     }
 }

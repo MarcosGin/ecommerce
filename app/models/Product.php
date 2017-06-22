@@ -33,11 +33,11 @@ class Product {
     }
     public function getProduct($name){
         $dbObj = DB::getInstance();
-        $query = $dbObj->getQuery("SELECT * FROM productos WHERE nombre =:id");
+        $query = $dbObj->getQuery("SELECT * FROM productos WHERE nombre =:name LIMIT 1");
         $query->execute([
-           'nombre' =>  $name,
+           'name' =>  $name,
         ]);
-        $data =$query->fetchAll(\PDO::FETCH_ASSOC);
+        $data =$query->fetchAll(\PDO::FETCH_OBJ);
         if(!$data){
             throw new \Exception('Not Found Product!');
         }
@@ -50,7 +50,7 @@ class Product {
         $query->execute([
             'id' => $id,
         ]);
-        $data = $query->fetchall(\PDO::FETCH_ASSOC);
+        $data = $query->fetchAll(\PDO::FETCH_ASSOC);
         if(!$data){
             throw new \Exception ("Not Found Products!");
         }
@@ -75,6 +75,39 @@ class Product {
             throw new \Exception ("Not found products!");
         }
         return $data;
+    }
+    public function getImgs($carpet, $type = "max"){
+        $dbObj = DB::getInstance();
+        $query = $dbObj->getQuery("SELECT * FROM producimgs WHERE carpet = :carpet AND type =:type");
+        $query->execute([
+            'carpet' => $carpet,
+            'type' => $type,
+        ]);
+        $data = $query->fetchAll(\PDO::FETCH_ASSOC);
+        if(!$data){
+            throw new \Exception('Not founds thes imgs for this product');
+        }
+        return $data;
+    }
+    public function getComments($id) {
+        $dbObj = DB::getInstance();
+        $query = $dbObj->getQuery("SELECT * FROM product_comment WHERE product_id = :id");
+        $query->execute([
+            'id' => $id,
+        ]);
+        $data = $query->fetchAll(\PDO::FETCH_ASSOC);
+        return $data;
+    }
+    public function setComment($product_id, $username, $coment, $fecha) {
+        $dbObj = DB::getInstance();
+        $query = $dbObj->getQuery("INSERT INTO product_comment (product_id, username, coment, fecha) VALUES(:product_id, :username, :coment, :fecha)");
+        $result = $query->execute([
+            'product_id' => $product_id,
+            'username' => $username,
+            'coment' => $coment,
+            'fecha' => $fecha,
+        ]);
+        return $result;
     }
 
 
