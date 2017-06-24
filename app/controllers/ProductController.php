@@ -33,6 +33,17 @@ class ProductController extends BaseController{
         $categories = $this->categories->getCategories();
         return $this->render('products.twig', ['products' => $products, 'categories' => $categories, 'param' => $param, 'param2' => $param]);
     }
+    public function getBusq($name = null){
+        $products = $this->product->getProductLike($name, true);
+        header('Content-Type: application/json');
+
+        return $products;
+    }
+    public function getName($name = null){
+        $products = $this->product->getProductLike($name, false);
+        $categories = $this->categories->getCategories();
+        return $this->render('products.twig', ['products' => $products, 'categories' => $categories]);
+    }
     public function getProfile($param = null) {
         $products = $this->product->getProduct($param);
         $product_comment = $this->product->getComments($products[0]->id);
@@ -43,10 +54,10 @@ class ProductController extends BaseController{
     public function postComment($idProduc){
         if($_POST){
         $produc = $this->product->getProduct($idProduc);
-        $comment = $this->product->setComment($idProduc, "Admin", $_POST['coment'], time());
+        $comment = $this->product->createComment($idProduc, "Admin", $_POST['coment'], time());
         header("location: " . BASE_URL . "products/profile/" . $produc[0]->nombre);
         }else{
-            echo "casi pa";
+            throw new \Exception('Not exits dates in the form.');
         }
 
     }

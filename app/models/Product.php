@@ -44,6 +44,26 @@ class Product {
         }
         return $data;
     }
+    public function getProductLike($name, $json){
+        $data = array();
+        $dbObj = DB::getInstance();
+        $query = $dbObj->getQuery("SELECT * FROM productos WHERE nombre  LIKE ? ");
+        $query->execute([
+            "%$name%",
+        ]);
+        $products = $query->fetchAll(\PDO::FETCH_OBJ);
+        foreach($products as $product){
+            $data[] = $product->nombre;
+        }
+        if($json){
+            return json_encode($data);
+        }else{
+            if(!$products){
+                throw new \Exception('Not found products!');
+            }
+            return $products;
+        }
+    }
 
     public function getProductForCategory($id){
         $dbObj = DB::getInstance();
@@ -99,7 +119,7 @@ class Product {
         $data = $query->fetchAll(\PDO::FETCH_ASSOC);
         return $data;
     }
-    public function setComment($product_id, $username, $coment, $fecha) {
+    public function createComment($product_id, $username, $coment, $fecha) {
         $dbObj = DB::getInstance();
         $query = $dbObj->getQuery("INSERT INTO product_comment (product_id, username, coment, fecha) VALUES(:product_id, :username, :coment, :fecha)");
         $result = $query->execute([
