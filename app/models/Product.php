@@ -31,11 +31,12 @@ class Product {
         }
         return $data;
     }
-    public function getProduct($name){
+    public function getProduct($produc){
         $dbObj = DB::getInstance();
-        $query = $dbObj->getQuery("SELECT * FROM productos WHERE nombre =:name LIMIT 1");
+        $query = $dbObj->getQuery("SELECT * FROM productos WHERE nombre =:name OR id=:id LIMIT 1");
         $query->execute([
-           'name' =>  $name,
+           'name' =>  $produc,
+           'id'   =>  $produc,
         ]);
         $data =$query->fetchAll(\PDO::FETCH_OBJ);
         if(!$data){

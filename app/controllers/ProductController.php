@@ -40,7 +40,16 @@ class ProductController extends BaseController{
         $imgs_min = $this->product->getImgs($products[0]->carpet, "min");
         return $this->render('product-profile.twig', ['products' => $products, 'comments' => $product_comment, 'imgs_max' => $imgs_max, 'imgs_min' => $imgs_min]);
     }
-    public function postProfile(){
-       //Hacer
+    public function postComment($idProduc){
+        if($_POST){
+        $produc = $this->product->getProduct($idProduc);
+        $comment = $this->product->setComment($idProduc, "Admin", $_POST['coment'], time());
+        header("location: " . BASE_URL . "products/profile/" . $produc[0]->nombre);
+        }else{
+            echo "casi pa";
+        }
+
     }
+
+
 }

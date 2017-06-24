@@ -60,7 +60,7 @@
                 <?php }else{?>-->
                 <div class="error"><i class="fa fa-exclamation-triangle"></i><p></p></div>
 
-                <form action="" method="post">
+                <form action="{{ ('products/comment/' ~ product.id) | url }}" method="post">
                     <textarea name="coment" id="userComent" placeholder="Comentar producto..."></textarea>
                     <button type="submit"  name="newComent" id="newComent">Comentar</button>
                 </form>
