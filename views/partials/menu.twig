@@ -23,7 +23,7 @@
                 <div class="item "><a href="{{ 'contacto' | url }}"><i class="fa fa-question-circle"></i> Contacto</a></div>
             </nav>
     <div class="buscador">
-        <form action="{{ 'productos' | url }}" method="get">
+        <form action="{{ 'products/name/' | url }}" method="get">
             <input type="text" name="busq" class="typeahead tt-query" autocomplete="off" spellcheck="false" placeholder="Buscar producto">
             <button type="submit" class="icon-buscador"><i class="fa fa-search"></i></button>
         </form>

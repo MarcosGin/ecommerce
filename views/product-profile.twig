@@ -1,0 +1,86 @@
+{% extends 'layout.twig' %}
+
+{% block container %}
+
+    <div class="containerCentral">
+        {% for product in products %}
+        <section class="product">
+           <div class="produc-top">
+                <div class="slick-left">
+                    <div class="slick-cont">
+                        <div class="slider-for">
+                            {% for img in imgs_max %}
+                                 <div class="item">
+                                    <img src="{{ (img.carpet ~ '/' ~ img.url) | url_image }}" alt="image"  draggable="false"/>
+                                 </div>
+                            {% endfor %}
+                    </div>
+                  <div class="slider-nav">
+                           {% for img in imgs_min %}
+                               <div class="item item2">
+                                   <img src="{{ (img.carpet ~ '/' ~ img.url) | url_image }}" alt="image"  draggable="false"/>
+                               </div>
+                           {% endfor %}
+
+                </div>
+            </div>
+             </div>
+    <div class="info-right">
+        <div class="buy-info">
+            <div class="headerInfo"><h3>{{ product.nombre }}</h3></div>
+            <div class="contInfo">
+                <div class="price">
+                    <span>$ {{ product.precio }}</span>
+                    <button type="submit" name="buy"><a href="agreedcar"><i class="fa fa-shopping-cart"></i> Agregar al carrito</a></button>
+                </div>
+            </div>
+
+            <div class="comentaries">
+                <div class="tittle"><i class="fa fa-star-o"></i> Comentarios</div>
+
+                <div class="coments">
+                    {% for comment in comments %}
+                        <div class="coment">
+                            <div class="user"></div>
+                            <div class="content">
+                                <div class="user-name"><i class="fa fa-user"></i> {{ comment.username }}</div>
+                                <div class="user-info">{{ comment.coment }}</div>
+                                <div class="user-data"><i class="fa fa-clock-o"></i> --/--/--</div>
+                            </div>
+                        </div>
+                    {% else %}
+                        <p>No hay comentarios</p>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="newComentaries">
+               <!-- <?php if(isset($msg)){?>
+                <div class="error" style="display:block;"><i class="fa fa-exclamation-triangle"></i><p><?php echo $msg;?></p></div>
+                <?php }else{?>-->
+                <div class="error"><i class="fa fa-exclamation-triangle"></i><p></p></div>
+
+                <form action="{{ ('products/comment/' ~ product.id) | url }}" method="post">
+                    <textarea name="coment" id="userComent" placeholder="Comentar producto..."></textarea>
+                    <button type="submit"  name="newComent" id="newComent">Comentar</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+               </div>
+    <div class="learDescri"><i class="fa fa-plus"></i> Descripción</div>
+    <div class="descri">
+        {% autoescape false %}
+             {{ product.descri }}
+        {% endautoescape %}
+
+    </div>
+
+
+    </section>
+            {% endfor %}
+
+    </div>
+
+{% endblock %}
