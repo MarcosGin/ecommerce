@@ -20,6 +20,33 @@ $baseImage = $baseUrl . 'assets/img/products/';
 define('BASE_URL', $baseUrl);
 define('BASE_IMAGE', $baseImage);
 
+
+$mail = new PHPMailer;
+$mail->isSMTP();
+$mail->Host = 'smtp.gmail.com';
+$mail->SMTPAuth = true;
+$mail->Username = 'marcosgin291@gmail.com';
+$mail->Password = 'mamateamo10';
+$mail->SMTPSecure = 'tls';
+$mail->Port = 587;
+
+$mail->setFrom('mundotecnologia@gmail.com', 'Mundotecnologia');
+$mail->addAddress('bocajuniors291@hotmail.com');
+
+
+$mail->isHTML(true);
+
+$mail->Subject = 'Verifiq your account, please.';
+$mail->Body    = '<a href="link">Here</a>';
+$mail->AltBody = '?';
+
+if(!$mail->send()) {
+    echo 'Message could not be sent.';
+    echo 'Mailer Error: ' . $mail->ErrorInfo;
+} else {
+    echo 'Message has been sent';
+}
+
 //Routes
 $route = $_GET['route'] ?? '/';
 $router = new RouteCollector();
