@@ -1,53 +1,10 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-
-    <title>MundoTecnologia</title>
-    <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-    <meta charset="utf-8">
-    <link rel="icon" href="img/favicon.ico">
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
-    <link rel="stylesheet" href="{{ 'assets/css/estilos.css' | url }}">
-    <link rel="stylesheet" href="{{ 'assets/css/font-awesome.min.css' | url }}">
-    <link rel="stylesheet" href="{{ 'assets/css/header.css' | url }}">
-    <link rel="stylesheet" href="{{ 'assets/css/responsiveslides.css' | url }}">
-    <link rel="stylesheet" href="{{ 'assets/css/themes.css' | url }}">
-    <link rel="stylesheet" href="{{ 'assets/css/slick.css' | url }}">
-    <link rel="stylesheet" href="{{ 'assets/css/buy.css' | url }}">
-
+{% include('partials/header.twig') %}
 <body>
-<div class="container">
-    {% include('partials/menu.twig') %}
+    <div class="container">
+        {% include('partials/menu.twig') %}
 
-    {% block container %}{% endblock %}
-</div>
-<footer class="footer-pag">
-    <div class="center"><div class="footer-cont">
-            <div class="info"><p>Todos los derechos reservados a sus respectivos dueños.</p>
-                <p>MundoTecnologia &copy; 2016.</p>
-                <p>Crated By: Marcos Gin</p></div>
-            <div class="iconsSocial">
-                <a href="http://facebook.com" target="_blank"><i class="fa fa-facebook-official"></i></a>
-                <a href="http://twitter.com" target="_blank"><i class="fa fa-twitter-square"></i></a>
-                <a href="http://google.com" target="_blank"><i class="fa fa-google-plus"></i></a>
-            </div>
-        </div>
+        {% block container %}{% endblock %}
     </div>
-</footer>
-
-<script type="text/javascript" src="{{ 'assets/js/jquery-3.1.0.min.js' | url }}"></script>
-<script type="text/javascript" src="{{ 'assets/js/typeahead.min.js' | url }}"></script>
-<script type="text/javascript" src="{{ 'assets/js/search.js' | url }}"></script>
-<script type="text/javascript" src="{{ 'assets/js/menu.js' | url }}"></script>
-
-<!--Index-->
-<script type="text/javascript" src="{{ 'assets/js/responsiveslides.js' | url }}"></script>
-<script type="text/javascript" src="{{ 'assets/js/confSlider.js' | url }}"></script>
-
-<script type="text/javascript" src="{{ 'assets/js/buy.js' | url }}"></script>
-<script type="text/javascript" src="{{ 'assets/js/slick.min.js' | url }}"></script>
-
-
-
 </body>
-</html>
+
+{% include('partials/footer.twig') %}

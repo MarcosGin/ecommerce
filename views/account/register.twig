@@ -1,0 +1,86 @@
+{% include('partials/header.twig') %}
+
+<form action="" method="post" class="register">
+
+    <div class="tittle-register">
+        <a class="logo" href="index"><img src="{{ 'assets/img/logo.png' | url}}"></a>
+        <h1>Registrarse</h1></div>
+    {% if errors %}
+
+    <div class="error" style="display:block;"><i class="fa fa-exclamation-triangle"></i>
+        <ul>
+       {% for messages in errors %}
+            {% for message in messages %}
+                <li>{{ message }}</li>
+                    {% endfor %}
+        {% endfor %}
+        </ul>
+    </div>
+    {% else  %}
+    <div class="error"><i class="fa fa-exclamation-triangle"></i><p></p></div>
+    {% endif %}
+    <div class="input input-50">
+        <div class="fa-login"><i class="fa fa-user"></i></div>
+        <input type="text" class="nombre" name="newName" placeholder="Nombre">
+    </div>
+    <div class="input input-50">
+        <div class="fa-login"><i class="fa fa-user"></i></div>
+        <input type="text" class="lastName" name="newLastName" placeholder="Apellidos">
+    </div>
+    <div class="input input-50">
+        <div class="fa-login"><i class="fa fa-unlock"></i></div>
+        <input type="password" class="password" name="newPass" placeholder="Contraseña">
+    </div>
+    <div class="input input-50">
+        <div class="fa-login"><i class="fa fa-unlock-alt"></i></div>
+        <input type="password" class="conpassword" name="newPassConfirm" placeholder="Repetir contraseña">
+    </div>
+    <div class="input">
+        <div class="fa-login"><i class="fa fa-envelope"></i></div>
+        <input type="email" class="correo" name="newEmail" placeholder="Correo electrónico">
+    </div>
+    <div class="selects">
+        <div class="dia select"><div class="icon-selects"><i class="fa fa-arrow-circle-o-down"></i></div>
+            <select name="newDay" class="day">
+                <option select>Día</option>
+                <option value="">1</option>
+            </select>
+        </div>
+        <div class="mes select"><div class="icon-selects"><i class="fa fa-arrow-circle-o-down"></i></div>
+            <select name="newMonth" class="month">
+                <option select>Mes</option>
+                <option value="">Enero</option>
+            </select>
+        </div>
+        <div class="año select"><div class="icon-selects"><i class="fa fa-arrow-circle-o-down"></i></div>
+
+            <select name="newYear" class="year">
+                <option select>Año</option>
+                <option value="">1980</option>
+            </select>
+        </div>
+    </div>
+    <div class="input input-50">
+        <div class="fa-login"><i class="fa fa-phone"></i></div>
+        <input type="text" class="phoneReal" name="newPhone" placeholder="Teléfono">
+    </div>
+    <div class="input input-50">
+        <div class="fa-login"><i class="fa fa-file"></i></div>
+        <input type="text" class="documento" name="newDNI" placeholder="Documento">
+    </div>
+
+    <div class="gender">
+        <div class="gendercont">
+            <input type="radio" id="fem" class="newGender" name="newGender" value="Femenino">
+            <label for="fem" class="fem">Femenino</label>
+        </div>
+        <div class="gendercont">
+            <input type="radio" id="mas" class="newGender"  name="newGender" value="Masculino">
+            <label for="mas" class="mas">Masculino</label></div>
+    </div>
+    <div class="termines"><label for="termine"><input type="checkbox" name="termine" id="termine"> He leído y acepto las Condiciones de uso y la Política de privacidad.</label></div>
+    <button type="submit" class="Benviar" name="Benviar"> Registrarse</button>
+    <div class="ready-login">¿Ya tienes una cuenta? <a href="{{ 'account/login' | url }}">Iniciar Sesión</a></div>
+
+</form>
+{% include('partials/footer.twig') %}
