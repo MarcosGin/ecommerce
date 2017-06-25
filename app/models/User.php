@@ -49,7 +49,10 @@ class User {
             'newPhone:celular' => 'required()(El campo del {label} es requerido) |  integer()(El campo del {label} permite solo numeros) | minlength(10)(El campo del {label} es invalido) | maxlength(10)(El campo del {label} es invalido) ',
             'termine' => 'required()(Debes aceptar las Condiciones de uso y la Política de privacidad)',
         ));
+
         if($validator->validate($post)){
+            $verif_user_exist = $this->getUser($post['newEmail']);
+            if(!$verif_user_exist){
                 $query->execute([
                     'name' => $post['newName'],
                     'lastname' => $post['newLastName'],
@@ -64,8 +67,11 @@ class User {
                     'img' =>    "none.jpg",
                     'newlatter' =>  0,
                 ]);
-             return false;
-
+                     return false;
+            }else{
+                $validator->addMessage('newEmail', 'Ya existe una cuenta con este correo electronico.');
+                return  $validator->getMessages();
+            }
         }else{
             return  $validator->getMessages();
 
