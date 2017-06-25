@@ -37,36 +37,14 @@ class AuthController extends BaseController {
         $errors = [];
         $result = false;
         if($_POST){
-            $validator = new Validator();
+            $user = $this->user->insertUser($_POST);
 
-            $validator->add(array(
-                'newName:nombre' => 'required()(El campo del {label} es requerido) | fullname()(El campo del {label} es invalido) | maxlength(50)(El campo del {label} permite como maximo {max} caracteres)',
-                'newLastName:apellido' => 'required()(El campo del {label} es requerido) | maxlength(30)(El campo del {label} permite como maximo {max} caracteres)',
-                'newPass:contraseña' => 'required()(El campo de la {label} es requerido) | minlength(10)(El campo de la {label} permite como minimo {min} caracteres)',
-                'newEmail:correo electrónico' => 'required()(El campo del {label} es requerido) | email()(El campo del {label} es invalido)',
-                'newGender:género' => 'required()(El campo del {label} es requerido)',
-                'newDNI:documento' => 'required()(El campo {label} es requerido) | integer()(El campo del {label} permite solo numeros) | minlength(8)(El campo del {label} es invalido) | maxlength(8)(El campo del {label} es invalido) ',
-                'newPhone:celular' => 'required()(El campo {label} es requerido) |  integer()(El campo del {label} permite solo numeros) | minlength(10)(El campo del {label} es invalido) | maxlength(10)(El campo del {label} es invalido) ',
-            ));
-
-            if($validator->validate($_POST)){
-                   $user = $this->user->insertUser(
-                       $_POST['newName'],
-                       $_POST['newLastName'],
-                       password_hash($_POST['newPass'], PASSWORD_DEFAULT),
-                       $_POST['newEmail'],
-                       $_POST['newGender'],
-                       $_POST['newDNI'],
-                       $_POST['newPhone'],
-                       0,
-                       10000,
-                       $_POST['newDay'].'/'.$_POST['newMonth'].'/'.$_POST['newYear'],
-                       "none.jpg",
-                       0);
-                        $result = true;
+            if($user){
+                $errors = $user;
             }else{
-                    $errors = $validator->getMessages();
+                $result = true;
             }
+
         }
         return $this->render("account/register.twig", ['errors' => $errors, 'result' => $result]);
     }

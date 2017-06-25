@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Database\DB;
+use Sirius\Validation\Validator;
 
 class User {
 
@@ -30,26 +31,45 @@ class User {
         return $data;
     }
 
-    public function insertUser($name, $lastName, $email, $password, $gender, $dni, $phone, $rank, $cash, $dateUser, $img, $newLatter) {
+    public function insertUser($post) {
         $dbObj = DB::getInstance();
         $query = $dbObj->getQuery("INSERT INTO users (name, lastname, password, email, gender, dni, phone, rank, cash, dateuser, img, newlatter)
             VALUES (:name, :lastname, :password, :email, :gender, :dni, :phone, :rank, :cash, :dateuser, :img, :newlatter)
         ");
-        $result = $query->execute([
-            'name' => $name,
-            'lastname' => $lastName,
-            'password' => $email,
-            'email' => $password,
-            'gender' => $gender,
-            'dni' =>    $dni,
-            'phone' =>  $phone,
-            'rank' =>   $rank,
-            'cash' =>   $cash,
-            'dateuser' =>   $dateUser,
-            'img' =>    $img,
-            'newlatter' =>  $newLatter,
-        ]);
-        return $result;
+
+        $validator = new Validator();
+
+        $validator->add(array(
+            'newName:nombre' => 'required()(El campo del {label} es requerido) | fullname()(El campo del {label} es invalido) | maxlength(50)(El campo del {label} permite como maximo {max} caracteres)',
+            'newLastName:apellido' => 'required()(El campo del {label} es requerido) | maxlength(30)(El campo del {label} permite como maximo {max} caracteres)',
+            'newPass:contraseña' => 'required()(El campo de la {label} es requerido) | minlength(10)(El campo de la {label} permite como minimo {min} caracteres)',
+            'newEmail:correo electrónico' => 'required()(El campo del {label} es requerido) | email()(El campo del {label} es invalido)',
+            'newGender:género' => 'required()(El campo del {label} es requerido)',
+            'newDNI:documento' => 'required()(El campo del {label} es requerido) | integer()(El campo del {label} permite solo numeros) | minlength(8)(El campo del {label} es invalido) | maxlength(8)(El campo del {label} es invalido) ',
+            'newPhone:celular' => 'required()(El campo del {label} es requerido) |  integer()(El campo del {label} permite solo numeros) | minlength(10)(El campo del {label} es invalido) | maxlength(10)(El campo del {label} es invalido) ',
+            'termine' => 'required()(Debes aceptar las Condiciones de uso y la Política de privacidad)',
+        ));
+        if($validator->validate($post)){
+                $query->execute([
+                    'name' => $post['newName'],
+                    'lastname' => $post['newLastName'],
+                    'password' => password_hash($post['newPass'], PASSWORD_DEFAULT),
+                    'email' => $post['newEmail'],
+                    'gender' => $post['newGender'],
+                    'dni' =>    $post['newDNI'],
+                    'phone' =>  $post['newPhone'],
+                    'rank' =>   0,
+                    'cash' =>   0,
+                    'dateuser' =>  $post['newDay'].'/'.$post['newMonth'].'/'.$post['newYear'],
+                    'img' =>    "none.jpg",
+                    'newlatter' =>  0,
+                ]);
+             return false;
+
+        }else{
+            return  $validator->getMessages();
+
+        }
     }
 
 
