@@ -2,7 +2,8 @@
 
 namespace App\Models;
 
-use App\Database\DB;
+use App\Bin\Database\DB;
+use App\Bin\Mail\Mail;
 use Sirius\Validation\Validator;
 
 class User {
@@ -67,6 +68,8 @@ class User {
                     'img' =>    "none.jpg",
                     'newlatter' =>  0,
                 ]);
+                   $mail = new Mail();
+                   $mail->sedMailForRegister($post['newEmail'], $this->generateTokenRegister($dbObj->getLastInsertedId()));
                      return false;
             }else{
                 $validator->addMessage('newEmail', 'Ya existe una cuenta con este correo electronico.');
@@ -76,6 +79,18 @@ class User {
             return  $validator->getMessages();
 
         }
+    }
+
+    public function generateTokenRegister($id){
+         $token = bin2hex(random_bytes(40));
+         $dbObj = DB::getInstance();
+         $query = $dbObj->getQuery("INSERT INTO users_activate (user_id, token) VALUES(:user_id, :token)");
+         $query->execute([
+             'user_id' => $id,
+             'token' => $token,
+         ]);
+
+        return BASE_URL.'account/token/'.$token;
     }
 
 

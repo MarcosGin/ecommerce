@@ -9,7 +9,8 @@ error_reporting(E_ALL);
 session_start();
 
 require_once '../vendor/autoload.php';
-require_once '../app/database/DB.php';
+require_once '../app/bin/config.php';
+require_once '../app/bin/database/DB.php';
 
 use Phroute\Phroute\RouteCollector;
 
@@ -19,33 +20,6 @@ $baseUrl = 'http://' . $_SERVER['HTTP_HOST'] . $baseDir;
 $baseImage = $baseUrl . 'assets/img/products/';
 define('BASE_URL', $baseUrl);
 define('BASE_IMAGE', $baseImage);
-
-
-$mail = new PHPMailer;
-$mail->isSMTP();
-$mail->Host = 'smtp.gmail.com';
-$mail->SMTPAuth = true;
-$mail->Username = 'marcosgin291@gmail.com';
-$mail->Password = '';
-$mail->SMTPSecure = 'tls';
-$mail->Port = 587;
-
-$mail->setFrom('mundotecnologia@gmail.com', 'Mundotecnologia');
-$mail->addAddress('bocajuniors291@hotmail.com');
-
-
-$mail->isHTML(true);
-
-$mail->Subject = 'Verifiq your account, please.';
-$mail->Body    = '<a href="link">Here</a>';
-$mail->AltBody = '?';
-
-if(!$mail->send()) {
-    echo 'Message could not be sent.';
-    echo 'Mailer Error: ' . $mail->ErrorInfo;
-} else {
-    echo 'Message has been sent';
-}
 
 //Routes
 $route = $_GET['route'] ?? '/';
