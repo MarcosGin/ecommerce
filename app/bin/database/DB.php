@@ -5,7 +5,7 @@
  * Date: 19/06/17
  * Time: 10:50
  */
-namespace App\Database;
+namespace App\Bin;
 
 require_once 'config.php';
 
