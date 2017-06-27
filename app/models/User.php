@@ -32,6 +32,30 @@ class User {
         return $data;
     }
 
+    public function getUserToken($token){
+        $dbObj = DB::getInstance();
+        $query = $dbObj->getQuery("SELECT * FROM users_activate WHERE token = :token LIMIT 1");
+        $result = $query->execute([
+            'token' => $token,
+        ]);
+        $data = $query->fetchAll(\PDO::FETCH_OBJ);
+
+        return $data;
+    }
+
+    public function activateUser($token){
+        if($this->getUserToken($token)){
+            $dbObj = DB::getInstance();
+            $query = $dbObj->getQuery("DELETE FROM users_activate WHERE token = :token");
+            $query->execute([
+                'token' => $token
+            ]);
+            return  true;
+        }else{
+            return false;
+        }
+    }
+
     public function insertUser($post) {
         $dbObj = DB::getInstance();
         $query = $dbObj->getQuery("INSERT INTO users (name, lastname, password, email, gender, dni, phone, rank, cash, dateuser, img, newlatter)

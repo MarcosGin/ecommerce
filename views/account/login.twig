@@ -1,9 +1,14 @@
 {% include('partials/header.twig') %}
 
-<form action="" method="post" class="login">
+<form action="{{ 'account/login' | url}}" method="post" class="login">
     <div class="tittle-login">
         <a class="logo" href=""><img src="{{ 'assets/img/logo.png' | url }}"></a>
         <h1>Iniciar Sesión</h1></div>
+
+    {% if activate_account %}
+        <div class="succes"><p>Tu cuenta ha sido activada, ya puedes iniciar sesion.</p></div>
+    {% endif %}
+
     {% if errors %}
     <div class="error"s style="display: block;"><i class="fa fa-exclamation-triangle"></i><p>{{ errors }}</p></div>
     {% else %}

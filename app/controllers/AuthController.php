@@ -48,6 +48,20 @@ class AuthController extends BaseController {
         }
         return $this->render("account/register.twig", ['errors' => $errors, 'result' => $result]);
     }
+
+    public function getToken($token = null){
+        $user = $this->user->activateUser($token);
+
+
+        if($user){
+            return $this->render("account/login.twig", ['activate_account' => true]);
+        }else{
+            header("Location: ". BASE_URL);
+        }
+
+
+    }
+
     public function getLogout(){
         session_destroy();
         unset($_SESSION['email']);
