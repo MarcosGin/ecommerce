@@ -20,6 +20,8 @@ $baseUrl = 'http://' . $_SERVER['HTTP_HOST'] . $baseDir;
 $baseImage = $baseUrl . 'assets/img/products/';
 define('BASE_URL', $baseUrl);
 define('BASE_IMAGE', $baseImage);
+define('SECRET_KEY', 'mykey');
+define('ALGORITHM', 'HS512');
 
 //Routes
 $route = $_GET['route'] ?? '/';

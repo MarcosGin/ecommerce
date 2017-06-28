@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\User;
+use Firebase\JWT\JWT;
 
 class AuthController extends BaseController {
     private $user;
@@ -19,8 +20,29 @@ class AuthController extends BaseController {
             $user = $this->user->getUser($_POST['email']);
                 if($user && password_verify($_POST['password'], $user[0]->password)){
                     if(!$this->user->getUserActivate($user[0]->id, "id")){
-                        $_SESSION['email'] = $user[0]->email;
-                        header("Location: " . BASE_URL . "index");
+
+                        $time = time();
+                        $key = getenv("APP_SECRET_KEY");
+
+                        $token = array(
+                            'iat' => $time, // Tiempo que inició el token
+                            'exp' => $time + (60), // Tiempo que expirará el token (+1 hora)
+                            'data' => [ // información del usuario
+                                'id' => $user[0]->id,
+                                'email' => $user[0]->email,
+                            ]
+                        );
+
+                        $jwt = JWT::encode($token, $key, getenv("APP_ALGORITHM"));
+
+                        //$data = JWT::decode($jwt, $key, array(getenv("APP_ALGORITHM")));
+
+                        $data = ["jwt" => $jwt];
+
+                        echo json_encode($data);
+
+                        die();
+
                     }else{
                         $error = "Your account is not activated, you must access your email and activate it";
                     }
