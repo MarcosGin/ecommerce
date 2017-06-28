@@ -32,9 +32,13 @@ class User {
         return $data;
     }
 
-    public function getUserToken($token){
+    public function getUserToken($token, $type = null){
         $dbObj = DB::getInstance();
-        $query = $dbObj->getQuery("SELECT * FROM users_activate WHERE token = :token LIMIT 1");
+        if($type == "id"){
+            $query = $dbObj->getQuery("SELECT * FROM users_activate WHERE user_id = :token LIMIT 1");
+        }else{
+            $query = $dbObj->getQuery("SELECT * FROM users_activate WHERE token = :token LIMIT 1");
+        }
         $result = $query->execute([
             'token' => $token,
         ]);
