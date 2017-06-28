@@ -9,6 +9,8 @@
         "twig/twig": "~2.0",
         "vlucas/phpdotenv": "^2.4",
         "siriusphp/validation": "^2.2",
-        "kint-php/kint": "^2.1"
+        "kint-php/kint": "^2.1",
+        "phpmailer/phpmailer": "^5.2",
+        "firebase/php-jwt": "^5.0"
     }
 }

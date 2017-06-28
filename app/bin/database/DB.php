@@ -5,9 +5,7 @@
  * Date: 19/06/17
  * Time: 10:50
  */
-namespace App\Database;
-
-require_once 'config.php';
+namespace App\Bin\Database;
 
 class DB {
     private static $Db;

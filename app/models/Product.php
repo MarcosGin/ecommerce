@@ -8,7 +8,7 @@
 namespace App\Models;
 
 
-use App\Database\DB;
+use App\Bin\Database\DB;
 
 class Product {
     private $name;

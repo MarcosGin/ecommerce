@@ -7,7 +7,7 @@
  */
 namespace App\Models;
 
-use App\Database\DB;
+use App\Bin\Database\DB;
 
 class Category{
     private $name;

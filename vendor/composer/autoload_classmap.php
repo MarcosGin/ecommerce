@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'EasyPeasyICS' => $vendorDir . '/phpmailer/phpmailer/extras/EasyPeasyICS.php',
     'Kint' => $vendorDir . '/kint-php/kint/src/Kint.php',
     'Kint_Object' => $vendorDir . '/kint-php/kint/src/Object.php',
     'Kint_Object_Blob' => $vendorDir . '/kint-php/kint/src/Object/Blob.php',
@@ -83,4 +84,11 @@ return array(
     'Kint_Renderer_Text_Recursion' => $vendorDir . '/kint-php/kint/src/Renderer/Text/Recursion.php',
     'Kint_Renderer_Text_Trace' => $vendorDir . '/kint-php/kint/src/Renderer/Text/Trace.php',
     'Kint_SourceParser' => $vendorDir . '/kint-php/kint/src/SourceParser.php',
+    'PHPMailer' => $vendorDir . '/phpmailer/phpmailer/class.phpmailer.php',
+    'PHPMailerOAuth' => $vendorDir . '/phpmailer/phpmailer/class.phpmaileroauth.php',
+    'PHPMailerOAuthGoogle' => $vendorDir . '/phpmailer/phpmailer/class.phpmaileroauthgoogle.php',
+    'POP3' => $vendorDir . '/phpmailer/phpmailer/class.pop3.php',
+    'SMTP' => $vendorDir . '/phpmailer/phpmailer/class.smtp.php',
+    'ntlm_sasl_client_class' => $vendorDir . '/phpmailer/phpmailer/extras/ntlm_sasl_client.php',
+    'phpmailerException' => $vendorDir . '/phpmailer/phpmailer/class.phpmailer.php',
 );
