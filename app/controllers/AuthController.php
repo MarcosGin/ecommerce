@@ -3,7 +3,6 @@
 namespace App\Controllers;
 
 use App\Models\User;
-use Sirius\Validation\Validator;
 
 class AuthController extends BaseController {
     private $user;
@@ -19,8 +18,12 @@ class AuthController extends BaseController {
             if(!empty($_POST['email']) && !empty($_POST['password'])){
             $user = $this->user->getUser($_POST['email']);
                 if($user && password_verify($_POST['password'], $user[0]->password)){
-                    $_SESSION['email'] = $user[0]->email;
-                    header("Location: " . BASE_URL . "index");
+                    if(!$this->user->getUserToken($user[0]->id, "id")){
+                        $_SESSION['email'] = $user[0]->email;
+                        header("Location: " . BASE_URL . "index");
+                    }else{
+                        $error = "Your account is not activated, you must access your email and activate it";
+                    }
                 }else{
                     $error = "Your email address and / or your password is incorrect";
                 }
