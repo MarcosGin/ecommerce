@@ -32,7 +32,7 @@ class User {
         return $data;
     }
 
-    public function getUserToken($token, $type = null){
+    public function getUserActivate($token, $type = null){
         $dbObj = DB::getInstance();
         if($type == "id"){
             $query = $dbObj->getQuery("SELECT * FROM users_activate WHERE user_id = :token LIMIT 1");
@@ -48,7 +48,7 @@ class User {
     }
 
     public function activateUser($token){
-        if($this->getUserToken($token)){
+        if($this->getUserActivate($token)){
             $dbObj = DB::getInstance();
             $query = $dbObj->getQuery("DELETE FROM users_activate WHERE token = :token");
             $query->execute([
