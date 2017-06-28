@@ -20,7 +20,6 @@ class AuthController extends BaseController {
                 if($user && password_verify($_POST['password'], $user[0]->password)){
                     if(!$this->user->getUserActivate($user[0]->id, "id")){
                         $_SESSION['email'] = $user[0]->email;
-                        $_SESSION['token'] =
                         header("Location: " . BASE_URL . "index");
                     }else{
                         $error = "Your account is not activated, you must access your email and activate it";
