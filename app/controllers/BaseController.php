@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\User;
 use Twig_Loader_Filesystem;
 
 class BaseController {
@@ -20,7 +21,11 @@ class BaseController {
             return  BASE_IMAGE . $path;
         }));
     }
-    public function render($fileName, $data= []) {
+    public function render($fileName, $data = []) {
+        if(isset($_SESSION['email'])){
+             $user = new User();
+             $data['session_user'] =  $user->getUser($_SESSION['email']);
+        }
         return $this->templateEngine->render($fileName, $data);
     }
 }
