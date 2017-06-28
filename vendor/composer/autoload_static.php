@@ -25,6 +25,10 @@ class ComposerStaticInit20c21e6cbe05927a5b30745fa33cfa9a
         array (
             'Phroute\\Phroute\\' => 16,
         ),
+        'F' => 
+        array (
+            'Firebase\\JWT\\' => 13,
+        ),
         'D' => 
         array (
             'Dotenv\\' => 7,
@@ -51,6 +55,10 @@ class ComposerStaticInit20c21e6cbe05927a5b30745fa33cfa9a
         'Phroute\\Phroute\\' => 
         array (
             0 => __DIR__ . '/..' . '/phroute/phroute/src/Phroute',
+        ),
+        'Firebase\\JWT\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/firebase/php-jwt/src',
         ),
         'Dotenv\\' => 
         array (
