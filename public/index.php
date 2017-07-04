@@ -20,13 +20,14 @@ $baseUrl = 'http://' . $_SERVER['HTTP_HOST'] . $baseDir;
 $baseImage = $baseUrl . 'assets/img/products/';
 define('BASE_URL', $baseUrl);
 define('BASE_IMAGE', $baseImage);
-
+define('SECRET_KEY', 'mysecretkey');
+define('ALGORITHM', '');
 //Routes
 $route = $_GET['route'] ?? '/';
 $router = new RouteCollector();
 
 $router->filter('auth', function () {
-    if(isset($_SESSION['email'])) {
+    if(isset($_SESSION['token'])) {
         header('Location: ' . BASE_URL . 'index');
         return false;
     }
