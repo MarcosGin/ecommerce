@@ -7,6 +7,7 @@
  */
 namespace App\Controllers;
 
+use App\Bin\Token;
 use App\Models\Category;
 use App\Models\Mark;
 use App\Models\Product;
@@ -53,8 +54,11 @@ class ProductController extends BaseController{
     }
     public function postComment($idProduc){
         if($_POST){
-        $produc = $this->product->getProduct($idProduc);
-        $comment = $this->product->createComment($idProduc, "Admin", $_POST['coment'], time());
+            $jwt = Token::checkToken($_POST['user_token']);
+            $produc = $this->product->getProduct($idProduc);
+            if($jwt){
+                $comment = $this->product->createComment($idProduc, $jwt->username, $_POST['coment'], time());
+            }
         header("location: " . BASE_URL . "products/profile/" . $produc[0]->nombre);
         }else{
             throw new \Exception('Not exits dates in the form.');
