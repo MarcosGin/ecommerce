@@ -61,7 +61,7 @@
                 <div class="error"><i class="fa fa-exclamation-triangle"></i><p></p></div>
 
                 <form action="{{ ('products/comment/' ~ product.id) | url }}" method="post">
-                    <input type="hidden" value="{{ token_form }}">
+                    <input type="hidden" name="user_token" value="{{ token_form }}">
 
                     <textarea name="coment" id="userComent" placeholder="Comentar producto..."></textarea>
                     <button type="submit"  name="newComent" id="newComent">Comentar</button>
