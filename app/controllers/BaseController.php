@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Bin\Token;
 use App\Models\User;
 use Twig_Loader_Filesystem;
 
@@ -23,11 +24,13 @@ class BaseController {
     }
     public function render($fileName, $data = []) {
         if(isset($_SESSION['token'])){
-            $jwt = \Firebase\JWT\JWT::decode($_SESSION['token'], SECRET_KEY, array(ALGORITHM));
+            $jwt = Token::checkToken($_SESSION['token']);
+            if($jwt){
+                $user = new User();
+                $data['token_form'] = $_SESSION['token'];
+                $data['session_user'] =  $user->getUser($jwt->email);
+            }
 
-            $user = new User();
-            $data['token_form'] = $_SESSION['token'];
-            $data['session_user'] =  $user->getUser($jwt->data->email);
         }
         return $this->templateEngine->render($fileName, $data);
     }
