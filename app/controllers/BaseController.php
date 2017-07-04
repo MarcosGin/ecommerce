@@ -22,9 +22,9 @@ class BaseController {
         }));
     }
     public function render($fileName, $data = []) {
-        if(isset($_SESSION['email'])){
+        if(isset($_SESSION['token'])){
              $user = new User();
-             $data['session_user'] =  $user->getUser($_SESSION['email']);
+             $data['session_user'] =  $user->getUser("bocajuniors291@hotmail.com");
         }
         return $this->templateEngine->render($fileName, $data);
     }
