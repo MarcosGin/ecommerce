@@ -23,8 +23,11 @@ class BaseController {
     }
     public function render($fileName, $data = []) {
         if(isset($_SESSION['token'])){
-             $user = new User();
-             $data['session_user'] =  $user->getUser("bocajuniors291@hotmail.com");
+            $jwt = \Firebase\JWT\JWT::decode($_SESSION['token'], SECRET_KEY, array(ALGORITHM));
+
+            $user = new User();
+            $data['token_form'] = $_SESSION['token'];
+            $data['session_user'] =  $user->getUser($jwt->data->email);
         }
         return $this->templateEngine->render($fileName, $data);
     }

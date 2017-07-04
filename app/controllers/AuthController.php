@@ -26,10 +26,11 @@ class AuthController extends BaseController {
 
                         $token = array(
                             'iat' => $time, // Tiempo que inició el token
-                            'exp' => $time + (60), // Tiempo que expirará el token (+1 hora)
+                            'exp' => $time + (7200), // Tiempo que expirará el token (+2 hora)
                             'data' => [ // información del usuario
                                 'id' => $user[0]->id,
                                 'email' => $user[0]->email,
+                                'admin' => $user[0]->rank,
                             ]
                         );
 

@@ -22,6 +22,7 @@ define('BASE_URL', $baseUrl);
 define('BASE_IMAGE', $baseImage);
 define('SECRET_KEY', 'mysecretkey');
 define('ALGORITHM', 'HS256');
+
 //Routes
 $route = $_GET['route'] ?? '/';
 $router = new RouteCollector();
