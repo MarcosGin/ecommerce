@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Bin\Token;
 use App\Models\User;
 use Firebase\JWT\JWT;
 
@@ -20,22 +21,9 @@ class AuthController extends BaseController {
             $user = $this->user->getUser($_POST['email']);
                 if($user && password_verify($_POST['password'], $user[0]->password)){
                     if(!$this->user->getUserActivate($user[0]->id, "id")){
-
-                        $time = time();
-                        $key = SECRET_KEY;
-
-                        $token = array(
-                            'iat' => $time, // Tiempo que inició el token
-                            'exp' => $time + (7200), // Tiempo que expirará el token (+2 hora)
-                            'data' => [ // información del usuario
-                                'id' => $user[0]->id,
-                                'email' => $user[0]->email,
-                                'admin' => $user[0]->rank,
-                            ]
-                        );
-
-                        $jwt = JWT::encode($token, $key, ALGORITHM);
-
+                        $jwt = Token::newToken(['id' => $user[0]->id,
+                                                'email' => $user[0]->email,
+                                                'admin' => $user[0]->rank], 60);
                         $_SESSION['token'] = $jwt;
                         header("Location: " . BASE_URL . "index");
                     }else{
