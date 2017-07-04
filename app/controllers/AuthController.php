@@ -22,8 +22,9 @@ class AuthController extends BaseController {
                 if($user && password_verify($_POST['password'], $user[0]->password)){
                     if(!$this->user->getUserActivate($user[0]->id, "id")){
                         $jwt = Token::newToken(['id' => $user[0]->id,
+                                                'username' => $user[0]->name.' '.$user[0]->lastname,
                                                 'email' => $user[0]->email,
-                                                'admin' => $user[0]->rank], 60);
+                                                'admin' => $user[0]->rank], 120);
                         $_SESSION['token'] = $jwt;
                         header("Location: " . BASE_URL . "index");
                     }else{
