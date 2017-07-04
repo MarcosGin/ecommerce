@@ -19,7 +19,6 @@ class Token
         );
        return  \Firebase\JWT\JWT::encode($token, SECRET_KEY, ALGORITHM);
     }
-
     public static function checkToken($token){
 
         if(!$token){
@@ -27,7 +26,16 @@ class Token
         }
 
         try{
-           $jwt = \Firebase\JWT\JWT::decode($token, SECRET_KEY, array(ALGORITHM));
+            $jwt = \Firebase\JWT\JWT::decode($token, SECRET_KEY, array(ALGORITHM));
+            $realTime = $jwt->exp - time();
+
+            if($realTime < 1800){
+                $newData = json_decode(json_encode($jwt->data), true);
+                $newJwt = self::newToken($newData, 7200);
+                $_SESSION['token'] = $newJwt;
+            }
+
+
            return $jwt->data;
         }catch (\FireBase\JWT\ExpiredException $e) {
             self::deleteToken();
