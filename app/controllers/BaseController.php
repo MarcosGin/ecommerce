@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Bin\Token;
 use App\Models\User;
 use Twig_Loader_Filesystem;
 
@@ -22,9 +23,14 @@ class BaseController {
         }));
     }
     public function render($fileName, $data = []) {
-        if(isset($_SESSION['email'])){
-             $user = new User();
-             $data['session_user'] =  $user->getUser($_SESSION['email']);
+        if(isset($_SESSION['token'])){
+            $jwt = Token::checkToken($_SESSION['token']);
+            if($jwt){
+                $user = new User();
+                $data['token_form'] = $_SESSION['token'];
+                $data['session_user'] =  $user->getUser($jwt->email);
+            }
+
         }
         return $this->templateEngine->render($fileName, $data);
     }
