@@ -9,10 +9,11 @@ $(function() {
               data: form.serialize(),
               datatype: 'json'
           }).done(function (data) {
-             if(data.status === 'nice'){
+             if(data.result === true){
                  localStorage.setItem("__token", data.jwt);
+                 Cookies.set('__token', data.jwt);
                  message.html('<div id="Success">' +
-                     '<p> <i class="fa fa-exclamation-triangle"></i>  Has iniciado sesión, espere unos segundos... </p>' +
+                     '<p> <i class="fa fa-exclamation-triangle"></i>  '+ data.message + ' </p>' +
                      '</div>');
                  message.css({'display': 'block'});
                  window.setInterval(function () {
