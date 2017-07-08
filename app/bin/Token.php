@@ -19,6 +19,7 @@ class Token
         );
        return  \Firebase\JWT\JWT::encode($token, SECRET_KEY, ALGORITHM);
     }
+
     public static function checkToken($token){
 
         if(!$token){
@@ -32,10 +33,8 @@ class Token
             if($realTime < 1800){
                 $newData = json_decode(json_encode($jwt->data), true);
                 $newJwt = self::newToken($newData, 7200);
-                $_SESSION['token'] = $newJwt;
+                setcookie('__token', $newJwt, time() + 7200, '/');
             }
-
-
            return $jwt->data;
         }catch (\FireBase\JWT\ExpiredException $e) {
             self::deleteToken();
@@ -43,15 +42,13 @@ class Token
         }catch (\FireBase\JWT\SignatureInvalidException $e){
             throw new \Exception('Verification failed');
         }
-
-
     }
 
     private static function deleteToken(){
-        if(isset($_SESSION['token'])){
-            unset($_SESSION['token']);
+        if(isset($_COOKIE['__token'])){
+            unset($_COOKIE['__token']);
+            setcookie("__token", "", time()-3600, '/');
         }
     }
-
 
 }
