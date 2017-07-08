@@ -15,44 +15,25 @@ class AuthController extends BaseController {
 
 
     public function postLogin(){
-            if(!empty($_POST['email']) && !empty($_POST['password'])){
+        if(!empty($_POST['email']) && !empty($_POST['password'])){
             $user = $this->user->getUser($_POST['email']);
                 if($user && password_verify($_POST['password'], $user[0]->password)){
                     if(!$this->user->getUserActivate($user[0]->id, "id")){
                         $jwt = Token::newToken(['id' => $user[0]->id,
                                                 'username' => $user[0]->name.' '.$user[0]->lastname,
                                                 'email' => $user[0]->email,
-                                                'admin' => $user[0]->rank], 120);
+                                                'admin' => $user[0]->rank], 7200);
 
-                        header('Content-Type: application/json');
-                        echo json_encode(array(
-                            'status' => 'nice',
-                            'jwt' => $jwt,
-                        ));
-
-
+                        echo $this->json_response('You are logged in, wait a few seconds ...', 200, $jwt, true);
                     }else{
-                        header('Content-Type: application/json');
-                        echo
-                        json_encode(array(
-                            'status' => 'fail',
-                            'message' => 'Your account is not activated, you must access your email and activate it'));
+                        echo $this->json_response('Your account is not activated, you must access your email and activate it', 200);
                     }
                 }else{
-                    header('Content-Type: application/json');
-                    echo json_encode(array(
-                        'status' => 'fail',
-                        'message' => 'Your email address and / or your password is incorrect'));
-
+                    echo $this->json_response('Your email address and / or your password is incorrect', 200);
                 }
             }else{
-                header('Content-Type: application/json');
-                echo json_encode(array(
-                        'status' => 'fail',
-                        'message' => 'You must complete all the fields'));
+                echo $this->json_response('You must complete all the fields', 200);
             }
-
-
     }
     public function getLogin(){
         return $this->render("account/login.twig");
@@ -90,7 +71,8 @@ class AuthController extends BaseController {
 
     public function getLogout(){
         session_destroy();
-        unset($_SESSION['token']);
+        unset($_COOKIE['__token']);
+        setcookie("__token", "", time()-3600, "/");
         header("Location: " . BASE_URL . "index");
     }
 
