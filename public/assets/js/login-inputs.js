@@ -1,7 +1,7 @@
 $(function() {
        var form = $('#LoginForm');
        var message = $('#Message');
-    form.click(function (e) {
+    form.on('submit', function (e) {
         e.preventDefault();
           $.ajax({
               url: 'http://localhost/ecommerce/public/account/login',
@@ -11,9 +11,17 @@ $(function() {
           }).done(function (data) {
              if(data.status === 'nice'){
                  localStorage.setItem("__token", data.jwt);
-                 windows.location.replace('http://localhost/ecommerce/public/);
+                 message.html('<div id="Success">' +
+                     '<p> <i class="fa fa-exclamation-triangle"></i>  Has iniciado sesión, espere unos segundos... </p>' +
+                     '</div>');
+                 message.css({'display': 'block'});
+                 window.setInterval(function () {
+                     window.location.replace('http://localhost/ecommerce/public/');
+                 }, 3000)
              }else{
-                 message.html(' <i class="fa fa-exclamation-triangle"></i> <p>'+ data.message + '</p>');
+                 message.html('<div id="Failed">' +
+                     '<p> <i class="fa fa-exclamation-triangle"></i> '+ data.message + '</p>' +
+                     '</div>');
                  message.css({'display': 'block'});
              }
           }).fail(function (jqXHR, textStatus, errorThrown) {
