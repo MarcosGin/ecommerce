@@ -19,6 +19,7 @@ class Token
         );
        return  \Firebase\JWT\JWT::encode($token, SECRET_KEY, ALGORITHM);
     }
+
     public static function checkToken($token){
 
         if(!$token){
@@ -41,8 +42,6 @@ class Token
         }catch (\FireBase\JWT\SignatureInvalidException $e){
             throw new \Exception('Verification failed');
         }
-
-
     }
 
     private static function deleteToken(){
@@ -51,6 +50,5 @@ class Token
             setcookie("__token", "", time()-3600, '/');
         }
     }
-
 
 }
