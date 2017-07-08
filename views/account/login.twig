@@ -1,19 +1,18 @@
 {% include('partials/header.twig') %}
 
-<form action="{{ 'account/login' | url}}" method="post" class="login">
+<form class="login" id="LoginForm">
     <div class="tittle-login">
         <a class="logo" href=""><img src="{{ 'assets/img/logo.png' | url }}"></a>
-        <h1>Iniciar Sesión</h1></div>
+        <h1 class="title-form">Iniciar Sesión</h1></div>
 
     {% if activate_account %}
         <div class="succes"><p><i class="fa fa-check-circle-o" aria-hidden="true"></i> Tu cuenta ha sido activada, ya puedes iniciar sesion.</p></div>
     {% endif %}
 
-    {% if errors %}
-    <div class="error"s style="display: block;"><i class="fa fa-exclamation-triangle"></i><p>{{ errors }}</p></div>
-    {% else %}
-    <div class="error"><i class="fa fa-exclamation-triangle"></i><p></p></div>
-    {% endif %}
+    <div id="Message">
+
+    </div>
+
     <div class="input">
         <div class="fa-login"><i class="fa fa-user"></i></div>
         <input type="email"  class="loginput correoelect" placeholder="Correo electrónico" name="email">
@@ -27,7 +26,7 @@
         <div class="left"><label for="remenber"><input type="checkbox" name="remenber" id="remenber" checked> Permanecer con la sesión iniciada</label></div>
         <div class="right"><a href="{{ 'account/forgot' | url }}">¿Has olvidado la contraseña?</a></div>
     </div>
-    <button type="submit" name="Blogin" class="Blogin"> INICIAR SESIÓN</button>
+    <button type="submit" name="Blogin" class="Blogin" id="Sendform"> INICIAR SESIÓN</button>
     <div class="plus-regis">¿Todavía no eres miembro? <a href="{{ 'account/register' | url }}">Registrarse</a></div>
 
 </form>
