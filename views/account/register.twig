@@ -1,31 +1,15 @@
 {% include('partials/header.twig') %}
 
-<form action="" method="post" class="register">
+<form class="register" id="RegisterForm">
 
     <div class="tittle-register">
         <a class="logo" href="index"><img src="{{ 'assets/img/logo.png' | url}}"></a>
         <h1>Registrarse</h1></div>
 
-    {% if result %}
-            <div class="succes">
-                <p>Te has registrado correctamente, ve a tu correo electrónico y valida la cuenta.</p>
-            </div>
-    {% else %}
-            {% if errors %}
+        <div id="Message">
+        <div id="loading"><img src="/ecommerce/public/assets/img/loading.gif" /> Loading...</div>
+        </div>
 
-            <div class="error" style="display:block;"><i class="fa fa-exclamation-triangle"></i>
-                <ul>
-               {% for messages in errors %}
-                    {% for message in messages %}
-                        <li>{{ message }}</li>
-                            {% endfor %}
-                {% endfor %}
-                </ul>
-            </div>
-            {% else  %}
-            <div class="error"><i class="fa fa-exclamation-triangle"></i><p></p></div>
-            {% endif %}
-    {% endif %}
             <div class="input input-50">
                 <div class="fa-login"><i class="fa fa-user"></i></div>
                 <input type="text" class="nombre" name="newName" placeholder="Nombre">
