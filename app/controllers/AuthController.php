@@ -40,20 +40,18 @@ class AuthController extends BaseController {
     }
 
 
-    public function anyRegister(){
-        $errors = [];
-        $result = false;
-        if($_POST){
-            $user = $this->user->insertUser($_POST);
-
-            if($user){
-                $errors = $user;
+    public function postRegister(){
+            $errors = $this->user->insertUser($_POST);
+            if(!$errors){
+                $result = "Te has registrado éxitosamente, debes acceder al correo electrónico y confirmarlo";
+                echo $this->json_response($result, 200, "", true);
             }else{
-                $result = true;
+                echo $this->json_response($errors,200);
             }
+    }
 
-        }
-        return $this->render("account/register.twig", ['errors' => $errors, 'result' => $result]);
+    public function getRegister(){
+        return $this->render("account/register.twig");
     }
 
     public function getToken($token = null){
