@@ -1,5 +1,6 @@
 {% include('partials/header.twig') %}
 
+<div>
 <form class="register" id="RegisterForm">
 
     <div class="tittle-register">
@@ -7,7 +8,6 @@
         <h1>Registrarse</h1></div>
 
         <div id="Message">
-        <div id="loading"><img src="/ecommerce/public/assets/img/loading.gif" /> Loading...</div>
         </div>
 
             <div class="input input-50">
@@ -88,7 +88,7 @@
             <button type="submit" class="Benviar" name="Benviar"> Registrarse</button>
             <div class="ready-login">¿Ya tienes una cuenta? <a href="{{ 'account/login' | url }}">Iniciar Sesión</a></div>
 
-        </form>
+</form></div>
 
 
 {% include('partials/footer.twig') %}

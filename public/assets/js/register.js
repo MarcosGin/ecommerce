@@ -12,6 +12,7 @@ $(function(){
             datatype: 'json',
             beforeSend: function (){
                     message.html('<div id="loading"><img src="/ecommerce/public/assets/img/loading.gif" /> Loading...</div>');
+                    message.css({'display': 'block'});
             },
             complete: function () {
                    $('#loading').remove();
