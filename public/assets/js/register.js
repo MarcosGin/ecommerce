@@ -9,13 +9,26 @@ $(function(){
             url : 'http://localhost/ecommerce/public/account/register',
             type : 'POST',
             data : form.serialize(),
-            datatype: 'json'
+            datatype: 'json',
+            beforeSend: function (){
+                    message.html('<div id="loading"><img src="/ecommerce/public/assets/img/loading.gif" /> Loading...</div>');
+            },
+            complete: function () {
+                   $('#loading').remove();
+            }
        }).done(function (data) {
            if(data.result === true){
-                //response message success
-               console.log("success");
+               message.html('<div id="Success">' +
+                   '<p> <i class="fa fa-exclamation-triangle"></i>  '+ data.message + ' </p>' +
+                   '</div>');
+               message.css({'display': 'block'});
            }else{
-               console.log("failed");
+               var messages = "";
+               for (var key in data.message){
+                    messages += '<p> <i class="fa fa-exclamation-triangle"></i> '+ data.message[key] +'<p/>';
+               }
+               message.html('<div id="Failed">' + messages + '</div>');
+               message.css({'display': 'block'});
            }
        }).fail(function (jqXHR, textStatus, errorThrown) {
            console.log(jqXHR.responseText + "\n" + textStatus + "\n" + errorThrown);
