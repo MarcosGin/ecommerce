@@ -53,15 +53,19 @@ class ProductController extends BaseController{
         return $this->render('product-profile.twig', ['products' => $products, 'comments' => $product_comment, 'imgs_max' => $imgs_max, 'imgs_min' => $imgs_min]);
     }
     public function postComment(){
-        $jwt = Token::checkToken($_POST['user_token']);
+        $jwt = [];
+        foreach (getallheaders() as $key => $value){
+            if($key == 'Authorization'){
+                $jwt = Token::checkToken($value);
+            }
+        }
         if($jwt['result'] == true){
             $this->product->getProduct($_POST['product_id']);
             $this->product->createComment($_POST['product_id'], $jwt['jwt']->username, $_POST['coment'], time());
-            echo $this->json_response('Good', 200, $_POST['user_token'], true);
+            echo $this->json_response('Your comment was successfully created', 200, $jwt['token'], true);
         }else{
             echo $this->json_response($jwt['response'], 200);
         }
-
     }
 
 

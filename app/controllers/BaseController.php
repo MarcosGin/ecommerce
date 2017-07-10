@@ -25,7 +25,7 @@ class BaseController {
     public function render($fileName, $data = []) {
         if(isset($_COOKIE['__token'])){
             $jwt = Token::checkToken($_COOKIE['__token']);
-            if($jwt){
+            if($jwt['result'] == true){
                 $user = new User();
                 $data['token_form'] = $_COOKIE['__token'];
                 $data['session_user'] =  $user->getUser($jwt['jwt']->email);
