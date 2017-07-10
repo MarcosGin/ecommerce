@@ -61,8 +61,14 @@ class ProductController extends BaseController{
         }
         if($jwt['result'] == true){
             $this->product->getProduct($_POST['product_id']);
-            $this->product->createComment($_POST['product_id'], $jwt['jwt']->username, $_POST['coment'], time());
-            echo $this->json_response('Your comment was successfully created', 200, $jwt['token'], true);
+            $createComment = $this->product->createComment($_POST['product_id'], $jwt['jwt']->username, $_POST['coment'], time());
+
+            if($createComment['result']){
+                echo $this->json_response($createComment['response'], 200, $jwt['token'], true);
+            }else{
+                echo $this->json_response($createComment['response'], 200);
+            }
+
         }else{
             echo $this->json_response($jwt['response'], 200);
         }

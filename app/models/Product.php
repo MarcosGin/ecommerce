@@ -120,15 +120,33 @@ class Product {
         return $data;
     }
     public function createComment($product_id, $username, $coment, $fecha) {
-        $dbObj = DB::getInstance();
-        $query = $dbObj->getQuery("INSERT INTO product_comment (product_id, username, coment, fecha) VALUES(:product_id, :username, :coment, :fecha)");
-        $result = $query->execute([
-            'product_id' => $product_id,
-            'username' => $username,
-            'coment' => $coment,
-            'fecha' => $fecha,
-        ]);
-        return $result;
+        $message = array('result' => false);
+        if($coment){
+            if(strlen($coment) < 150) {
+                $dbObj = DB::getInstance();
+                $query = $dbObj->getQuery("INSERT INTO product_comment (product_id, username, coment, fecha) VALUES(:product_id, :username, :coment, :fecha)");
+                $result = $query->execute([
+                    'product_id' => $product_id,
+                    'username' => $username,
+                    'coment' => $coment,
+                    'fecha' => $fecha,
+                ]);
+                if($result){
+                    $message['result'] = true;
+                    $message['response'] = 'The comment has created successfully';
+                    return $message;
+                }else{
+                    $message['response'] = 'The comment could not be created, try again';
+                    return $message;
+                }
+            }else{
+                $message['response'] = 'Your comment is too long, only 150 characters are allowed.';
+                return $message;
+            }
+        }else{
+            $message['response'] = 'You need to enter a comment';
+            return $message;
+        }
     }
 
 
