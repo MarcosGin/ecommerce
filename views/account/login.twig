@@ -6,13 +6,12 @@
         <h1 class="title-form">Iniciar Sesión</h1></div>
 
     {% if activate_account %}
-        <div class="succes"><p><i class="fa fa-check-circle-o" aria-hidden="true"></i> Tu cuenta ha sido activada, ya puedes iniciar sesion.</p></div>
+        <div id="Message" style="display: block;"><div class="succes"><p><i class="fa fa-check-circle-o" aria-hidden="true"></i> Your account has been activated, you can login.</p></div></div>
+    {% else %}
+        <div id="Message"></div>
     {% endif %}
 
 
-    <div id="Message">
-
-    </div>
 
     <div class="input">
         <div class="fa-login"><i class="fa fa-user"></i></div>
