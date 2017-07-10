@@ -28,7 +28,7 @@ $route = $_GET['route'] ?? '/';
 $router = new RouteCollector();
 
 $router->filter('auth', function () {
-    if(isset($_COOKIE['token'])) {
+    if(isset($_COOKIE['__token'])) {
         header('Location: ' . BASE_URL . 'index');
         return false;
     }
