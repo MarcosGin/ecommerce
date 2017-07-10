@@ -10,8 +10,7 @@ $(function() {
               datatype: 'json'
           }).done(function (data) {
              if(data.result === true){
-                 localStorage.setItem("__token", data.jwt);
-                 Cookies.set('__token', data.jwt);
+                 Cookies.set('__token', data.jwt, {expires: 365});
                  message.html('<div id="Success">' +
                      '<p> <i class="fa fa-exclamation-triangle"></i>  '+ data.message + ' </p>' +
                      '</div>');

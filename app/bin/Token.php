@@ -22,8 +22,10 @@ class Token
 
     public static function checkToken($token){
 
+        $message = array('result' => false);
         if(!$token){
-            throw new \Exception('Invalid token!');
+            $message['response'] = 'Token empty!';
+            return $message;
         }
 
         try{
@@ -33,14 +35,22 @@ class Token
             if($realTime < 1800){
                 $newData = json_decode(json_encode($jwt->data), true);
                 $newJwt = self::newToken($newData, 7200);
-                setcookie('__token', $newJwt, time() + 7200, '/');
+                $token = $newJwt;
             }
-           return $jwt->data;
+            $message['result'] = true;
+            $message['jwt'] = $jwt->data;
+            $message['token'] = $token;
+           return $message;
         }catch (\FireBase\JWT\ExpiredException $e) {
             self::deleteToken();
-            throw  new \Exception('Token expired! Re loggin');
+            $message['response'] = 'Your session has expired! Re login';
+            return $message;
         }catch (\FireBase\JWT\SignatureInvalidException $e){
-            throw new \Exception('Verification failed');
+            $message['response'] =  'Verification failed';
+            return $message;
+        }catch (\UnexpectedValueException $e){
+            $message['response'] =  'You must be logged in.';
+            return $message;
         }
     }
 
