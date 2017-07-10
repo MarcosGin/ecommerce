@@ -1,1 +1,24 @@
-$(document).ready(function(){$("#newComent").click(function(){var coment = $("#userComent").val();var errormsg = "";var error = false;if(coment.length < 30){errormsg = "Debes ingresar un comentario más largo.";error =true;}else if(coment.length > 150){errormsg = "Debes ingresar un comentario más corto.";error =true;}if(error==true){$(".newComentaries .error").fadeIn("slow");$('.newComentaries .error p').text(errormsg);return false;}else{return true;}});$(".learDescri").on('click', function(){if($(".descri").css("display")=="none"){$(".descri").slideDown(250);}else{$(".descri").slideUp(500);}});$('.slider-for').slick({slidesToShow: 1,slidesToScroll: 1,arrows: false,fade: true,asNavFor: '.slider-nav'});$('.slider-nav').slick({slidesToShow: 3,slidesToScroll: 1,asNavFor: '.slider-for',dots: true,centerMode: true,focusOnSelect: true});});
+$(document).ready(function() {
+    $(".learDescri").on('click', function() {
+        if ($(".descri").css("display") == "none") {
+            $(".descri").slideDown(250);
+        } else {
+            $(".descri").slideUp(500);
+        }
+    });
+    $('.slider-for').slick({
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        arrows: false,
+        fade: true,
+        asNavFor: '.slider-nav'
+    });
+    $('.slider-nav').slick({
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        asNavFor: '.slider-for',
+        dots: true,
+        centerMode: true,
+        focusOnSelect: true
+    });
+});
