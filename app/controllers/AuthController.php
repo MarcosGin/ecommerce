@@ -4,7 +4,6 @@ namespace App\Controllers;
 
 use App\Bin\Token;
 use App\Models\User;
-use Firebase\JWT\JWT;
 
 class AuthController extends BaseController {
     private $user;
