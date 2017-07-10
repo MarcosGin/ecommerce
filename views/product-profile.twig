@@ -55,14 +55,10 @@
             </div>
 
             <div class="newComentaries">
-               <!-- <?php if(isset($msg)){?>
-                <div class="error" style="display:block;"><i class="fa fa-exclamation-triangle"></i><p><?php echo $msg;?></p></div>
-                <?php }else{?>-->
-                <div class="error"><i class="fa fa-exclamation-triangle"></i><p></p></div>
-
-                <form action="{{ ('products/comment/' ~ product.id) | url }}" method="post">
+                <div id="Message"></div>
+                <form id="CommentForm">
                     <input type="hidden" name="user_token" value="{{ token_form }}">
-
+                    <input type="hidden" name="product_id" value="{{ product.id }}">
                     <textarea name="coment" id="userComent" placeholder="Comentar producto..."></textarea>
                     <button type="submit"  name="newComent" id="newComent">Comentar</button>
                 </form>
