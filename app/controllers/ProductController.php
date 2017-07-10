@@ -52,16 +52,14 @@ class ProductController extends BaseController{
         $imgs_min = $this->product->getImgs($products[0]->carpet, "min");
         return $this->render('product-profile.twig', ['products' => $products, 'comments' => $product_comment, 'imgs_max' => $imgs_max, 'imgs_min' => $imgs_min]);
     }
-    public function postComment($idProduc){
-        if($_POST){
-            $jwt = Token::checkToken($_POST['user_token']);
-            $produc = $this->product->getProduct($idProduc);
-            if($jwt){
-                $comment = $this->product->createComment($idProduc, $jwt->username, $_POST['coment'], time());
-            }
-        header("location: " . BASE_URL . "products/profile/" . $produc[0]->nombre);
+    public function postComment(){
+        $jwt = Token::checkToken($_POST['user_token']);
+        if($jwt['result'] == true){
+            $this->product->getProduct($_POST['product_id']);
+            $this->product->createComment($_POST['product_id'], $jwt['jwt']->username, $_POST['coment'], time());
+            echo $this->json_response('Good', 200, $_POST['user_token'], true);
         }else{
-            throw new \Exception('Not exits dates in the form.');
+            echo $this->json_response($jwt['response'], 200);
         }
 
     }

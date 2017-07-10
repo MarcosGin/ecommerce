@@ -28,7 +28,7 @@ class BaseController {
             if($jwt){
                 $user = new User();
                 $data['token_form'] = $_COOKIE['__token'];
-                $data['session_user'] =  $user->getUser($jwt->email);
+                $data['session_user'] =  $user->getUser($jwt['jwt']->email);
             }
 
         }
