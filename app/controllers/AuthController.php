@@ -42,7 +42,7 @@ class AuthController extends BaseController {
     public function postRegister(){
             $errors = $this->user->insertUser($_POST);
             if(!$errors){
-                $result = "Te has registrado éxitosamente, debes acceder al correo electrónico y confirmarlo";
+                $result = "You have registered successfully, you must access the email and confirm it";
                 echo $this->json_response($result, 200, "", true);
             }else{
                 echo $this->json_response($errors,200);
