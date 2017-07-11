@@ -4,145 +4,143 @@
 
     <div class="containerCentral">
         {% for product in products %}
-        <section class="product">
-           <div class="produc-top">
-                <div class="slick-left">
-                    <div class="slick-cont">
-                        <div class="slider-for">
-                            {% for img in imgs_max %}
-                                 <div class="item">
-                                    <img src="{{ (img.carpet ~ '/' ~ img.url) | url_image }}" alt="image"  draggable="false"/>
-                                 </div>
-                            {% endfor %}
+            <section class="product">
+                <div class="produc-top">
+                    <div class="slick-left">
+                        <div class="slick-cont">
+                            <div class="slider-for">
+                                {% for img in imgs_max %}
+                                    <div class="item">
+                                        <img src="{{ (img.carpet ~ '/' ~ img.url) | url_image }}" alt="image"  draggable="false"/>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <div class="slider-nav">
+                                {% for img in imgs_min %}
+                                    <div class="item item2">
+                                        <img src="{{ (img.carpet ~ '/' ~ img.url) | url_image }}" alt="image"  draggable="false"/>
+                                    </div>
+                                {% endfor %}
+
+                            </div>
+                        </div>
                     </div>
-                  <div class="slider-nav">
-                           {% for img in imgs_min %}
-                               <div class="item item2">
-                                   <img src="{{ (img.carpet ~ '/' ~ img.url) | url_image }}" alt="image"  draggable="false"/>
-                               </div>
-                           {% endfor %}
+                    <div class="info-right">
+                        <div class="buy-info">
+                            <div class="headerInfo"><h3>{{ product.nombre }}</h3></div>
+                            <div class="contInfo">
+                                <div class="price">
+                                    <span>$ {{ product.precio }}</span>
+                                    <button type="submit" name="buy"><a href="agreedcar"><i class="fa fa-shopping-cart"></i> Agregar al carrito</a></button>
+                                </div>
+                            </div>
+
+                            <div class="comentaries">
+                                <div class="tittle"><i class="fa fa-star-o"></i> Comentarios</div>
+
+                                <div class="coments" id="Comments"></div>
+                            </div>
+
+                            <div class="newComentaries">
+                                <div id="Message"></div>
+                                <form id="CommentForm">
+                                    <textarea name="coment" id="userComent" placeholder="Comentar producto..."></textarea>
+                                    <button type="submit"  id="newComent">Comentar</button>
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="learDescri"><i class="fa fa-plus"></i> Descripción</div>
+                <div class="descri">
+                    {% autoescape false %}
+                        {{ product.descri }}
+                    {% endautoescape %}
 
                 </div>
-            </div>
-             </div>
-    <div class="info-right">
-        <div class="buy-info">
-            <div class="headerInfo"><h3>{{ product.nombre }}</h3></div>
-            <div class="contInfo">
-                <div class="price">
-                    <span>$ {{ product.precio }}</span>
-                    <button type="submit" name="buy"><a href="agreedcar"><i class="fa fa-shopping-cart"></i> Agregar al carrito</a></button>
-                </div>
-            </div>
 
-            <div class="comentaries">
-                <div class="tittle"><i class="fa fa-star-o"></i> Comentarios</div>
-
-                <div class="coments" id="Comments"></div>
-            </div>
-
-            <div class="newComentaries">
-                <div id="Message"></div>
-                <form id="CommentForm">
-                    <textarea name="coment" id="userComent" placeholder="Comentar producto..."></textarea>
-                    <button type="submit"  id="newComent">Comentar</button>
-                </form>
-            </div>
-        </div>
-
-    </div>
-               </div>
-    <div class="learDescri"><i class="fa fa-plus"></i> Descripción</div>
-    <div class="descri">
-        {% autoescape false %}
-             {{ product.descri }}
-        {% endautoescape %}
-
-    </div>
-
-        </section>
-            {% endfor %}
+            </section>
+        {% endfor %}
 
     </div>
 {% endblock %}
 {% block scripts_footer %}
     {% for product in products %}
-    <script type="text/javascript">
-
-        $(function () {
-            var product = (function (){
-                var product_id = {{ product.id }};
-
-                return {
-                    value: function () {
-                        return product_id;
+        <script type="text/javascript">
+            $(function () {
+                var product = (function (){
+                    var product_id = {{ product.id }};
+                    return {
+                        value: function () {
+                            return product_id;
+                        }
                     }
-                }
-            })();
-            var comments = $('#Comments');
+                })();
 
-            $.ajax({
-                url : 'http://localhost/ecommerce/public/products/comment/'+ product.value(),
-                type: 'GET',
-                data: {},
-                contentType: "application/json; charset=utf-8",
-                datatype: 'json',
-                cache: false,
-            }).done(function (data) {
-                if(data.result === true){
-                    var MessagesHTML = '';
-                    $.each(data.message, function (i, comment) {
-                        MessagesHTML += ' <div class="coment"><div class="user"></div>' +
-                           '<div class="content">' +
-                            '<div class="user-name"><i class="fa fa-user"></i> '+ data.message[i].username +'</div>'+
-                            '<div class="user-info">'+ data.message[i].coment +'</div>'+
-                            '<div class="user-data"><i class="fa fa-clock-o"></i> '+ data.message[i].fecha +'</div></div></div>';
+                var getComments = (function () {
+                    var comments = $('#Comments');
+                    $.ajax({
+                        url : 'http://localhost/ecommerce/public/products/comment/'+ product.value(),
+                        type: 'GET',
+                        data: {},
+                        contentType: "application/json; charset=utf-8",
+                        datatype: 'json',
+                        cache: false,
+                    }).done(function (data) {
+                        if(data.result === true){
+                            comments.empty();
+                            var MessagesHTML = '';
+                            $.each(data.message, function (i, comment) {
+                                MessagesHTML += ' <div class="coment"><div class="user"></div>' +
+                                    '<div class="content">' +
+                                    '<div class="user-name"><i class="fa fa-user"></i> '+ data.message[i].username +'</div>'+
+                                    '<div class="user-info">'+ data.message[i].coment +'</div>'+
+                                    '<div class="user-data"><i class="fa fa-clock-o"></i> <span data-livestamp="'+ data.message[i].fecha +'"></span></div></div></div>';
+                            });
+                            comments.append(MessagesHTML);
+                        }else{
+                            var NotFoundMessage = '<p>' + data.message + '</p>';
+                            comments.append(NotFoundMessage);
+                        }
+                    }).fail(function (jqXHR, textStatus, errorThrown) {
+                        console.log(jqXHR.responseText + "\n" + textStatus + "\n" + errorThrown);
                     });
-                    comments.append(MessagesHTML);
-                }else{
-                    var NotFoundMessage = '<p>' + data.message + '</p>';
-                    comments.append(NotFoundMessage);
-                }
-            }).fail(function (jqXHR, textStatus, errorThrown) {
-                console.log(jqXHR.responseText + "\n" + textStatus + "\n" + errorThrown);
-            });
-
-            var form = $('#CommentForm');
-            var message = $('#Message');
-
-
-            form.on('submit', function (e) {
-                e.preventDefault();
-
-                $.ajax({
-                    url: 'http://localhost/ecommerce/public/products/comment',
-                    type: 'POST',
-                    data: {product_id : product.value(), coment: $('#userComent').val()},
-                    datatype: 'json',
-                    beforeSend: function (xhr) {
-                        xhr.setRequestHeader ("Authorization", Cookies.get('__token'));
-                    }
-                }).done(function (data) {
-                    if(data.result === true){
-                        Cookies.set('__token', data.jwt);
-                        message.html('<div id="Success">' +
-                            '<p> <i class="fa fa-exclamation-triangle"></i>  '+ data.message + ' </p>' +
-                            '</div>');
-                        message.css({'display': 'block'});
-                    }else{
-                        message.html('<div id="Failed">' +
-                            '<p> <i class="fa fa-exclamation-triangle"></i> '+ data.message + '</p>' +
-                            '</div>');
-                        message.css({'display': 'block'});
-                    }
-                }).fail(function (jqXHR, textStatus, errorThrown) {
-                    console.log(jqXHR.responseText + "\n" + textStatus + "\n" + errorThrown);
                 });
+                getComments();
 
+                var form = $('#CommentForm');
+                var message = $('#Message');
+                form.on('submit', function (e) {
+                    e.preventDefault();
+                    $.ajax({
+                        url: 'http://localhost/ecommerce/public/products/comment',
+                        type: 'POST',
+                        data: {product_id : product.value(), coment: $('#userComent').val()},
+                        datatype: 'json',
+                        beforeSend: function (xhr) {
+                            xhr.setRequestHeader ("Authorization", Cookies.get('__token'));
+                        }
+                    }).done(function (data) {
+                        if(data.result === true){
+                            getComments();
+                            Cookies.set('__token', data.jwt);
+                            message.html('<div id="Success">' +
+                                '<p> <i class="fa fa-exclamation-triangle"></i>  '+ data.message + ' </p>' +
+                                '</div>');
+                            message.css({'display': 'block'});
+                        }else{
+                            message.html('<div id="Failed">' +
+                                '<p> <i class="fa fa-exclamation-triangle"></i> '+ data.message + '</p>' +
+                                '</div>');
+                            message.css({'display': 'block'});
+                        }
+                        form[0].reset();
+                    }).fail(function (jqXHR, textStatus, errorThrown) {
+                        console.log(jqXHR.responseText + "\n" + textStatus + "\n" + errorThrown);
+                    });
+                });
             });
-
-        });
-    </script>
+        </script>
     {% endfor %}
 {% endblock %}
-
