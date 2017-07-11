@@ -113,7 +113,7 @@ class Product {
     public function getComments($id) {
         $message = array('result' => false);
         $dbObj = DB::getInstance();
-        $query = $dbObj->getQuery("SELECT * FROM product_comment WHERE product_id = :id");
+        $query = $dbObj->getQuery("SELECT * FROM product_comment WHERE product_id = :id ORDER BY fecha DESC");
         $query->execute([
             'id' => $id,
         ]);
