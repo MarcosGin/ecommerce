@@ -47,10 +47,9 @@ class ProductController extends BaseController{
     }
     public function getProfile($param = null) {
         $products = $this->product->getProduct($param);
-        $product_comment = $this->product->getComments($products[0]->id);
         $imgs_max = $this->product->getImgs($products[0]->carpet);
         $imgs_min = $this->product->getImgs($products[0]->carpet, "min");
-        return $this->render('product-profile.twig', ['products' => $products, 'comments' => $product_comment, 'imgs_max' => $imgs_max, 'imgs_min' => $imgs_min]);
+        return $this->render('product-profile.twig', ['products' => $products, 'imgs_max' => $imgs_max, 'imgs_min' => $imgs_min]);
     }
     public function postComment(){
         $jwt = [];
