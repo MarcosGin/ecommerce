@@ -47,9 +47,14 @@ class ProductController extends BaseController{
     }
     public function getProfile($param = null) {
         $products = $this->product->getProduct($param);
-        $imgs_max = $this->product->getImgs($products[0]->carpet);
-        $imgs_min = $this->product->getImgs($products[0]->carpet, "min");
-        return $this->render('product-profile.twig', ['products' => $products, 'imgs_max' => $imgs_max, 'imgs_min' => $imgs_min]);
+        if($products['result']){
+            $imgs_max = $this->product->getImgs($products['response'][0]->carpet);
+            $imgs_min = $this->product->getImgs($products['response'][0]->carpet, "min");
+            return $this->render('product-profile.twig', ['products' => $products['response'], 'imgs_max' => $imgs_max, 'imgs_min' => $imgs_min]);
+        }else{
+            throw new  \Exception($products['response']);
+        }
+
     }
     public function postComment(){
         $jwt = [];
@@ -60,7 +65,7 @@ class ProductController extends BaseController{
         }
         if($jwt['result'] == true){
             $this->product->getProduct($_POST['product_id']);
-            $createComment = $this->product->createComment($_POST['product_id'], $jwt['jwt']->username, $_POST['coment'], time());
+            $createComment = $this->product->createComment($_POST['product_id'],$jwt['jwt']->id, $jwt['jwt']->username, $_POST['coment'], time());
 
             if($createComment['result']){
                 echo $this->json_response($createComment['response'], 200, $jwt['token'], true);

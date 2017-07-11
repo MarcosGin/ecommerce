@@ -35,6 +35,7 @@ $router->filter('auth', function () {
 });
 $router->controller('/', App\Controllers\IndexController::class);
 $router->controller('/products', App\Controllers\ProductController::class);
+$router->controller('/cart', App\Controllers\CartController::class);
 $router->group(['after' => 'auth'], function($router){
     $router->controller('/account', App\Controllers\AuthController::class);
 });
