@@ -74,5 +74,14 @@ class ProductController extends BaseController{
         }
     }
 
+    public function getComment($id){
+        $comments = $this->product->getComments($id);
+        if($comments['result']){
+            echo $this->json_response($comments['response'], 200, '', true);
+        }else{
+            echo $this->json_response($comments['response'], 200);
+        }
+    }
+
 
 }
