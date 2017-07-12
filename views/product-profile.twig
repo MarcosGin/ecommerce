@@ -70,6 +70,17 @@
     {% for product in products %}
         <script type="text/javascript">
             $(function () {
+                var cart = (function () {
+                    var cart = JSON.parse(localStorage.getItem("cart"));
+                    if (cart === null) {
+                        cart = {};
+                    }
+                    return {
+                        value: function () {
+                            return cart;
+                        }
+                    }
+                })();
                 var product = (function (){
                     var product_id = {{ product.id }};
                     return {
@@ -82,15 +93,6 @@
                 var mycart = $('#AddMyCart');
 
                 mycart.on('click', function () {
-                    var cart = (function(){
-                        var cart = JSON.parse(localStorage.getItem("cart"));
-                        if(cart === null){cart = {};}
-                        return {
-                            value: function () {
-                                return cart;
-                            }
-                        }
-                    })();
 
                     $.ajax({
                         url: 'http://localhost/ecommerce/public/cart/mycart',
