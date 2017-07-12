@@ -34,7 +34,7 @@ class CartController extends BaseController{
                         'price' => $product['response'][0]->precio,
                         'quantity' => 1);
                 }
-                echo $this->json_response($cart, 200, '', true);
+                echo $this->json_response(array('response'=> 'The product was successfully added to the cart', 'cart' => $cart), 200, '', true);
             }catch (\Exception $e){
                 echo $this->json_response('An unexpected error occurred, please try again', 200);
             }
