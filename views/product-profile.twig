@@ -31,7 +31,7 @@
                             <div class="contInfo">
                                 <div class="price">
                                     <span>$ {{ product.precio }}</span>
-                                    <button type="submit" name="buy"><a href="agreedcar"><i class="fa fa-shopping-cart"></i> Agregar al carrito</a></button>
+                                    <button id="AddMyCart"><i class="fa fa-shopping-cart"></i> Agregar al carrito</button>
                                 </div>
                             </div>
 
@@ -77,6 +77,39 @@
                         }
                     }
                 })();
+
+                var mycart = $('#AddMyCart');
+
+                mycart.on('click', function () {
+                    var cart = (function(){
+                        var cart = JSON.parse(localStorage.getItem("cart"));
+                        if(cart === null){cart = {};}
+                        return {
+                            value: function () {
+                                return cart;
+                            }
+                        }
+                    })();
+
+                    $.ajax({
+                        url: 'http://localhost/ecommerce/public/cart/mycart',
+                        type: 'POST',
+                        data: {product_id: product.value(), cart: cart.value()},
+                        datatype: 'json',
+                    }).done(function (data) {
+                        if(data.result === true){
+                            localStorage.setItem('cart', JSON.stringify(data['message']));
+                            console.log('El producto fue añadido al carrito exitosamente.');
+                        }else{
+                            console.log()
+                        }
+                        console.log(data);
+                    }).fail(function (jqXHR, textStatus, errorThrown) {
+                        console.log(jqXHR.responseText + "\n" + textStatus + "\n" + errorThrown);
+                    });
+                });
+
+
 
                 var getComments = (function () {
                     var comments = $('#Comments');
