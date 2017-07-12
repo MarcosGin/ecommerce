@@ -1,0 +1,52 @@
+{% extends 'layout.twig' %}
+
+{% block container %}
+<div class="containerCentral">
+    <h2 class="tittle-carrito">Tu carrito <i class="fa fa-shopping-cart"></i></h2>
+
+    <div class="carritoCont">
+
+        <div class="tabCont-carrito">
+            <table class="table-carrito">
+                <thead>
+                <tr>
+                    <th colspan="2">PRODUCTO</th>
+                    <th>PRECIO</th>
+                    <th>CANTIDAD</th>
+                    <th>TOTAL</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                    <!-- Data the cart-->
+                </tbody>
+            </table>
+        </div>
+        <div class="bill-cont">
+            <div class="bill">
+                <div class="bill-tittle">Resumen</div>
+                <div class="bill-buy">
+                    <div class="sub-buy"><span class="total">SUBTOTAL</span><span class="num">$ 0000</span></div>
+
+                    <div class="buy"><span class="total">TOTAL</span><span class="num">$ 0000</span></div>
+
+                    <form action="" method="post">
+                        <button type="submit" name="buy"><i class="fa fa-credit-card"></i> Pagar</button>
+
+                    </form>
+                </div>
+
+                <!--<div class="msg-error">error</div>-->
+            </div>
+            <div class="agree">
+                Seguir comprando más <a href="/productos">productos</a>
+            </div>
+        </div>
+
+
+
+    <!-- <div class='agreed'>No has seleccionado un producto, <a href='/productos'>click acá</a>.</div>-->
+
+</div>
+</div>
+{% endblock %}
