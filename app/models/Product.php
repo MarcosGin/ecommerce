@@ -127,24 +127,30 @@ class Product {
         }
         return $message;
     }
-    public function createComment($product_id, $username, $coment, $fecha) {
+    public function createComment($product_id, $user_id, $username, $coment, $fecha) {
         $message = array('result' => false);
         if($coment){
             if(strlen($coment) < 150) {
-                $dbObj = DB::getInstance();
-                $query = $dbObj->getQuery("INSERT INTO product_comment (product_id, username, coment, fecha) VALUES(:product_id, :username, :coment, :fecha)");
-                $result = $query->execute([
-                    'product_id' => $product_id,
-                    'username' => $username,
-                    'coment' => $coment,
-                    'fecha' => $fecha,
-                ]);
-                if($result){
-                    $message['result'] = true;
-                    $message['response'] = 'The comment has created successfully';
-                    return $message;
+                if($this->getCommentByUserId($user_id) === false) {
+                    $dbObj = DB::getInstance();
+                    $query = $dbObj->getQuery("INSERT INTO product_comment (product_id,user_id, username, coment, fecha) VALUES(:product_id, :user_id, :username, :coment, :fecha)");
+                    $result = $query->execute([
+                        'product_id' => $product_id,
+                        'user_id' => $user_id,
+                        'username' => $username,
+                        'coment' => $coment,
+                        'fecha' => $fecha,
+                    ]);
+                    if ($result) {
+                        $message['result'] = true;
+                        $message['response'] = 'The comment has created successfully';
+                        return $message;
+                    } else {
+                        $message['response'] = 'The comment could not be created, try again';
+                        return $message;
+                    }
                 }else{
-                    $message['response'] = 'The comment could not be created, try again';
+                    $message['response'] = 'You can not comment more than once on this comment';
                     return $message;
                 }
             }else{
@@ -155,6 +161,20 @@ class Product {
             $message['response'] = 'You need to enter a comment';
             return $message;
         }
+    }
+    public function getCommentByUserId($user_id){
+        $dbObj = DB::getInstance();
+        $query = $dbObj->getQuery("SELECT id FROM product_comment WHERE user_id = :user_id");
+        $result = $query->execute([
+           'user_id' => $user_id,
+        ]);
+        $data = $query->fetchAll(\PDO::FETCH_ASSOC);
+
+            if($data){
+                return $data;
+            }
+
+        return false;
     }
 
 
