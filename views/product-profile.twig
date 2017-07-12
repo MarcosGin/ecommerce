@@ -33,6 +33,7 @@
                                     <span>$ {{ product.precio }}</span>
                                     <button id="AddMyCart"><i class="fa fa-shopping-cart"></i> Agregar al carrito</button>
                                 </div>
+
                             </div>
 
                             <div class="comentaries">
@@ -99,7 +100,7 @@
                     }).done(function (data) {
                         if(data.result === true){
                             localStorage.setItem('cart', JSON.stringify(data['message']));
-                            console.log('El producto fue añadido al carrito exitosamente.');
+                            Notify('El producto fue añadido al carrito exitosamente.',null,null,'success');
                         }else{
                             console.log()
                         }

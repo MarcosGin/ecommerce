@@ -1,0 +1,126 @@
+#notifications {
+    cursor: pointer;
+    position: fixed;
+    right: 0;
+    z-index: 9999;
+    top: 0;
+    margin-bottom: 22px;
+    margin-right: 15px;
+    margin-top: 10px;
+    max-width: 400px;
+}
+
+.alert {
+    padding: 0;
+    font-size: 14px;
+}
+
+.alert-primary {
+    box-shadow: 0px 3px 10px #393032;
+    background: #483d3f;
+    border: none;
+    color: #fff;
+}
+.alert-primary i {
+    background: #393032;
+    height: 100%;
+    padding: 20px;
+    margin-right: 5px;
+}
+.alert-primary a {
+    padding: 10px;
+    color: #fff;
+    margin-top: 3px;
+}
+.alert-primary a:hover {
+    text-shadow: none;
+    color: #393032;
+}
+
+.alert-info {
+    box-shadow: 0px 3px 10px #0471ad;
+    background: #058ed9;
+    border: none;
+    color: #fff;
+}
+.alert-info i {
+    background: #0471ad;
+    height: 100%;
+    padding: 20px;
+    margin-right: 5px;
+}
+.alert-info a {
+    padding: 10px;
+    color: #fff;
+    margin-top: 3px;
+}
+.alert-info a:hover {
+    text-shadow: none;
+    color: #0471ad;
+}
+
+.alert-success {
+    box-shadow: 0px 3px 10px #3a842f;
+    background: #49a53b;
+    border: none;
+    color: #fff;
+}
+.alert-success i {
+    background: #3a842f;
+    height: 100%;
+    padding: 20px;
+    margin-right: 5px;
+}
+.alert-success a {
+    padding: 10px;
+    color: #fff;
+    margin-top: 3px;
+}
+.alert-success a:hover {
+    text-shadow: none;
+    color: #3a842f;
+}
+
+.alert-warning {
+    box-shadow: 0px 3px 10px #ad3817;
+    background: #d9461d;
+    border: none;
+    color: #fff;
+}
+.alert-warning i {
+    background: #ad3817;
+    height: 100%;
+    padding: 20px;
+    margin-right: 5px;
+}
+.alert-warning a {
+    padding: 10px;
+    color: #fff;
+    margin-top: 3px;
+}
+.alert-warning a:hover {
+    text-shadow: none;
+    color: #ad3817;
+}
+
+.alert-danger {
+    box-shadow: 0px 3px 10px #700000;
+    background: #8c0000;
+    border: none;
+    color: #fff;
+}
+.alert-danger i {
+    background: #700000;
+    height: 100%;
+    padding: 20px;
+    margin-right: 5px;
+}
+.alert-danger a {
+    padding: 10px;
+    color: #fff;
+    margin-top: 3px;
+}
+.alert-danger a:hover {
+    text-shadow: none;
+    color: #700000;
+}
