@@ -99,10 +99,10 @@
                         datatype: 'json',
                     }).done(function (data) {
                         if(data.result === true){
-                            localStorage.setItem('cart', JSON.stringify(data['message']));
-                            Notify('El producto fue añadido al carrito exitosamente.',null,null,'success');
+                            localStorage.setItem('cart', JSON.stringify(data['message'].cart));
+                            Notify(data['message'].response,null,null,'success');
                         }else{
-                            console.log()
+                            Notify(data['message'], null, null, 'danger');
                         }
                         console.log(data);
                     }).fail(function (jqXHR, textStatus, errorThrown) {
@@ -159,16 +159,10 @@
                         if(data.result === true){
                             getComments();
                             Cookies.set('__token', data.jwt);
-                            message.html('<div id="Success">' +
-                                '<p> <i class="fa fa-exclamation-triangle"></i>  '+ data.message + ' </p>' +
-                                '</div>');
-                            message.css({'display': 'block'});
+                            Notify(data['message'], null,null, 'success');
                             form[0].reset();
                         }else{
-                            message.html('<div id="Failed">' +
-                                '<p> <i class="fa fa-exclamation-triangle"></i> '+ data.message + '</p>' +
-                                '</div>');
-                            message.css({'display': 'block'});
+                            Notify(data['message'], null,null, 'danger');
                         }
                     }).fail(function (jqXHR, textStatus, errorThrown) {
                         console.log(jqXHR.responseText + "\n" + textStatus + "\n" + errorThrown);

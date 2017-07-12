@@ -29,9 +29,6 @@ function Notify(text, callback, close_callback, style) {
 
     var html = $('<div class="alert alert-' + style + '  hide">' + icon +  " " + text + '</div>');
 
-
-    console.log(text);
-
     $('<a>',{
         text: 'x',
         class: 'buttom close',
