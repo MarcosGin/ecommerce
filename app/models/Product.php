@@ -32,6 +32,7 @@ class Product {
         return $data;
     }
     public function getProduct($produc){
+        $message = array('result' => false);
         $dbObj = DB::getInstance();
         $query = $dbObj->getQuery("SELECT * FROM productos WHERE nombre =:name OR id=:id LIMIT 1");
         $query->execute([
@@ -39,10 +40,14 @@ class Product {
            'id'   =>  $produc,
         ]);
         $data =$query->fetchAll(\PDO::FETCH_OBJ);
-        if(!$data){
-            throw new \Exception('Not Found Product!');
-        }
-        return $data;
+            if($data){
+                $message['result'] = true;
+                $message['response'] = $data;
+               return $message;
+            }else{
+                $message['response'] = 'Not found product';
+                return $message;
+            }
     }
     public function getProductLike($name, $json){
         $data = array();
