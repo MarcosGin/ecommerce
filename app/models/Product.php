@@ -136,7 +136,7 @@ class Product {
         $message = array('result' => false);
         if($coment){
             if(strlen($coment) < 150) {
-                if($this->getCommentByUserId($user_id) === false) {
+                if($this->getCommentByUserId($user_id, $product_id) === false) {
                     $dbObj = DB::getInstance();
                     $query = $dbObj->getQuery("INSERT INTO product_comment (product_id,user_id, username, coment, fecha) VALUES(:product_id, :user_id, :username, :coment, :fecha)");
                     $result = $query->execute([
@@ -167,11 +167,12 @@ class Product {
             return $message;
         }
     }
-    public function getCommentByUserId($user_id){
+    public function getCommentByUserId($user_id, $product_id){
         $dbObj = DB::getInstance();
-        $query = $dbObj->getQuery("SELECT id FROM product_comment WHERE user_id = :user_id");
+        $query = $dbObj->getQuery("SELECT id FROM product_comment WHERE user_id = :user_id AND product_id = :product_id");
         $result = $query->execute([
-           'user_id' => $user_id,
+            'user_id' => $user_id,
+            'product_id' => $product_id,
         ]);
         $data = $query->fetchAll(\PDO::FETCH_ASSOC);
 
