@@ -21,8 +21,28 @@
 .nav .buscador .tt-suggestion{font-size:14px;line-height:24px;padding:3px 10px;border-bottom:1px solid#bbb9b9;text-transform:lowercase;color:#8E8B8B}
 .nav .buscador .tt-suggestion .tt-is-under-cursor{background-color:#5FB2F9;color:#FFFFFF}
 .nav .buscador .tt-suggestion:last-child{border-bottom:none}
-.carrito{background:#585353;margin-left:20px;height:30px;border-radius:3px;width:95px}
-.carrito a{display:block;padding:5px;text-align:right;line-height:20px;font-size:14px;color:#fff}
+.carrito{background:#585353;margin-left:20px;border-radius:3px;position: relative;}
+.carrito .cart{display:block;padding:5px;text-align:right;line-height:20px;color:#fff;max-width:105px;min-width: 95px;}
+.carrito .cart span{font-size:12px;}
+.carrito .data {display: none;position:absolute;top:52px;right:0;background:white;width:340px;padding:14px;border: 1px solid #c8c9ca;z-index:9999;color:#2d2d2d;}
+.active  .data{display: block;}
+.active  .data::before{
+	content: "";
+	width: 20px;
+	height: 20px;
+	position: absolute;
+	top: -15px;
+	right: 17px;
+}
+.active .data::after{
+	content: "";
+	width: 57px;
+	height: 22px;
+	display: inline-block;
+	position: absolute;
+	top: -22px;
+	right: 0;
+}
 @media(max-width:840px){
 .nav .center{flex-wrap:wrap}
 .nav nav{order:1;margin:0 auto}
