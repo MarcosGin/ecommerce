@@ -3,12 +3,15 @@
 namespace App\Controllers;
 
 use App\Models\Product;
+use App\Models\Category;
 
 class CartController extends BaseController{
     private $product;
+    private $category;
     public function __construct(){
         parent::__construct();
         $this->product = new Product();
+        $this->category = new Category();
     }
 
     public function anyIndex(){
@@ -29,9 +32,12 @@ class CartController extends BaseController{
                     }
                 }
                 if (!$exits) {
+                    $category_id = $this->category->getCategoryForId($product['response'][0]->category_id);
                     $cart[md5($product['response'][0]->id)] = array('id' => $product['response'][0]->id,
                         'name' => $product['response'][0]->nombre,
                         'price' => $product['response'][0]->precio,
+                        'category' => $category_id[0]->name,
+                        'img' => $product['response'][0]->carpet .'/'. $product['response'][0]->portada,
                         'quantity' => 1);
                 }
                 echo $this->json_response(array('response'=> 'The product was successfully added to the cart', 'cart' => $cart), 200, '', true);

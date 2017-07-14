@@ -33,12 +33,12 @@
                  items++;
 
                  getHTML += '<div class="item">' +
-                     '<div class="item-img"> <img src="http://lorempixel.com/40/40/" /></div>'+
+                     '<div class="item-img"> <img src="http://localhost/ecommerce/public/assets/img/products/' + cart.value()[obj].img + '" /></div>'+
                      '<div class="item-info">'+
                             '<div class="name">'+ cart.value()[obj].name + '</div>'+
-                            '<div class="info category"><span>Category:</span> mobile</div>'+
+                            '<div class="info category"><span>Category:</span> '+ cart.value()[obj].category +'</div>'+
                             '<div class="info quantity"><span>Quantity:</span> '+ cart.value()[obj].quantity +'</div>'+
-                            '<div class="info price"><span>Price:</span> ' + cart.value()[obj].price + '</div>' +
+                            '<div class="info price"><span>Price:</span> $ ' + parseInt(cart.value()[obj].price).formatMoney(0,',', '.') + '</div>' +
                      '</div></div>';
 
              }

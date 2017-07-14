@@ -57,4 +57,15 @@ class Category{
         return $vec;
     }
 
+    public function getCategoryForId($id){
+        $dbObj = DB::getInstance();
+        $query = $dbObj->getQuery("SELECT name FROM categories WHERE id = :id");
+        $query->execute([
+            'id' => $id,
+        ]);
+        $data = $query->fetchAll(\PDO::FETCH_OBJ);
+
+        return $data;
+    }
+
 }
