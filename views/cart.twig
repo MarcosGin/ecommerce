@@ -7,7 +7,7 @@
     <div class="carritoCont">
 
         <div class="tabCont-carrito">
-            <table class="table-carrito">
+            <table id="TableCart" class="table-carrito">
                 <thead>
                 <tr>
                     <th colspan="2">PRODUCTO</th>
@@ -18,7 +18,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                    <!-- Data the cart-->
+
                 </tbody>
             </table>
         </div>
@@ -49,4 +49,47 @@
 
 </div>
 </div>
+{% endblock %}
+{% block scripts_footer %}
+    <script type="text/javascript">
+        $(function () {
+            var tableCart = $('#TableCart tbody');
+
+            var cart = (function () {
+                var cart = JSON.parse(localStorage.getItem("cart"));
+                if (cart === null) {
+                    cart = {};
+                }
+                return {
+                    value: function () {
+                        return cart;
+                    }
+                }
+            })();
+            Number.prototype.formatMoney = function(c, d, t){
+                var n = this,
+                    c = isNaN(c = Math.abs(c)) ? 2 : c,
+                    d = d == undefined ? "." : d,
+                    t = t == undefined ? "," : t,
+                    s = n < 0 ? "-" : "",
+                    i = String(parseInt(n = Math.abs(Number(n) || 0).toFixed(c))),
+                    j = (j = i.length) > 3 ? j % 3 : 0;
+                return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
+            };
+            var tableHTML = "";
+            $.each(cart.value(), function (key, value) {
+                var priceProduct = parseInt(cart.value()[key].price) * parseInt(cart.value()[key].quantity);
+                tableHTML += '<tr><td><div class="carritoImg"><img src="http://localhost/ecommerce/public/assets/img/products/'+ cart.value()[key].img + '" alt=""></div></td>' +
+                             '    <td>' + cart.value()[key].name +'</td>' +
+                             '    <td>$ ' + parseInt(cart.value()[key].price).formatMoney(0,',','.') + '</td>' +
+                             '    <td>' + cart.value()[key].quantity + '</td>' +
+                             '    <td>$ ' + priceProduct.formatMoney(0,',','.') +'</td>' +
+                             '    <td><a data-id="' + key + '" style="cursor:pointer;"><i class="fa fa-trash"></i></a></td></tr>';
+            });
+            tableCart.empty();
+            tableCart.append(tableHTML);
+
+
+        });
+    </script>
 {% endblock %}
