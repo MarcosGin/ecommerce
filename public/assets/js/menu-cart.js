@@ -35,7 +35,7 @@
                  getHTML += '<div class="item">' +
                      '<div class="item-img"> <img src="http://localhost/ecommerce/public/assets/img/products/' + cart.value()[obj].img + '" /></div>'+
                      '<div class="item-info">'+
-                            '<div class="name">'+ cart.value()[obj].name + '</div>'+
+                            '<div class="name"><a href="http://localhost/ecommerce/public/products/profile/' + cart.value()[obj].name + '">'+ cart.value()[obj].name + '</a></div>'+
                             '<div class="info category"><span>Category:</span> '+ cart.value()[obj].category +'</div>'+
                             '<div class="info quantity"><span>Quantity:</span> '+ cart.value()[obj].quantity +'</div>'+
                             '<div class="info price"><span>Price:</span> $ ' + parseInt(cart.value()[obj].price).formatMoney(0,',', '.') + '</div>' +
