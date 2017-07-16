@@ -23,9 +23,18 @@
 .table-carrito .priceinpu{width:100%;max-width:50px;height:30px;font-size:17px;padding:5px;outline:none}
 .table-carrito .priceinpu::-webkit-inner-spin-button{}{color:red}
 
-.quantity {
+.quantityInput {
     position: relative;
+    display: flex;
+    justify-content: center;
 }
+
+.quantityInput::after{
+    content: '';
+    display: table;
+    clear: both;
+}
+
 
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button
@@ -39,8 +48,8 @@ input[type=number]
     -moz-appearance: textfield;
 }
 
-.quantity input {
-    width: 45px;
+.quantityInput input {
+    width: 65px;
     height: 42px;
     line-height: 1.65;
     float: left;
@@ -51,7 +60,7 @@ input[type=number]
     border: 1px solid #eee;
 }
 
-.quantity input:focus {
+.quantityInput input:focus {
     outline: 0;
 }
 

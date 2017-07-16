@@ -83,7 +83,7 @@
                     tableHTML += '<tr><td><div class="carritoImg"><img src="http://localhost/ecommerce/public/assets/img/products/' + cart.value()[key].img + '" alt=""></div></td>' +
                         '    <td>' + cart.value()[key].name + '</td>' +
                         '    <td>$ ' + parseInt(cart.value()[key].price).formatMoney(0, ',', '.') + '</td>' +
-                        '    <td> <div class="quantity"><input class="UpdateQuantity" data-id="' + key + '" min="1" max="9" step="1" type="number" value="' + cart.value()[key].quantity + '"></div></td>' +
+                        '    <td> <div class="quantityInput"><input class="UpdateQuantity" data-id="' + key + '" min="1"  step="1" type="number" value="' + cart.value()[key].quantity + '"></div></td>' +
                         '    <td>$ ' + priceProduct.formatMoney(0, ',', '.') + '</td>' +
                         '    <td><a class="RemoveProduct" data-id="' + key + '" style="cursor:pointer;"><i class="fa fa-trash"></i></a></td></tr>';
                 });
@@ -160,13 +160,42 @@
 
                 });
 
+                jQuery('<div class="quantity-nav"><div class="quantity-button quantity-up">+</div><div class="quantity-button quantity-down">-</div></div>').insertAfter('.quantityInput input');
+
+                jQuery('.quantityInput').each(function() {
+                    var spinner = jQuery(this),
+                        input = spinner.find('input[type="number"]'),
+                        btnUp = spinner.find('.quantity-up'),
+                        btnDown = spinner.find('.quantity-down'),
+                        min = input.attr('min'),
+                        max = input.attr('max');
+
+                    btnUp.click(function() {
+                        var oldValue = parseFloat(input.val());
+                        if (oldValue >= max) {
+                            var newVal = oldValue;
+                        } else {
+                            var newVal = oldValue + 1;
+                        }
+                        spinner.find("input").val(newVal);
+                        spinner.find("input").trigger("change");
+                    });
+
+                    btnDown.click(function() {
+                        var oldValue = parseFloat(input.val());
+                        if (oldValue <= min) {
+                            var newVal = oldValue;
+                        } else {
+                            var newVal = oldValue - 1;
+                        }
+                        spinner.find("input").val(newVal);
+                        spinner.find("input").trigger("change");
+                    });
+
+                });
+
             };
             renderTable();
-
-
-
-
-
 
         });
     </script>
