@@ -68,5 +68,25 @@ class CartController extends BaseController{
 
     }
 
+    public function putMycart(){
+            parse_str(file_get_contents("php://input"),$post_vars);//data amazing
+
+            $result = false;
+            $data= [];
+            foreach ($post_vars['cart'] as $key => $value){
+                if($key === $post_vars['dataid']){
+                    $result = true;
+                    $post_vars['cart'][$key]['quantity'] = $post_vars['quantity'];
+                }
+            }
+                if($result){
+                    echo $this->json_response(array('response' => 'The product was successfully modified', 'cart' => $post_vars['cart']), 200 ,'', true);
+                }else{
+                    echo $this->json_response('The product could not be modified, please try again.', 200);
+                }
+
+
+    }
+
 }
 

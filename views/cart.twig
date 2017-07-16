@@ -83,7 +83,7 @@
                     tableHTML += '<tr><td><div class="carritoImg"><img src="http://localhost/ecommerce/public/assets/img/products/' + cart.value()[key].img + '" alt=""></div></td>' +
                         '    <td>' + cart.value()[key].name + '</td>' +
                         '    <td>$ ' + parseInt(cart.value()[key].price).formatMoney(0, ',', '.') + '</td>' +
-                        '    <td>' + cart.value()[key].quantity + '</td>' +
+                        '    <td> <input class="UpdateQuantity" data-id="' + key + '" type="number" value="' + cart.value()[key].quantity + '"></td>' +
                         '    <td>$ ' + priceProduct.formatMoney(0, ',', '.') + '</td>' +
                         '    <td><a class="RemoveProduct" data-id="' + key + '" style="cursor:pointer;"><i class="fa fa-trash"></i></a></td></tr>';
                 });
@@ -121,6 +121,42 @@
                     }).fail(function (){
                         console.log('fail');
                     });
+
+                });
+
+                $('.UpdateQuantity').on('change', function (e) {
+                    var cart = (function () {
+                        var cart = JSON.parse(localStorage.getItem("cart"));
+                        if (cart === null) {
+                            cart = {};
+                        }
+                        return {
+                            value: function () {
+                                return cart;
+                            }
+                        }
+                    })();
+                    var dataid  = $(this).attr('data-id');
+                    var quantity = $(this).val();
+
+                    $.ajax({
+                        url: 'http://localhost/ecommerce/public/cart/mycart',
+                        type: 'PUT',
+                        data: {dataid: dataid, cart: cart.value(), quantity: quantity},
+                        datatype: 'json',
+                    }).done(function (data) {
+                        if(data.result){
+                            localStorage.setItem('cart', JSON.stringify(data.message.cart));
+                            renderTable();
+                            changeCart.init();
+                            Notify(data.message.response, null, null, 'success');
+                        }else {
+                            console.log(data);
+                        }
+                    }).fail(function () {
+                       console.log('fail');
+                    });
+
 
                 });
 
