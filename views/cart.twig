@@ -55,39 +55,81 @@
         $(function () {
             var tableCart = $('#TableCart tbody');
 
-            var cart = (function () {
-                var cart = JSON.parse(localStorage.getItem("cart"));
-                if (cart === null) {
-                    cart = {};
-                }
-                return {
-                    value: function () {
-                        return cart;
+            var renderTable = function() {
+                var cart = (function () {
+                    var cart = JSON.parse(localStorage.getItem("cart"));
+                    if (cart === null) {
+                        cart = {};
                     }
-                }
-            })();
-            Number.prototype.formatMoney = function(c, d, t){
-                var n = this,
-                    c = isNaN(c = Math.abs(c)) ? 2 : c,
-                    d = d == undefined ? "." : d,
-                    t = t == undefined ? "," : t,
-                    s = n < 0 ? "-" : "",
-                    i = String(parseInt(n = Math.abs(Number(n) || 0).toFixed(c))),
-                    j = (j = i.length) > 3 ? j % 3 : 0;
-                return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
+                    return {
+                        value: function () {
+                            return cart;
+                        }
+                    }
+                })();
+                Number.prototype.formatMoney = function (c, d, t) {
+                    var n = this,
+                        c = isNaN(c = Math.abs(c)) ? 2 : c,
+                        d = d == undefined ? "." : d,
+                        t = t == undefined ? "," : t,
+                        s = n < 0 ? "-" : "",
+                        i = String(parseInt(n = Math.abs(Number(n) || 0).toFixed(c))),
+                        j = (j = i.length) > 3 ? j % 3 : 0;
+                    return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
+                };
+                var tableHTML = "";
+                $.each(cart.value(), function (key, value) {
+                    var priceProduct = parseInt(cart.value()[key].price) * parseInt(cart.value()[key].quantity);
+                    tableHTML += '<tr><td><div class="carritoImg"><img src="http://localhost/ecommerce/public/assets/img/products/' + cart.value()[key].img + '" alt=""></div></td>' +
+                        '    <td>' + cart.value()[key].name + '</td>' +
+                        '    <td>$ ' + parseInt(cart.value()[key].price).formatMoney(0, ',', '.') + '</td>' +
+                        '    <td>' + cart.value()[key].quantity + '</td>' +
+                        '    <td>$ ' + priceProduct.formatMoney(0, ',', '.') + '</td>' +
+                        '    <td><a class="RemoveProduct" data-id="' + key + '" style="cursor:pointer;"><i class="fa fa-trash"></i></a></td></tr>';
+                });
+                tableCart.empty();
+                tableCart.append(tableHTML);
+
+                $('.RemoveProduct').on('click', function (e) {
+
+                    var cart = (function () {
+                        var cart = JSON.parse(localStorage.getItem("cart"));
+                        if (cart === null) {
+                            cart = {};
+                        }
+                        return {
+                            value: function () {
+                                return cart;
+                            }
+                        }
+                    })();
+                    var dataId = $(this).attr('data-id');
+                    $.ajax({
+                        url: 'http://localhost/ecommerce/public/cart/mycart',
+                        type: 'DELETE',
+                        data: {dataid: dataId, cart: cart.value()},
+                        datatype: 'json',
+                    }).done(function (data) {
+                        if(data.result){
+                            localStorage.setItem('cart', JSON.stringify(data.message.cart));
+                            renderTable();
+                            changeCart.init();
+                            Notify(data.message.response, null, null, 'success');
+                        }else{
+                            console.log(data);
+                        }
+                    }).fail(function (){
+                        console.log('fail');
+                    });
+
+                });
+
             };
-            var tableHTML = "";
-            $.each(cart.value(), function (key, value) {
-                var priceProduct = parseInt(cart.value()[key].price) * parseInt(cart.value()[key].quantity);
-                tableHTML += '<tr><td><div class="carritoImg"><img src="http://localhost/ecommerce/public/assets/img/products/'+ cart.value()[key].img + '" alt=""></div></td>' +
-                             '    <td>' + cart.value()[key].name +'</td>' +
-                             '    <td>$ ' + parseInt(cart.value()[key].price).formatMoney(0,',','.') + '</td>' +
-                             '    <td>' + cart.value()[key].quantity + '</td>' +
-                             '    <td>$ ' + priceProduct.formatMoney(0,',','.') +'</td>' +
-                             '    <td><a data-id="' + key + '" style="cursor:pointer;"><i class="fa fa-trash"></i></a></td></tr>';
-            });
-            tableCart.empty();
-            tableCart.append(tableHTML);
+            renderTable();
+
+
+
+
 
 
         });
