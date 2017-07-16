@@ -50,5 +50,23 @@ class CartController extends BaseController{
 
     }
 
+    public function deleteMycart(){
+        parse_str(file_get_contents("php://input"),$post_vars);//data amazing
+
+        $result = false;
+        foreach ($post_vars['cart'] as $key => $value){
+            if($key === $post_vars['dataid']){
+                $result = true;
+                unset($post_vars['cart'][$key]);
+            }
+        }
+            if($result){
+                echo $this->json_response(array('response' => 'The product was successfully deleted', 'cart' => $post_vars['cart']), 200 ,'', true);
+            }else{
+                echo $this->json_response('The product could not be deleted, please try again.', 200);
+            }
+
+    }
+
 }
 
