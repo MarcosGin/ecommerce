@@ -83,7 +83,7 @@
                     tableHTML += '<tr><td><div class="carritoImg"><img src="http://localhost/ecommerce/public/assets/img/products/' + cart.value()[key].img + '" alt=""></div></td>' +
                         '    <td>' + cart.value()[key].name + '</td>' +
                         '    <td>$ ' + parseInt(cart.value()[key].price).formatMoney(0, ',', '.') + '</td>' +
-                        '    <td> <input class="UpdateQuantity" data-id="' + key + '" type="number" value="' + cart.value()[key].quantity + '"></td>' +
+                        '    <td> <div class="quantity"><input class="UpdateQuantity" data-id="' + key + '" min="1" max="9" step="1" type="number" value="' + cart.value()[key].quantity + '"></div></td>' +
                         '    <td>$ ' + priceProduct.formatMoney(0, ',', '.') + '</td>' +
                         '    <td><a class="RemoveProduct" data-id="' + key + '" style="cursor:pointer;"><i class="fa fa-trash"></i></a></td></tr>';
                 });
