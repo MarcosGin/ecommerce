@@ -82,16 +82,20 @@
                 var mycart = $('#AddMyCart');
 
                 mycart.on('click', function () {
-                    var cart = (function(){
-                        var cart = JSON.parse(localStorage.getItem("cart"));
-                        if(cart === null){cart = {};}
+                    var cart = (function () {
+                        var data = "";
+                        try{
+                            data =  localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : [];
+                        }catch (err){
+                            localStorage.setItem('cart', '{}');
+                            data =  localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : [];
+                        }
                         return {
                             value: function () {
-                                return cart;
+                                return data;
                             }
                         }
                     })();
-
                     $.ajax({
                         url: 'http://localhost/ecommerce/public/cart/mycart',
                         type: 'POST',
@@ -100,11 +104,11 @@
                     }).done(function (data) {
                         if(data.result === true){
                             localStorage.setItem('cart', JSON.stringify(data['message'].cart));
+                            changeCart.init();
                             Notify(data['message'].response,null,null,'success');
                         }else{
                             Notify(data['message'], null, null, 'danger');
                         }
-                        console.log(data);
                     }).fail(function (jqXHR, textStatus, errorThrown) {
                         console.log(jqXHR.responseText + "\n" + textStatus + "\n" + errorThrown);
                     });

@@ -119,7 +119,6 @@ class User
         }
     }
 
-
     public function generateTokenRegister($id){
          $token = bin2hex(random_bytes(40));
          $dbObj = DB::getInstance();
@@ -132,6 +131,35 @@ class User
         return BASE_URL.'account/token/'.$token;
     }
 
+    public function insertPurchase($user_id, $cart = []){
+        $result = array('result' => true);
+        $buyId = uniqid();
+        $time = time();
+        $dbObj = DB::getInstance();
+        $errors =0;
+        foreach ($cart as $key => $value){
+            $query = $dbObj->getQuery("INSERT INTO  myhistory (buy_id, user_id, produc_id, quantity, price, fecha) VALUES(:buy_id, :user_id, :produc_id, :quantity, :price, :fecha)");
+            $data = $query->execute([
+                'buy_id' => $buyId,
+                'user_id' => $user_id,
+                'produc_id' => $cart[$key]['id'],
+                'quantity' => $cart[$key]['quantity'],
+                'price' => $cart[$key]['price'],
+                'fecha' => $time
+            ]);
+            if(!$data){
+                $errors++;
+            }
+        }
+        if ($errors < 1) {
+            $result['result'] = true;
+            $result['response'] = 'The purchase has been successfully completed';
+            return $result;
+        } else {
+            $message['response'] = 'There was a mistake in the purchase!';
+            return $result;
+        }
+    }
 
 
 }

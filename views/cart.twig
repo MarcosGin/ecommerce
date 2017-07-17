@@ -2,51 +2,257 @@
 
 {% block container %}
 <div class="containerCentral">
-    <h2 class="tittle-carrito">Tu carrito <i class="fa fa-shopping-cart"></i></h2>
+    <h2 class="tittle-carrito"><i class="fa fa-shopping-cart"></i> Carrito de compras</h2>
 
     <div class="carritoCont">
 
         <div class="tabCont-carrito">
-            <table class="table-carrito">
+            <table id="TableCart" class="table-carrito">
                 <thead>
                 <tr>
-                    <th colspan="2">PRODUCTO</th>
-                    <th>PRECIO</th>
-                    <th>CANTIDAD</th>
-                    <th>TOTAL</th>
-                    <th></th>
+                    <th colspan="2">Producto</th>
+                    <th>Precio</th>
+                    <th>Cantidad</th>
+                    <th>Total</th>
+                    <th>Eliminar</th>
                 </tr>
                 </thead>
-                <tbody>
-                    <!-- Data the cart-->
-                </tbody>
+                <tbody></tbody>
             </table>
-        </div>
-        <div class="bill-cont">
-            <div class="bill">
-                <div class="bill-tittle">Resumen</div>
-                <div class="bill-buy">
-                    <div class="sub-buy"><span class="total">SUBTOTAL</span><span class="num">$ 0000</span></div>
-
-                    <div class="buy"><span class="total">TOTAL</span><span class="num">$ 0000</span></div>
-
-                    <form action="" method="post">
-                        <button type="submit" name="buy"><i class="fa fa-credit-card"></i> Pagar</button>
-
-                    </form>
-                </div>
-
-                <!--<div class="msg-error">error</div>-->
-            </div>
-            <div class="agree">
-                Seguir comprando más <a href="/productos">productos</a>
+            <table id="TotalCart" class="table-total">
+                <tbody></tbody>
+            </table>
+            <div class="contBuy">
+                <button id="BuyCart" class="button-buy"><a>Comprar</a></button>
             </div>
         </div>
 
 
 
-    <!-- <div class='agreed'>No has seleccionado un producto, <a href='/productos'>click acá</a>.</div>-->
+</div>
+</div>
+{% endblock %}
+{% block scripts_footer %}
+    <script type="text/javascript">
+        $(function () {
+            var tabCont = $('.tabCont-carrito');
+            var tableCart = $('#TableCart tbody');
+            var tableTotalCart = $('#TotalCart tbody');
+            var renderTable = function() {
+                var cart = (function () {
+                    var data = "";
+                    try{
+                        data =  localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : [];
+                    }catch (err){
+                        localStorage.setItem('cart', '{}');
+                        data =  localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : [];
+                    }
 
-</div>
-</div>
+
+                    return {
+                        value: function () {
+                            return data;
+                        },
+                        empty: function () {
+                             for(var i in data) { return false; }
+                        return true;
+                    }
+                    }
+                })();
+                Number.prototype.formatMoney = function (c, d, t) {
+                    var n = this,
+                        c = isNaN(c = Math.abs(c)) ? 2 : c,
+                        d = d == undefined ? "." : d,
+                        t = t == undefined ? "," : t,
+                        s = n < 0 ? "-" : "",
+                        i = String(parseInt(n = Math.abs(Number(n) || 0).toFixed(c))),
+                        j = (j = i.length) > 3 ? j % 3 : 0;
+                    return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
+                };
+                var tableHTML = "";
+
+                var totalItems = 0, totalPrice=0;
+
+                if(!cart.empty()){
+                    $.each(cart.value(), function (key, value) {
+                        var priceProduct = parseInt(cart.value()[key].price) * parseInt(cart.value()[key].quantity);
+                        tableHTML += '<tr><td><div class="carritoImg"><img src="http://localhost/ecommerce/public/assets/img/products/' + cart.value()[key].img + '" alt=""></div></td>' +
+                            '    <td><a class="name" href="http://localhost/ecommerce/public/products/profile/'+ cart.value()[key].name +'">' + cart.value()[key].name + '</a></td>' +
+                            '    <td>$ ' + parseInt(cart.value()[key].price).formatMoney(0, ',', '.') + '</td>' +
+                            '    <td> <div class="quantityInput"><input class="UpdateQuantity" data-id="' + key + '" min="1"  step="1" type="number" value="' + cart.value()[key].quantity + '"></div></td>' +
+                            '    <td>$ ' + priceProduct.formatMoney(0, ',', '.') + '</td>' +
+                            '    <td><a class="RemoveProduct" data-id="' + key + '" style="cursor:pointer;"><i class="fa fa-trash"></i></a></td></tr>';
+
+                        totalItems += parseInt(cart.value()[key].quantity);
+                        totalPrice += parseInt(priceProduct);
+                    });
+                }else{
+                    var empty_cart = '<div class="empty-cart"><h2>¡Atención!</h2>' +
+                        '               <p>Su carrito se encuentra vacio, puede añadir productos en nuestra seccion de <a href="http://localhost/ecommerce/public/products">productos</a></p></div>';
+                    tabCont.append(empty_cart);
+                }
+                var tableTotalHTML = '<tr><td>Total item(s)</td><td>' + totalItems + '</td></tr>' +
+                                     '<tr><td>Subtotal</td><td>$ ' + totalPrice.formatMoney(2, ',', '.') + '</td></tr>' +
+                                     '<tr><td>Total a pagar</td><td>$ ' + totalPrice.formatMoney(2, ',', '.') + '</td></tr>';
+                tableCart.empty();
+                tableCart.append(tableHTML);
+                tableTotalCart.empty();
+                tableTotalCart.append(tableTotalHTML);
+
+
+                $('.RemoveProduct').on('click', function (e) {
+
+                    var cart = (function () {
+                        var data = "";
+                        try{
+                            data =  localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : [];
+                        }catch (err){
+                            localStorage.setItem('cart', '{}');
+                            data =  localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : [];
+                        }
+                        return {
+                            value: function () {
+                                return data;
+                            }
+                        }
+                    })();
+                    var dataId = $(this).attr('data-id');
+                    $.ajax({
+                        url: 'http://localhost/ecommerce/public/cart/mycart',
+                        type: 'DELETE',
+                        data: {dataid: dataId, cart: cart.value()},
+                        datatype: 'json',
+                    }).done(function (data) {
+                        if(data.result){
+                            localStorage.setItem('cart', JSON.stringify(data.message.cart));
+                            renderTable();
+                            changeCart.init();
+                            Notify(data.message.response, null, null, 'success');
+                        }else{
+                            console.log(data);
+                        }
+                    }).fail(function (){
+                        console.log('fail');
+                    });
+
+                });
+
+                $('.UpdateQuantity').on('change', function (e) {
+                    var cart = (function () {
+                        var data = "";
+                        try{
+                            data =  localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : [];
+                        }catch (err){
+                            localStorage.setItem('cart', '{}');
+                            data =  localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : [];
+                        }
+
+                        return {
+                            value: function () {
+                                return data;
+                            }
+                        }
+                    })();
+                    var dataid  = $(this).attr('data-id');
+                    var quantity = $(this).val();
+
+                    $.ajax({
+                        url: 'http://localhost/ecommerce/public/cart/mycart',
+                        type: 'PUT',
+                        data: {dataid: dataid, cart: cart.value(), quantity: quantity},
+                        datatype: 'json',
+                    }).done(function (data) {
+                        if(data.result){
+                            localStorage.setItem('cart', JSON.stringify(data.message.cart));
+                            renderTable();
+                            changeCart.init();
+                            Notify(data.message.response, null, null, 'success');
+                        }else {
+                            console.log(data);
+                        }
+                    }).fail(function () {
+                       console.log('fail');
+                    });
+
+
+                });
+
+                jQuery('<div class="quantity-nav"><div class="quantity-button quantity-up">+</div><div class="quantity-button quantity-down">-</div></div>').insertAfter('.quantityInput input');
+
+                jQuery('.quantityInput').each(function() {
+                    var spinner = jQuery(this),
+                        input = spinner.find('input[type="number"]'),
+                        btnUp = spinner.find('.quantity-up'),
+                        btnDown = spinner.find('.quantity-down'),
+                        min = input.attr('min'),
+                        max = input.attr('max');
+
+                    btnUp.click(function() {
+                        var oldValue = parseFloat(input.val());
+                        if (oldValue >= max) {
+                            var newVal = oldValue;
+                        } else {
+                            var newVal = oldValue + 1;
+                        }
+                        spinner.find("input").val(newVal);
+                        spinner.find("input").trigger("change");
+                    });
+
+                    btnDown.click(function() {
+                        var oldValue = parseFloat(input.val());
+                        if (oldValue <= min) {
+                            var newVal = oldValue;
+                        } else {
+                            var newVal = oldValue - 1;
+                        }
+                        spinner.find("input").val(newVal);
+                        spinner.find("input").trigger("change");
+                    });
+
+                });
+
+            };
+            renderTable();
+
+            $('#BuyCart').on('click', function () {
+                var cart = (function () {
+                    var data = "";
+                    try{
+                        data =  localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : [];
+                    }catch (err){
+                        localStorage.setItem('cart', '{}');
+                        data =  localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : [];
+                    }
+                    return {
+                        value: function () {
+                            return data;
+                        }
+                    }
+                })();
+
+                $.ajax({
+                    url: 'http://localhost/ecommerce/public/cart/buy',
+                    type: 'POST',
+                    data: {cart: cart.value()},
+                    datatype: 'json',
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader ("Authorization", Cookies.get('__token'));
+                    }
+                }).done(function (data) {
+                    if(data.result){
+                        localStorage.removeItem('cart');
+                        renderTable();
+                        Notify(data.message,null,null,'success');
+                    }else{
+                        Notify(data.message,null,null,'danger');
+                    }
+                }).fail(function () {
+                    console.log('fail');
+                })
+
+            });
+
+
+        });
+    </script>
 {% endblock %}
