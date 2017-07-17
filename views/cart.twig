@@ -2,7 +2,7 @@
 
 {% block container %}
 <div class="containerCentral">
-    <h2 class="tittle-carrito">Tu carrito <i class="fa fa-shopping-cart"></i></h2>
+    <h2 class="tittle-carrito"><i class="fa fa-shopping-cart"></i> Carrito de compras</h2>
 
     <div class="carritoCont">
 
@@ -10,42 +10,24 @@
             <table id="TableCart" class="table-carrito">
                 <thead>
                 <tr>
-                    <th colspan="2">PRODUCTO</th>
-                    <th>PRECIO</th>
-                    <th>CANTIDAD</th>
-                    <th>TOTAL</th>
-                    <th></th>
+                    <th colspan="2">Producto</th>
+                    <th>Precio</th>
+                    <th>Cantidad</th>
+                    <th>Total</th>
+                    <th>Eliminar</th>
                 </tr>
                 </thead>
-                <tbody>
-
-                </tbody>
+                <tbody></tbody>
             </table>
-        </div>
-        <div class="bill-cont">
-            <div class="bill">
-                <div class="bill-tittle">Resumen</div>
-                <div class="bill-buy">
-                    <div class="sub-buy"><span class="total">SUBTOTAL</span><span class="num">$ 0000</span></div>
-
-                    <div class="buy"><span class="total">TOTAL</span><span class="num">$ 0000</span></div>
-
-                    <form action="" method="post">
-                        <button type="submit" name="buy"><i class="fa fa-credit-card"></i> Pagar</button>
-
-                    </form>
-                </div>
-
-                <!--<div class="msg-error">error</div>-->
-            </div>
-            <div class="agree">
-                Seguir comprando más <a href="/productos">productos</a>
+            <table id="TotalCart" class="table-total">
+                <tbody></tbody>
+            </table>
+            <div class="contBuy">
+                <button class="button-buy"><a href="{{ 'cart/buy' | url }}">Comprar</a></button>
             </div>
         </div>
 
 
-
-    <!-- <div class='agreed'>No has seleccionado un producto, <a href='/productos'>click acá</a>.</div>-->
 
 </div>
 </div>
@@ -54,7 +36,7 @@
     <script type="text/javascript">
         $(function () {
             var tableCart = $('#TableCart tbody');
-
+            var tableTotalCart = $('#TotalCart tbody');
             var renderTable = function() {
                 var cart = (function () {
                     var cart = JSON.parse(localStorage.getItem("cart"));
@@ -78,17 +60,31 @@
                     return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
                 };
                 var tableHTML = "";
+
+                var totalItems = 0, totalPrice=0;
                 $.each(cart.value(), function (key, value) {
                     var priceProduct = parseInt(cart.value()[key].price) * parseInt(cart.value()[key].quantity);
                     tableHTML += '<tr><td><div class="carritoImg"><img src="http://localhost/ecommerce/public/assets/img/products/' + cart.value()[key].img + '" alt=""></div></td>' +
-                        '    <td>' + cart.value()[key].name + '</td>' +
+                        '    <td><a class="name" href="http://localhost/ecommerce/public/products/profile/'+ cart.value()[key].name +'">' + cart.value()[key].name + '</a></td>' +
                         '    <td>$ ' + parseInt(cart.value()[key].price).formatMoney(0, ',', '.') + '</td>' +
                         '    <td> <div class="quantityInput"><input class="UpdateQuantity" data-id="' + key + '" min="1"  step="1" type="number" value="' + cart.value()[key].quantity + '"></div></td>' +
                         '    <td>$ ' + priceProduct.formatMoney(0, ',', '.') + '</td>' +
                         '    <td><a class="RemoveProduct" data-id="' + key + '" style="cursor:pointer;"><i class="fa fa-trash"></i></a></td></tr>';
+
+                   totalItems += parseInt(cart.value()[key].quantity);
+                   totalPrice += parseInt(priceProduct);
+
+
+
                 });
+                var tableTotalHTML = '<tr><td>Total item(s)</td><td>' + totalItems + '</td></tr>' +
+                                     '<tr><td>Subtotal</td><td>$ ' + totalPrice.formatMoney(2, ',', '.') + '</td></tr>' +
+                                     '<tr><td>Total a pagar</td><td>$ ' + totalPrice.formatMoney(2, ',', '.') + '</td></tr>';
                 tableCart.empty();
                 tableCart.append(tableHTML);
+                tableTotalCart.empty();
+                tableTotalCart.append(tableTotalHTML);
+
 
                 $('.RemoveProduct').on('click', function (e) {
 
