@@ -153,10 +153,10 @@ class User
         }
         if ($errors < 1) {
             $result['result'] = true;
-            $result['response'] = 'The purchase has created successfully';
+            $result['response'] = 'The purchase has been successfully completed';
             return $result;
         } else {
-            $message['response'] = 'There was a mistake in the purchese!';
+            $message['response'] = 'There was a mistake in the purchase!';
             return $result;
         }
     }
