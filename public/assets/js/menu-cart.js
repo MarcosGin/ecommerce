@@ -3,13 +3,16 @@
      return{
          init: function () {
              var cart = (function () {
-                 var cart = JSON.parse(localStorage.getItem("cart"));
-                 if (cart === null) {
-                     cart = {};
+                 var data = "";
+                 try{
+                     data =  localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : [];
+                 }catch (err){
+                     localStorage.setItem('cart', '{}');
+                     data =  localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : [];
                  }
                  return {
                      value: function () {
-                         return cart;
+                         return data;
                      }
                  }
              })();

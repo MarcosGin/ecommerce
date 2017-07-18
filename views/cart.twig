@@ -39,13 +39,17 @@
             var tableTotalCart = $('#TotalCart tbody');
             var renderTable = function() {
                 var cart = (function () {
-                    var cart = JSON.parse(localStorage.getItem("cart"));
-                    if (cart === null) {
-                        cart = {};
+                    var data = "";
+                    try{
+                        data =  localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : [];
+                    }catch (err){
+                        localStorage.setItem('cart', '{}');
+                        data =  localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : [];
                     }
+
                     return {
                         value: function () {
-                            return cart;
+                            return data;
                         }
                     }
                 })();
@@ -62,21 +66,25 @@
                 var tableHTML = "";
 
                 var totalItems = 0, totalPrice=0;
-                $.each(cart.value(), function (key, value) {
-                    var priceProduct = parseInt(cart.value()[key].price) * parseInt(cart.value()[key].quantity);
-                    tableHTML += '<tr><td><div class="carritoImg"><img src="http://localhost/ecommerce/public/assets/img/products/' + cart.value()[key].img + '" alt=""></div></td>' +
-                        '    <td><a class="name" href="http://localhost/ecommerce/public/products/profile/'+ cart.value()[key].name +'">' + cart.value()[key].name + '</a></td>' +
-                        '    <td>$ ' + parseInt(cart.value()[key].price).formatMoney(0, ',', '.') + '</td>' +
-                        '    <td> <div class="quantityInput"><input class="UpdateQuantity" data-id="' + key + '" min="1"  step="1" type="number" value="' + cart.value()[key].quantity + '"></div></td>' +
-                        '    <td>$ ' + priceProduct.formatMoney(0, ',', '.') + '</td>' +
-                        '    <td><a class="RemoveProduct" data-id="' + key + '" style="cursor:pointer;"><i class="fa fa-trash"></i></a></td></tr>';
+                if(cart.value() !== null){
+                    $.each(cart.value(), function (key, value) {
+                        var priceProduct = parseInt(cart.value()[key].price) * parseInt(cart.value()[key].quantity);
+                        tableHTML += '<tr><td><div class="carritoImg"><img src="http://localhost/ecommerce/public/assets/img/products/' + cart.value()[key].img + '" alt=""></div></td>' +
+                            '    <td><a class="name" href="http://localhost/ecommerce/public/products/profile/'+ cart.value()[key].name +'">' + cart.value()[key].name + '</a></td>' +
+                            '    <td>$ ' + parseInt(cart.value()[key].price).formatMoney(0, ',', '.') + '</td>' +
+                            '    <td> <div class="quantityInput"><input class="UpdateQuantity" data-id="' + key + '" min="1"  step="1" type="number" value="' + cart.value()[key].quantity + '"></div></td>' +
+                            '    <td>$ ' + priceProduct.formatMoney(0, ',', '.') + '</td>' +
+                            '    <td><a class="RemoveProduct" data-id="' + key + '" style="cursor:pointer;"><i class="fa fa-trash"></i></a></td></tr>';
 
-                   totalItems += parseInt(cart.value()[key].quantity);
-                   totalPrice += parseInt(priceProduct);
+                        totalItems += parseInt(cart.value()[key].quantity);
+                        totalPrice += parseInt(priceProduct);
 
 
 
-                });
+                    });
+                }else{
+                    tableHTML = '<p>Cart empty!</p>';
+                }
                 var tableTotalHTML = '<tr><td>Total item(s)</td><td>' + totalItems + '</td></tr>' +
                                      '<tr><td>Subtotal</td><td>$ ' + totalPrice.formatMoney(2, ',', '.') + '</td></tr>' +
                                      '<tr><td>Total a pagar</td><td>$ ' + totalPrice.formatMoney(2, ',', '.') + '</td></tr>';
@@ -89,13 +97,16 @@
                 $('.RemoveProduct').on('click', function (e) {
 
                     var cart = (function () {
-                        var cart = JSON.parse(localStorage.getItem("cart"));
-                        if (cart === null) {
-                            cart = {};
+                        var data = "";
+                        try{
+                            data =  localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : [];
+                        }catch (err){
+                            localStorage.setItem('cart', '{}');
+                            data =  localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : [];
                         }
                         return {
                             value: function () {
-                                return cart;
+                                return data;
                             }
                         }
                     })();
@@ -122,13 +133,17 @@
 
                 $('.UpdateQuantity').on('change', function (e) {
                     var cart = (function () {
-                        var cart = JSON.parse(localStorage.getItem("cart"));
-                        if (cart === null) {
-                            cart = {};
+                        var data = "";
+                        try{
+                            data =  localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : [];
+                        }catch (err){
+                            localStorage.setItem('cart', '{}');
+                            data =  localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : [];
                         }
+
                         return {
                             value: function () {
-                                return cart;
+                                return data;
                             }
                         }
                     })();
@@ -195,13 +210,16 @@
 
             $('#BuyCart').on('click', function () {
                 var cart = (function () {
-                    var cart = JSON.parse(localStorage.getItem("cart"));
-                    if (cart === null) {
-                        cart = {};
+                    var data = "";
+                    try{
+                        data =  localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : [];
+                    }catch (err){
+                        localStorage.setItem('cart', '{}');
+                        data =  localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : [];
                     }
                     return {
                         value: function () {
-                            return cart;
+                            return data;
                         }
                     }
                 })();
