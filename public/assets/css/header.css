@@ -26,6 +26,7 @@
 .carrito .cart span{font-size:12px;}
 .carrito .data{display: none;position:absolute;top:52px;right:0;background:white;width:340px;padding:14px;border: 1px solid #c8c9ca;z-index:9999;color:#2d2d2d;}
 .carrito .data .data-body{overflow-y:auto;max-height:210px;margin-bottom: 10px;}
+.carrito .data .data-body .alert-notproducts{padding: 10px;font-size: 14px;text-align: center}
 .carrito .data .data-body .item {display: flex;max-height: 100px;margin-bottom: 10px;}
 .carrito .data .data-body .item:last-child{margin-bottom: 0;}
 .carrito .data .data-body .item .item-img{width: 30%;}
@@ -35,17 +36,23 @@
 .carrito .data .data-body .item .item-info .info span{color:#5FB2F9;}
 .carrito .data .data-body .item .item-info .name {margin-bottom: 3px;padding-bottom:3px;border-bottom: 1px solid #737373;}
 .carrito .data .data-body .item .item-info .name a:hover{color: #5FB2F9;}
+.carrito .data .data-footer{
+	text-align: center;
+}
 .carrito .data .data-footer .see-cart{
 	width: 100%;
-	padding: 5px;
-	text-align: center;
+	max-width: 150px;
 	background: #48abf9;
 	color: #fff;
-	font-size: 17px;
 	border: 1px solid#3AAFF2;
 	border-radius: 3px;
 	cursor: pointer;
-	height: 50px;
+}
+.carrito .data .data-footer .see-cart a{
+	display: block;
+	padding: 10px 0;
+	text-align: center;
+	font-size: 14px;
 }
 .active  .data{display: block;}
 .active  .data::before{content: "";width: 20px;height: 20px;position: absolute;top: -15px;right: 17px;}
