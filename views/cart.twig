@@ -23,7 +23,7 @@
                 <tbody></tbody>
             </table>
             <div class="contBuy">
-                <button class="button-buy"><a href="{{ 'cart/buy' | url }}">Comprar</a></button>
+                <button id="BuyCart" class="button-buy"><a>Comprar</a></button>
             </div>
         </div>
 
@@ -192,6 +192,42 @@
 
             };
             renderTable();
+
+            $('#BuyCart').on('click', function () {
+                var cart = (function () {
+                    var cart = JSON.parse(localStorage.getItem("cart"));
+                    if (cart === null) {
+                        cart = {};
+                    }
+                    return {
+                        value: function () {
+                            return cart;
+                        }
+                    }
+                })();
+
+                $.ajax({
+                    url: 'http://localhost/ecommerce/public/cart/buy',
+                    type: 'POST',
+                    data: {cart: cart.value()},
+                    datatype: 'json',
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader ("Authorization", Cookies.get('__token'));
+                    }
+                }).done(function (data) {
+                    if(data.result){
+                        localStorage.removeItem('cart');
+                        renderTable();
+                        console.log(data.message);
+                    }else{
+                        console.log(data.message);
+                    }
+                }).fail(function () {
+                    console.log('fail');
+                })
+
+            });
+
 
         });
     </script>
