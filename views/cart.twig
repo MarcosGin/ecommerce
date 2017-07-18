@@ -35,6 +35,7 @@
 {% block scripts_footer %}
     <script type="text/javascript">
         $(function () {
+            var tabCont = $('.tabCont-carrito');
             var tableCart = $('#TableCart tbody');
             var tableTotalCart = $('#TotalCart tbody');
             var renderTable = function() {
@@ -47,10 +48,15 @@
                         data =  localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : [];
                     }
 
+
                     return {
                         value: function () {
                             return data;
-                        }
+                        },
+                        empty: function () {
+                             for(var i in data) { return false; }
+                        return true;
+                    }
                     }
                 })();
                 Number.prototype.formatMoney = function (c, d, t) {
@@ -66,7 +72,8 @@
                 var tableHTML = "";
 
                 var totalItems = 0, totalPrice=0;
-                if(cart.value() !== null){
+
+                if(!cart.empty()){
                     $.each(cart.value(), function (key, value) {
                         var priceProduct = parseInt(cart.value()[key].price) * parseInt(cart.value()[key].quantity);
                         tableHTML += '<tr><td><div class="carritoImg"><img src="http://localhost/ecommerce/public/assets/img/products/' + cart.value()[key].img + '" alt=""></div></td>' +
@@ -78,12 +85,11 @@
 
                         totalItems += parseInt(cart.value()[key].quantity);
                         totalPrice += parseInt(priceProduct);
-
-
-
                     });
                 }else{
-                    tableHTML = '<p>Cart empty!</p>';
+                    var empty_cart = '<div class="empty-cart"><h2>¡Atención!</h2>' +
+                        '               <p>Su carrito se encuentra vacio, puede añadir productos en nuestra seccion de <a href="http://localhost/ecommerce/public/products">productos</a></p></div>';
+                    tabCont.append(empty_cart);
                 }
                 var tableTotalHTML = '<tr><td>Total item(s)</td><td>' + totalItems + '</td></tr>' +
                                      '<tr><td>Subtotal</td><td>$ ' + totalPrice.formatMoney(2, ',', '.') + '</td></tr>' +

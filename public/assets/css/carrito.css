@@ -39,6 +39,19 @@
     width: 100%;
     margin-bottom: 20px;
 }
+.empty-cart{
+    background: #BDE5F8;
+    color: #00529B;
+    width: 100%;
+    padding: 10px 20px;
+    font-weight: 300;
+}
+.empty-cart h2{
+    font-weight: 400;
+}
+.empty-cart p a{
+    text-decoration: underline;
+}
 
 .table-carrito tr:first-child {
     border: 1px solid#444
