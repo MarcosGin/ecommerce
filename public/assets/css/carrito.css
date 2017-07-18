@@ -36,7 +36,8 @@
 
 .table-carrito {
     color: #444;
-    width: 100%
+    width: 100%;
+    margin-bottom: 20px;
 }
 
 .table-carrito tr:first-child {
@@ -174,6 +175,7 @@ input[type=number] {
 .contBuy .button-buy a{
     padding:5px 8px;
     display: block;
+    cursor: pointer;
 }
 
 @media(max-width:620px) {
