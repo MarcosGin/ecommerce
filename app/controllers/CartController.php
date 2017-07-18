@@ -100,13 +100,16 @@ class CartController extends BaseController{
         }
 
             if($jwt['result']){
-                $cart = $_POST['cart'];
-
-                $purchase = $this->user->insertPurchase($jwt['jwt']->id, $cart);
-                if($purchase['result']){
-                    echo $this->json_response($purchase['response'], 200, $jwt['token'], true);
+                $cart = $_POST['cart'] ?? [];
+                if(sizeof($cart) !== 0){
+                    $purchase = $this->user->insertPurchase($jwt['jwt']->id, $cart);
+                    if($purchase['result']){
+                        echo $this->json_response($purchase['response'], 200, $jwt['token'], true);
+                    }else{
+                        echo $this->json_response($purchase['response'], 200);
+                    }
                 }else{
-                    echo $this->json_response($purchase['response'], 200);
+                    echo $this->json_response('The cart is empty', 200);
                 }
             }else{
                 echo $this->json_response($jwt['response'], 200);

@@ -45,12 +45,15 @@
     width: 100%;
     padding: 10px 20px;
     font-weight: 300;
+    font-size: 14px;
 }
 .empty-cart h2{
     font-weight: 400;
+    font-size: 17px;
 }
 .empty-cart p a{
     text-decoration: underline;
+
 }
 
 .table-carrito tr:first-child {
