@@ -4,14 +4,18 @@ namespace App\Controllers;
 
 use App\Models\Product;
 use App\Models\Category;
+use App\Bin\Token;
+use App\Models\User;
 
 class CartController extends BaseController{
     private $product;
     private $category;
+    private $user;
     public function __construct(){
         parent::__construct();
         $this->product = new Product();
         $this->category = new Category();
+        $this->user = new User();
     }
 
     public function anyIndex(){
@@ -72,7 +76,6 @@ class CartController extends BaseController{
             parse_str(file_get_contents("php://input"),$post_vars);//data amazing
 
             $result = false;
-            $data= [];
             foreach ($post_vars['cart'] as $key => $value){
                 if($key === $post_vars['dataid']){
                     $result = true;
@@ -84,6 +87,30 @@ class CartController extends BaseController{
                 }else{
                     echo $this->json_response('The product could not be modified, please try again.', 200);
                 }
+
+
+    }
+
+    public function postBuy(){
+        $jwt = [];
+        foreach (getallheaders() as $key => $value){
+            if($key == 'Authorization'){
+                $jwt = Token::checkToken($value);
+            }
+        }
+
+            if($jwt['result']){
+                $cart = $_POST['cart'];
+
+                $purchase = $this->user->insertPurchase($jwt['jwt']->id, $cart);
+                if($purchase['result']){
+                    echo $this->json_response($purchase['response'], 200, $jwt['token'], true);
+                }else{
+                    echo $this->json_response($purchase['response'], 200);
+                }
+            }else{
+                echo $this->json_response($jwt['response'], 200);
+            }
 
 
     }
