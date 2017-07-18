@@ -242,9 +242,9 @@
                     if(data.result){
                         localStorage.removeItem('cart');
                         renderTable();
-                        console.log(data.message);
+                        Notify(data.message,null,null,'success');
                     }else{
-                        console.log(data.message);
+                        Notify(data.message,null,null,'danger');
                     }
                 }).fail(function () {
                     console.log('fail');
