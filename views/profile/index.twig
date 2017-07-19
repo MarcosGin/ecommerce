@@ -4,7 +4,7 @@
 
     <div class="containerCentral">
        <div class="header-profile"><h2> <i class="fa fa-cogs" aria-hidden="true"></i>
-               Configuracion de la cuenta</h2></div>
+               Account settings</h2></div>
         <div class="cont-profile">
             <div class="menu-left">
                 <div class="data-user">
@@ -12,13 +12,82 @@
                     <div class="name">Marcos Gin</div>
                 </div>
                 <ul class="menu">
-                    <li class="active"><div class="icon"><i class="fa fa-cog" aria-hidden="true"></i></div> Account settings</li>
+                    <li class="active"><div class="icon"><i class="fa fa-cog" aria-hidden="true"></i></div> Settings</li>
                     <li class=""><div class="icon"><i class="fa fa-history" aria-hidden="true"></i></div> My history</li>
                     <li class=""><div class="icon"><i class="fa fa-shield" aria-hidden="true"></i></div> Security and privacity</li>
                 </ul>
             </div>
-            <div class="data-right"><p>The data here</p></div>
+            <div class="data-right">
+                <div class="data">
+                    <div class="header-tittle"><h2>Your configuration</h2></div>
+                    <div class="body">
+                        <div class="content">
+                            <div class="content-title"><span>Personal Information</span></div>
+                            <div class="content-body">
+                                <div class="column">
+                                    <div class="reference">First name:</div>
+                                    <div class="value"><input type="text" value="Marcos"></div>
+                                </div>
+                                <div class="column">
+                                    <div class="reference">Last name:</div>
+                                    <div class="value"><input type="text" value="Gin"></div>
+                                </div>
+                                <div class="column">
+                                    <div class="reference">Birthdate:</div>
+                                    <div class="value">30/05/1999</div>
+                                </div>
+                                <div class="column">
+                                    <div class="reference">Document:</div>
+                                    <div class="value"><input type="text" value="42270070"></div>
+                                </div>
+                                <div class="column">
+                                    <div class="reference">Phone number:</div>
+                                    <div class="value"><input type="text" value="1515678912"></div>
+                                </div>
+                                <div class="column">
+                                    <div class="reference">Gender:</div>
+                                    <div class="value"> 
+                                        <select class="cs-select cs-skin-elastic">
+                                            <option value="" disabled selected>Select Gender</option>
+                                            <option value="male" data-class="icon gender-male">Male</option>
+                                            <option value="female" data-class="icon gender-female">Female</option>
+                                        </select></div>
+                                </div>
+
+                                <div class="column">
+                                    <div class="reference">Country:</div>
+                                    <div class="value">
+                                        <select class="cs-select cs-skin-elastic">
+                                            <option value="" disabled selected>Select Country</option>
+                                            <option value="ar" data-class="flag-ar">Argentina</option>
+                                            <option value="bo" data-class="flag-bo">Bolivia</option>
+                                            <option value="br" data-class="flag-br">Brazil</option>
+                                            <option value="cl" data-class="flag-cl">Chile</option>
+                                            <option value="co" data-class="flag-co">Colombia</option>
+                                            <option value="ec" data-class="flag-ec">Ecuador</option>
+                                            <option value="mx" data-class="flag-mx">México</option>
+                                            <option value="pe" data-class="flag-pe">Perú</option>
+                                            <option value="py" data-class="flag-py">Paraguay</option>
+                                            <option value="uy" data-class="flag-uy">Uruguay</option>
+                                            <option value="ve" data-class="flag-ve">Venezuela</option>
+                                        </select></div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
+{% endblock %}
+{% block scripts_footer %}
+<script>
+    (function() {
+        [].slice.call( document.querySelectorAll( 'select.cs-select' ) ).forEach( function(el) {
+            new SelectFx(el);
+        } );
+    })();
+</script>
 {% endblock %}
