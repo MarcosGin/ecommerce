@@ -39,6 +39,7 @@ $router->controller('/cart', App\Controllers\CartController::class);
 $router->group(['after' => 'auth'], function($router){
     $router->controller('/account', App\Controllers\AuthController::class);
 });
+$router->controller('/profile', App\Controllers\ProfileController::class);
 
 $dispatcher = new Phroute\Phroute\Dispatcher($router->getData());
 $response = $dispatcher->dispatch($_SERVER['REQUEST_METHOD'], $route);
