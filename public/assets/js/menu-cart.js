@@ -61,7 +61,6 @@
                     info.children('span').empty();
                     info.children('span').append('$ ' + price.formatMoney(0, ',', '.') + ' (' + items +') ');
 
-                    console.log(getHTML);
                     var data_body = element.children('div.data').children('div.data-body');
                     data_body.empty();
                     data_body.append(getHTML);
