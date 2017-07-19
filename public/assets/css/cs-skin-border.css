@@ -1,0 +1,211 @@
+
+div.cs-skin-elastic {
+	background: transparent;
+	font-weight: 300;
+	color: #5b8583;
+	width: 100%;
+}
+
+@media screen and (max-width: 30em) {
+	div.cs-skin-elastic { font-size: 1em; }
+}
+
+.cs-skin-elastic > span {
+	background-color: #fff;
+	z-index: 100;
+	border: 1px solid #eee;
+	border-radius: 4px;
+}
+
+.cs-skin-elastic > span::after {
+	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
+}
+
+.cs-skin-elastic .cs-options {
+	overflow: visible;
+	background: transparent;
+	opacity: 1;
+	visibility: visible;
+	padding: 5px 0;
+	pointer-events: none;
+}
+
+.cs-skin-elastic.cs-active .cs-options {
+	pointer-events: auto;
+	margin-top: 4px;
+	border: 1px solid #eee;
+	border-radius: 5px;
+}
+
+.cs-skin-elastic .cs-options > ul::before {
+	content: '';
+	position: absolute;
+	border-radius: 5px;
+	width: 100%;
+	height: 100%;
+	left: 0;
+	top: 0;
+	-webkit-transform: scale3d(1,0,1);
+	transform: scale3d(1,0,1);
+	background: #fff;
+	-webkit-transform-origin: 50% 0%;
+	transform-origin: 50% 0%;
+	-webkit-transition: -webkit-transform 0.3s;
+	transition: transform 0.3s;
+
+}
+
+.cs-skin-elastic.cs-active .cs-options > ul::before {
+	-webkit-transform: scale3d(1,1,1);
+	transform: scale3d(1,1,1);
+	-webkit-transition: none;
+	transition: none;
+	-webkit-animation: expand 0.6s ease-out;
+	animation: expand 0.6s ease-out;
+}
+
+.cs-skin-elastic .cs-options ul li {
+	opacity: 0;
+	-webkit-transform: translate3d(0,-25px,0);
+	transform: translate3d(0,-25px,0);
+	-webkit-transition: opacity 0.15s, -webkit-transform 0.15s;
+	transition: opacity 0.15s, transform 0.15s;
+}
+.cs-skin-elastic.cs-active .cs-options li.icon span::before{
+	font: normal normal normal 14px/1 FontAwesome;
+	font-size: inherit;
+	text-rendering: auto;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	position: absolute;
+	top:0.8em;
+	left: 2em;
+
+}
+.cs-skin-elastic.cs-active .cs-options  li.gender-male span::before{
+	content: "\f183";
+}
+.cs-skin-elastic.cs-active .cs-options  li.gender-female span::before{
+	content: "\f182";
+}
+.cs-skin-elastic.cs-active .cs-options ul li {
+	-webkit-transform: translate3d(0,0,0);
+	transform: translate3d(0,0,0);
+	opacity: 1;
+	-webkit-transition: none;
+	transition: none;
+	-webkit-animation: bounce 0.6s ease-out;
+	animation: bounce 0.6s ease-out;
+}
+
+/* Optional delays (problematic in IE 11/Win) */
+/*
+.cs-skin-elastic.cs-active .cs-options ul li:first-child {
+	-webkit-animation-delay: 0.1s;
+	animation-delay: 0.1s;
+}
+
+.cs-skin-elastic.cs-active .cs-options ul li:nth-child(2) {
+	-webkit-animation-delay: 0.15s;
+	animation-delay: 0.15s;
+}
+
+.cs-skin-elastic.cs-active .cs-options ul li:nth-child(3) {
+	-webkit-animation-delay: 0.2s;
+	animation-delay: 0.2s;
+}
+
+.cs-skin-elastic.cs-active .cs-options ul li:nth-child(4) {
+	-webkit-animation-delay: 0.25s;
+	animation-delay: 0.25s;
+}
+
+/* with more items, more delays declarations are needed */
+
+
+.cs-skin-elastic .cs-options span {
+	background-repeat: no-repeat;
+	background-position: 1.5em 50%;
+	background-size: 2em auto;
+	padding: 0.8em 1em 0.8em 4em;
+}
+.cs-skin-elastic .cs-options li:hover, .cs-skin-elastic .cs-options .cs-selected{
+	background: #f4f4f4;
+}
+.cs-skin-elastic .cs-options span:hover,
+.cs-skin-elastic .cs-options li.cs-focus span,
+.cs-skin-elastic .cs-options .cs-selected span {
+	color: #1e4c4a;
+}
+
+.cs-skin-elastic .cs-options .cs-selected span::after {
+	content: '';
+}
+
+.cs-skin-elastic .cs-options li.flag-ar span {
+	background-image: url(../img/flags/ar.svg);
+}
+.cs-skin-elastic .cs-options li.flag-bo span {
+	background-image: url(../img/flags/bo.svg);
+}
+.cs-skin-elastic .cs-options li.flag-br span {
+	background-image: url(../img/flags/br.svg);
+}
+.cs-skin-elastic .cs-options li.flag-cl span {
+	background-image: url(../img/flags/cl.svg);
+}
+.cs-skin-elastic .cs-options li.flag-co span {
+	background-image: url(../img/flags/co.svg);
+}
+.cs-skin-elastic .cs-options li.flag-ec span {
+	background-image: url(../img/flags/ec.svg);
+}
+.cs-skin-elastic .cs-options li.flag-mx span {
+	background-image: url(../img/flags/mx.svg);
+}
+.cs-skin-elastic .cs-options li.flag-pe span {
+	background-image: url(../img/flags/pe.svg);
+}
+.cs-skin-elastic .cs-options li.flag-py span {
+	background-image: url(../img/flags/py.svg);
+}
+.cs-skin-elastic .cs-options li.flag-uy span {
+	background-image: url(../img/flags/uy.svg);
+}
+.cs-skin-elastic .cs-options li.flag-ve span {
+	background-image: url(../img/flags/ve.svg);
+}
+
+@-webkit-keyframes expand {
+	0% { -webkit-transform: scale3d(1,0,1); }
+	25% { -webkit-transform: scale3d(1,1.2,1); }
+	50% { -webkit-transform: scale3d(1,0.85,1); }
+	75% { -webkit-transform: scale3d(1,1.05,1) }
+	100% { -webkit-transform: scale3d(1,1,1); }
+}
+
+@keyframes expand {
+	0% { -webkit-transform: scale3d(1,0,1); transform: scale3d(1,0,1); }
+	25% { -webkit-transform: scale3d(1,1.2,1); transform: scale3d(1,1.2,1); }
+	50% { -webkit-transform: scale3d(1,0.85,1); transform: scale3d(1,0.85,1); }
+	75% { -webkit-transform: scale3d(1,1.05,1); transform: scale3d(1,1.05,1); }
+	100% { -webkit-transform: scale3d(1,1,1); transform: scale3d(1,1,1); }
+}
+
+
+@-webkit-keyframes bounce {
+	0% { -webkit-transform: translate3d(0,-25px,0); opacity:0; }
+	25% { -webkit-transform: translate3d(0,10px,0); }
+	50% { -webkit-transform: translate3d(0,-6px,0); }
+	75% { -webkit-transform: translate3d(0,2px,0); }
+	100% { -webkit-transform: translate3d(0,0,0); opacity: 1; }
+}
+
+@keyframes bounce {
+	0% { -webkit-transform: translate3d(0,-25px,0); transform: translate3d(0,-25px,0); opacity:0; }
+	25% { -webkit-transform: translate3d(0,10px,0); transform: translate3d(0,10px,0); }
+	50% { -webkit-transform: translate3d(0,-6px,0); transform: translate3d(0,-6px,0); }
+	75% { -webkit-transform: translate3d(0,2px,0); transform: translate3d(0,2px,0); }
+	100% { -webkit-transform: translate3d(0,0,0); transform: translate3d(0,0,0); opacity: 1; }
+}
