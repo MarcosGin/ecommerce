@@ -24,74 +24,75 @@
                         <div class="content">
                             <div class="content-title"><span>Personal Information</span></div>
                             <div class="content-body">
-                                <div class="column">
-                                    <div class="reference">First name:</div>
-                                    <div class="value"><input type="text" value="Marcos"></div>
-                                </div>
-                                <div class="column">
-                                    <div class="reference">Last name:</div>
-                                    <div class="value"><input type="text" value="Gin"></div>
-                                </div>
-                                <div class="column">
-                                    <div class="reference">Birthdate:</div>
-                                    <div class="value multiple-selects">
-                                        <select class="cs-select cs-skin-elastic scroll">
-                                            <option value="" disabled selected>Day</option>
-                                            {% for i in 1..31 %}
-                                               <option value="{{ i }}"> {{ i }}</option>
-                                            {% endfor %}
-                                        </select>
-                                        <select class="cs-select cs-skin-elastic scroll">
-                                            <option value="" disabled selected>Month</option>
-                                            {% for i in 1..12 %}
-                                              <option value="{{ i }}">{{ i }}</option>
-                                            {% endfor %}
-                                        </select>
-                                        <select class="cs-select cs-skin-elastic scroll">
-                                            <option value="" disabled selected>Year</option>
-                                            {% for i in 1999..1960 %}
-                                                <option value="{{ i }}">{{ i }}</option>
-                                            {% endfor %}
-                                        </select>
+                                <form id="personalData">
+                                    <div class="column">
+                                        <div class="reference">First name:</div>
+                                        <div class="value"><input type="text" id="firstName" value="Marcos"></div>
                                     </div>
-                                </div>
-                                <div class="column">
-                                    <div class="reference">Document:</div>
-                                    <div class="value"><input type="text" value="42270070"></div>
-                                </div>
-                                <div class="column">
-                                    <div class="reference">Phone number:</div>
-                                    <div class="value"><input type="text" value="1515678912"></div>
-                                </div>
-                                <div class="column">
-                                    <div class="reference">Gender:</div>
-                                    <div class="value"> 
-                                        <select class="cs-select cs-skin-elastic">
-                                            <option value="" disabled selected>Select Gender</option>
-                                            <option value="male" data-class="icon gender-male">Male</option>
-                                            <option value="female" data-class="icon gender-female">Female</option>
-                                        </select></div>
-                                </div>
-
-                                <div class="column">
-                                    <div class="reference">Country:</div>
-                                    <div class="value">
-                                        <select class="cs-select cs-skin-elastic">
-                                            <option value="" disabled selected>Select Country</option>
-                                            <option value="ar" data-class="flag-ar">Argentina</option>
-                                            <option value="bo" data-class="flag-bo">Bolivia</option>
-                                            <option value="br" data-class="flag-br">Brazil</option>
-                                            <option value="cl" data-class="flag-cl">Chile</option>
-                                            <option value="co" data-class="flag-co">Colombia</option>
-                                            <option value="ec" data-class="flag-ec">Ecuador</option>
-                                            <option value="mx" data-class="flag-mx">México</option>
-                                            <option value="pe" data-class="flag-pe">Perú</option>
-                                            <option value="py" data-class="flag-py">Paraguay</option>
-                                            <option value="uy" data-class="flag-uy">Uruguay</option>
-                                            <option value="ve" data-class="flag-ve">Venezuela</option>
-                                        </select></div>
-                                </div>
-
+                                    <div class="column">
+                                        <div class="reference">Last name:</div>
+                                        <div class="value"><input type="text" id="lastName" value="Gin"></div>
+                                    </div>
+                                    <div class="column">
+                                        <div class="reference">Birthdate:</div>
+                                        <div class="value multiple-selects">
+                                            <select id="dayBirth" class="cs-select cs-skin-elastic scroll">
+                                                <option value="" disabled selected>Day</option>
+                                                {% for i in 1..31 %}
+                                                   <option value="{{ i }}"> {{ i }}</option>
+                                                {% endfor %}
+                                            </select>
+                                            <select id="monthBirth" class="cs-select cs-skin-elastic scroll">
+                                                <option value="" disabled selected>Month</option>
+                                                {% for i in 1..12 %}
+                                                  <option value="{{ i }}">{{ i }}</option>
+                                                {% endfor %}
+                                            </select>
+                                            <select id="yearBirth" class="cs-select cs-skin-elastic scroll">
+                                                <option value="" disabled selected>Year</option>
+                                                {% for i in 1999..1960 %}
+                                                    <option value="{{ i }}">{{ i }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="column">
+                                        <div class="reference">Document:</div>
+                                        <div class="value"><input id="document" type="text" value="42270070"></div>
+                                    </div>
+                                    <div class="column">
+                                        <div class="reference">Phone number:</div>
+                                        <div class="value"><input id="phoneNumber" type="text" value="1515678912"></div>
+                                    </div>
+                                    <div class="column">
+                                        <div class="reference">Gender:</div>
+                                        <div class="value">
+                                            <select id="gender" class="cs-select cs-skin-elastic">
+                                                <option value="" disabled selected>Select Gender</option>
+                                                <option value="male" data-class="icon gender-male">Male</option>
+                                                <option value="female" data-class="icon gender-female">Female</option>
+                                            </select></div>
+                                    </div>
+                                    <div class="column">
+                                        <div class="reference">Country:</div>
+                                        <div class="value">
+                                            <select id="country" class="cs-select cs-skin-elastic">
+                                                <option value="" disabled selected>Select Country</option>
+                                                <option value="ar" data-class="flag-ar">Argentina</option>
+                                                <option value="bo" data-class="flag-bo">Bolivia</option>
+                                                <option value="br" data-class="flag-br">Brazil</option>
+                                                <option value="cl" data-class="flag-cl">Chile</option>
+                                                <option value="co" data-class="flag-co">Colombia</option>
+                                                <option value="ec" data-class="flag-ec">Ecuador</option>
+                                                <option value="mx" data-class="flag-mx">México</option>
+                                                <option value="pe" data-class="flag-pe">Perú</option>
+                                                <option value="py" data-class="flag-py">Paraguay</option>
+                                                <option value="uy" data-class="flag-uy">Uruguay</option>
+                                                <option value="ve" data-class="flag-ve">Venezuela</option>
+                                            </select></div>
+                                    </div>
+                                    <input type="submit" value="go">
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -103,10 +104,53 @@
 {% endblock %}
 {% block scripts_footer %}
 <script>
-    (function() {
-        [].slice.call( document.querySelectorAll( 'select.cs-select' ) ).forEach( function(el) {
-            new SelectFx(el);
-        } );
-    })();
+    $(function () {
+        (function () {
+            [].slice.call(document.querySelectorAll('select.cs-select')).forEach(function (el) {
+                new SelectFx(el,{
+                    onChange:function(){
+                        alert('change');
+                    }
+                });
+            });
+        })();
+
+
+        var form = (function () {
+            var inputs = $('#personalData :input');
+            var data = {};
+            $.each(inputs, function (key, el) {
+                data[$(el).attr('id')] = $(el).val();
+            });
+            return {
+                value: function () {
+                    return data;
+                },
+                valid: function () {
+                    $.each(inputs, function (key, el) {
+                        $(el).on('change', function () {
+                           alert('change?');
+                        });
+                    });
+                }
+            }
+        })();
+        form.valid();
+        console.log(form.value());
+        $('#personalData').on('submit', function (e) {
+            e.preventDefault();
+            $.ajax({
+                url: 'http://localhost/ecommerce/public/profile/settings',
+                type: 'PUT',
+                data: form.value(),
+                datatype: 'json',
+            }).done(function (data) {
+                console.log(data);
+            }).fail(function (e) {
+                console.log(e);
+            });
+        });
+
+    });
 </script>
 {% endblock %}
