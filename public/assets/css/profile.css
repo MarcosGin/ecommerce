@@ -125,7 +125,17 @@
     font-size: 12px;
 }
 .cont-profile .data-right .body .content .content-body .column .value{
-    width: 200px;
+    width: 270px;
+}
+.cont-profile .data-right .body .content .content-body .column .multiple-selects{
+    display: flex;
+}
+.cont-profile .data-right .body .content .content-body .column .multiple-selects .cs-select{
+    margin: 0 1%;
+}
+.cont-profile .data-right .body .content .content-body .column .multiple-selects .cs-skin-elastic .cs-options span {
+    padding: 1em;
+    text-align: center;
 }
 .cont-profile .data-right .body .content .content-body .column .value input{
     border: none;
