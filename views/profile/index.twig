@@ -36,19 +36,19 @@
                                     <div class="column">
                                         <div class="reference">Birthdate:</div>
                                         <div class="value multiple-selects">
-                                            <select id="dayBirth" class="cs-select cs-skin-elastic scroll">
-                                                <option value="" disabled selected>Day</option>
+                                            <select class="cs-select cs-skin-elastic scroll dayBirth">
+                                                <option value="" disabled disabled>Day</option>
                                                 {% for i in 1..31 %}
                                                    <option value="{{ i }}"> {{ i }}</option>
                                                 {% endfor %}
                                             </select>
-                                            <select id="monthBirth" class="cs-select cs-skin-elastic scroll">
+                                            <select class="cs-select cs-skin-elastic scroll monthBirth">
                                                 <option value="" disabled selected>Month</option>
                                                 {% for i in 1..12 %}
                                                   <option value="{{ i }}">{{ i }}</option>
                                                 {% endfor %}
                                             </select>
-                                            <select id="yearBirth" class="cs-select cs-skin-elastic scroll">
+                                            <select class="cs-select cs-skin-elastic scroll yearBirth">
                                                 <option value="" disabled selected>Year</option>
                                                 {% for i in 1999..1960 %}
                                                     <option value="{{ i }}">{{ i }}</option>
@@ -67,7 +67,7 @@
                                     <div class="column">
                                         <div class="reference">Gender:</div>
                                         <div class="value">
-                                            <select id="gender" class="cs-select cs-skin-elastic">
+                                            <select class="cs-select cs-skin-elastic gender">
                                                 <option value="" disabled selected>Select Gender</option>
                                                 <option value="male" data-class="icon gender-male">Male</option>
                                                 <option value="female" data-class="icon gender-female">Female</option>
@@ -76,8 +76,8 @@
                                     <div class="column">
                                         <div class="reference">Country:</div>
                                         <div class="value">
-                                            <select id="country" class="cs-select cs-skin-elastic">
-                                                <option value="" disabled selected>Select Country</option>
+                                            <select class="cs-select cs-skin-elastic country">
+                                                <option value="" disabled>Select Country</option>
                                                 <option value="ar" data-class="flag-ar">Argentina</option>
                                                 <option value="bo" data-class="flag-bo">Bolivia</option>
                                                 <option value="br" data-class="flag-br">Brazil</option>
@@ -115,15 +115,24 @@
             });
         })();
 
-
         var form = (function () {
             var inputs = $('#personalData :input');
             var data = {};
-            $.each(inputs, function (key, el) {
-                data[$(el).attr('id')] = $(el).val();
-            });
             return {
                 value: function () {
+                    $.each(inputs, function (key, el) {
+                        data[$(el).attr('id')] = $(el).val();
+                    });
+                    var day = $('.dayBirth .cs-options .cs-selected').attr('data-value');
+                    var month = $('.monthBirth .cs-options .cs-selected').attr('data-value');
+                    var year = $('.yearBirth .cs-options .cs-selected').attr('data-value');
+                    var gender = $('.gender .cs-options .cs-selected').attr('data-value');
+                    var country =  $('.country .cs-options .cs-selected').attr('data-value')
+                    data['day'] =  day ? day : null;
+                    data['month'] =  month ? month : null;
+                    data['year'] =  year ? year : null;
+                    data['gender'] =  gender ? gender : null;
+                    data['country'] =  country ? country : null;
                     return data;
                 },
                 valid: function () {
@@ -136,7 +145,6 @@
             }
         })();
         form.valid();
-        console.log(form.value());
         $('#personalData').on('submit', function (e) {
             e.preventDefault();
             $.ajax({
