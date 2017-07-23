@@ -150,6 +150,9 @@
                     type: 'PUT',
                     data: form.value(),
                     datatype: 'json',
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader ("Authorization", Cookies.get('__token'));
+                    }
                 }).done(function (data) {
                     console.log(data);
                 }).fail(function (e) {
