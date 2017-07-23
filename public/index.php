@@ -33,14 +33,21 @@ $router->filter('auth', function () {
         return false;
     }
 });
+$router->filter('user', function () {
+    if(!isset($_COOKIE['__token'])) {
+        header('Location: ' . BASE_URL . 'index');
+        return false;
+    }
+});
 $router->controller('/', App\Controllers\IndexController::class);
 $router->controller('/products', App\Controllers\ProductController::class);
 $router->controller('/cart', App\Controllers\CartController::class);
 $router->group(['after' => 'auth'], function($router){
     $router->controller('/account', App\Controllers\AuthController::class);
 });
-$router->controller('/profile', App\Controllers\ProfileController::class);
-
+$router->group(['before' => 'user'], function($router) {
+    $router->controller('/profile', App\Controllers\ProfileController::class);
+});
 $dispatcher = new Phroute\Phroute\Dispatcher($router->getData());
 $response = $dispatcher->dispatch($_SERVER['REQUEST_METHOD'], $route);
 
