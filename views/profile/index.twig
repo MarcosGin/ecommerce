@@ -1,7 +1,6 @@
 {% extends 'layout.twig' %}
 
 {% block container %}
-
     <div class="containerCentral">
        <div class="header-profile"><h2> <i class="fa fa-cogs" aria-hidden="true"></i>
                Account settings</h2></div>
@@ -91,7 +90,6 @@
                                                 <option value="ve" data-class="flag-ve">Venezuela</option>
                                             </select></div>
                                     </div>
-                                    <input type="submit" value="go">
                                 </form>
                             </div>
                         </div>
@@ -99,22 +97,13 @@
                 </div>
             </div>
         </div>
+        <div class="cont-changes"></div>
     </div>
 
 {% endblock %}
 {% block scripts_footer %}
 <script>
     $(function () {
-        (function () {
-            [].slice.call(document.querySelectorAll('select.cs-select')).forEach(function (el) {
-                new SelectFx(el,{
-                    onChange:function(){
-                        alert('change');
-                    }
-                });
-            });
-        })();
-
         var form = (function () {
             var inputs = $('#personalData :input');
             var data = {};
@@ -137,27 +126,51 @@
                 },
                 valid: function () {
                     $.each(inputs, function (key, el) {
-                        $(el).on('change', function () {
-                           alert('change?');
+                        $(el).bind("keyup change", function(e) {
+                            showSaveChanges();
                         });
                     });
                 }
             }
         })();
         form.valid();
-        $('#personalData').on('submit', function (e) {
-            e.preventDefault();
-            $.ajax({
-                url: 'http://localhost/ecommerce/public/profile/settings',
-                type: 'PUT',
-                data: form.value(),
-                datatype: 'json',
-            }).done(function (data) {
-                console.log(data);
-            }).fail(function (e) {
-                console.log(e);
+        var showSaveChanges = function () {
+            var structure = '<div class="save-changes">' +
+                '<button id="cancelChanges" class="button-profile button-red"><i class="fa fa-ban"></i> Cancel</button>' +
+                '<button id="saveChanges" class="button-profile button-white"><i class="fa fa-check"></i> Save</button>' +
+                '</div>';
+            var container = $('.cont-changes');
+            container.empty();
+            container.append(structure);
+
+            $('#saveChanges').on('click', function (e) {
+                e.preventDefault();
+                $.ajax({
+                    url: 'http://localhost/ecommerce/public/profile/settings',
+                    type: 'PUT',
+                    data: form.value(),
+                    datatype: 'json',
+                }).done(function (data) {
+                    console.log(data);
+                }).fail(function (e) {
+                    console.log(e);
+                });
             });
-        });
+            $('#cancelChanges').on('click', function (){
+               // render new the data of user
+            });
+        };
+
+        (function () {
+            [].slice.call(document.querySelectorAll('select.cs-select')).forEach(function (el) {
+                new SelectFx(el,{
+                    onChange:function(){
+                        showSaveChanges();
+                    }
+                });
+            });
+        })();
+
 
     });
 </script>

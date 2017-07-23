@@ -1,4 +1,10 @@
-
+.containerCentral{
+    overflow: hidden;
+    min-height: 1000px;
+}
+.footer-pag{
+    margin-top: 20px;
+}
 div.cs-skin-elastic {
 	background: transparent;
 	font-weight: 300;
