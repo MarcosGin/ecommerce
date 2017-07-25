@@ -3,8 +3,16 @@
 namespace App\Controllers;
 
 use App\Bin\Token;
+use App\Models\User;
 
 class ProfileController extends BaseController{
+    private $user;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->user = new User();
+    }
 
     public function getIndex(){
         return $this->render('profile/index.twig', []);
