@@ -161,5 +161,27 @@ class User
         }
     }
 
+    public function getProfile($user_id){
+        $result = array('result' => false);
+        $dbObj = DB::getInstance();
+        $query = $dbObj->getQuery('SELECT name,lastname,dayBirth,monthBirth,yearBirth,dni,phone,gender,country FROM users WHERE id=:id');
+        $query->execute([
+            'id' => $user_id,
+        ]);
+        $data = $query->fetchAll(\PDO::FETCH_ASSOC);
+                if($data){
+                    $result['result'] = true;
+                    $result['response'] = $data;
+                    return $result;
+                }else{
+                    $result['response'] = "Not found user";
+                    return $result;
+                }
+
+    }
+    public function updateProfile($user_id, $data){
+        //update
+    }
+
 
 }
