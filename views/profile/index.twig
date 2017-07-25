@@ -104,6 +104,23 @@
 {% block scripts_footer %}
 <script>
     $(function () {
+        var renderProfile = function () {
+            $.ajax({
+                url: 'http://localhost/ecommerce/public/profile/user',
+                type: 'GET',
+                data: {},
+                datatype: 'json',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader ("Authorization", Cookies.get('__token'));
+                }
+            }).done(function (data) {
+                console.log(data);
+            }).fail(function () {
+                console.log('fail');
+            })
+        };
+        renderProfile();
+
         var form = (function () {
             var inputs = $('#personalData :input');
             var data = {};
@@ -173,7 +190,6 @@
                 });
             });
         })();
-
 
     });
 </script>
