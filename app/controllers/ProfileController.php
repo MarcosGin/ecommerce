@@ -28,4 +28,19 @@ class ProfileController extends BaseController{
         }
         echo $this->json_response($post_vars, 200);
     }
+    public function getUser(){
+        $jwt = [];
+        foreach (getallheaders() as $key => $value){
+            if($key == 'Authorization'){
+                $jwt = Token::checkToken($value);
+            }
+        }
+        $dataUser = $this->user->getProfile(121);
+        if($dataUser['result']){
+            echo $this->json_response($dataUser['response'], 200, $jwt['token'], true);
+        }else{
+            echo $this->json_response($dataUser['response'], 200, $jwt['token'], false);
+        }
+
+    }
 }
