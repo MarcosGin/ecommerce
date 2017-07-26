@@ -35,9 +35,9 @@ class ProfileController extends BaseController{
                 $jwt = Token::checkToken($value);
             }
         }
-        $dataUser = $this->user->getProfile(121);
+        $dataUser = $this->user->getProfile($jwt['jwt']->id);
         if($dataUser['result']){
-            echo $this->json_response($dataUser['response'], 200, $jwt['token'], true);
+            echo $this->json_response($dataUser['response'][0], 200, $jwt['token'], true);
         }else{
             echo $this->json_response($dataUser['response'], 200, $jwt['token'], false);
         }
