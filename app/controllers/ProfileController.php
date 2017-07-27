@@ -26,7 +26,12 @@ class ProfileController extends BaseController{
                 $jwt = Token::checkToken($value);
             }
         }
-        echo $this->json_response($post_vars, 200);
+        if($jwt['result']){
+            $upUser = $this->user->updateProfile($jwt['jwt']->id, $post_vars);
+            echo $this->json_response($upUser, 200, $jwt['token'], true);
+        }else{
+            echo $this->json_response($jwt['response'], 200);
+        }
     }
     public function getUser(){
         $jwt = [];
@@ -43,7 +48,7 @@ class ProfileController extends BaseController{
                 echo $this->json_response($dataUser['response'], 200, $jwt['token'], false);
             }
         }else{
-            echo $this->json_response($jwt['response'], 200);
+                echo $this->json_response($jwt['response'], 200);
         }
 
     }
