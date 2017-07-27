@@ -180,7 +180,23 @@ class User
 
     }
     public function updateProfile($user_id, $data){
-        //update
+        $result = array('result' => false);
+        $dbObj = DB::getInstance();
+        $query = $dbObj->getQuery('UPDATE users SET name =:name, lastname=:lastname, dayBirth =:dayBirth, monthBirth=:monthBirth, yearBirth=:yearBirth, dni =:dni, phone=:phone, gender=:gender, country=:country WHERE id = :id');
+        $data = $query->execute([
+            'name' => $data['firstName'],
+            'lastname' => $data['lastName'],
+            'dayBirth' => $data['day'],
+            'monthBirth' => $data['month'],
+            'yearBirth' => $data['year'],
+            'dni' => $data['document'],
+            'phone' => $data['phoneNumber'],
+            'gender' => $data['gender'],
+            'country' => $data['country'],
+            'id' => $user_id,
+        ]);
+
+        return $data;
     }
 
 
