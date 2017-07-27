@@ -37,6 +37,7 @@
 {% block scripts_footer %}
 <script>
     $(function () {
+
         var renderProfile = (function () {
             var HTML = '';
             var countrys = {
@@ -151,7 +152,7 @@
                                 });
                             })();
                             var form = (function () {
-                                var inputs = $('#personalData :input');
+                                var inputs = $('#personalData input');
                                 var data = {};
                                 return {
                                     value: function () {
@@ -172,7 +173,7 @@
                                     },
                                     valid: function () {
                                         $.each(inputs, function (key, el) {
-                                            $(el).bind("keyup change", function (e) {
+                                            $(el).bind("change", function (e) {
                                                 showSaveChanges();
                                             });
                                         });
@@ -180,6 +181,36 @@
                                 }
                             })();
                             form.valid();
+                            var showSaveChanges = function () {
+                                var structure = '<div class="save-changes">' +
+                                    '<button id="cancelChanges" class="button-profile button-red"><i class="fa fa-ban"></i> Cancel</button>' +
+                                    '<button id="saveChanges" class="button-profile button-white"><i class="fa fa-check"></i> Save</button>' +
+                                    '</div>';
+                                var container = $('.cont-changes');
+                                container.empty();
+                                container.append(structure);
+
+                                $('#saveChanges').on('click', function (e) {
+                                    e.preventDefault();
+                                    $.ajax({
+                                        url: 'http://localhost/ecommerce/public/profile/settings',
+                                        type: 'PUT',
+                                        data: form.value(),
+                                        datatype: 'json',
+                                        beforeSend: function (xhr) {
+                                            xhr.setRequestHeader ("Authorization", Cookies.get('__token'));
+                                        }
+                                    }).done(function (data) {
+                                        console.log(data);
+                                    }).fail(function (e) {
+                                        console.log(e);
+                                    });
+                                });
+                                $('#cancelChanges').on('click', function (){
+                                    container.empty();
+                                    renderProfile.init();
+                                });
+                            };
                         }else{
                             console.log(data.message);
                         }
@@ -191,36 +222,6 @@
         })();
         renderProfile.init();
 
-
-        var showSaveChanges = function () {
-            var structure = '<div class="save-changes">' +
-                '<button id="cancelChanges" class="button-profile button-red"><i class="fa fa-ban"></i> Cancel</button>' +
-                '<button id="saveChanges" class="button-profile button-white"><i class="fa fa-check"></i> Save</button>' +
-                '</div>';
-            var container = $('.cont-changes');
-            container.empty();
-            container.append(structure);
-
-            $('#saveChanges').on('click', function (e) {
-                e.preventDefault();
-                $.ajax({
-                    url: 'http://localhost/ecommerce/public/profile/settings',
-                    type: 'PUT',
-                    data: form.value(),
-                    datatype: 'json',
-                    beforeSend: function (xhr) {
-                        xhr.setRequestHeader ("Authorization", Cookies.get('__token'));
-                    }
-                }).done(function (data) {
-                    console.log(data);
-                }).fail(function (e) {
-                    console.log(e);
-                });
-            });
-            $('#cancelChanges').on('click', function (){
-               // render new the data of user
-            });
-        };
 
 
     });
