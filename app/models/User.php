@@ -196,7 +196,14 @@ class User
             'id' => $user_id,
         ]);
 
-        return $data;
+            if($data){
+                $result['result'] = true;
+                $result['response'] = "The profile was successfully modified";
+            }else{
+                $result['response'] = "Profile was not successfully modified";
+            }
+
+        return $result;
     }
 
 
