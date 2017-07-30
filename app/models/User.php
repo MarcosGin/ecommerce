@@ -33,6 +33,16 @@ class User
 
         return $data;
     }
+    public function getUserForId($id){
+        $dbObj = DB::getInstance();
+        $query = $dbObj->getQuery("SELECT * FROM users WHERE id = :id LIMIT 1");
+        $query->execute([
+            'id' => $id,
+        ]);
+        $data = $query->fetchAll(\PDO::FETCH_OBJ);
+
+        return $data;
+    }
 
     public function getUserActivate($token, $type = null)
     {
@@ -195,6 +205,7 @@ class User
             'country' => $data['country'],
             'id' => $user_id,
         ]);
+
 
             if($data){
                 $result['result'] = true;
