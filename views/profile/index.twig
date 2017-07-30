@@ -63,6 +63,7 @@
                         url: 'http://localhost/ecommerce/public/profile/user',
                         type: 'GET',
                         data: {},
+                        contentType: 'application/json; charset=utf-8',
                         datatype: 'json',
                         cache: false,
                         beforeSend: function (xhr) {
@@ -70,6 +71,7 @@
                         }
                     }).done(function (data) {
                         if(data.result) {
+                            Cookies.set('__token', data.jwt);
                             HTML = ' <form id="personalData">' +
                                 '<div class="column"><div class="reference">First name:</div>' +
                                 '<div class="value"><input type="text" id="firstName" value="' + data.message.name + '"></div>' +
@@ -196,12 +198,20 @@
                                         url: 'http://localhost/ecommerce/public/profile/settings',
                                         type: 'PUT',
                                         data: form.value(),
+                                        contentType: 'application/json; charset=utf-8',
                                         datatype: 'json',
                                         beforeSend: function (xhr) {
                                             xhr.setRequestHeader ("Authorization", Cookies.get('__token'));
                                         }
                                     }).done(function (data) {
-                                        console.log(data);
+                                        if(data.result){
+                                            Cookies.set('__token', data.jwt);
+                                            Notify(data.message, null, null, "success");
+                                            container.empty();
+                                        }else{
+                                            Notify(data.message, null, null, "danger");
+                                            container.empty();
+                                        }
                                     }).fail(function (e) {
                                         console.log(e);
                                     });
@@ -214,8 +224,8 @@
                         }else{
                             console.log(data.message);
                         }
-                    }).fail(function () {
-
+                    }).fail(function (e) {
+                        console.log(e);
                     })
                 }
             }
