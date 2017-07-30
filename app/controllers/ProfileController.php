@@ -29,7 +29,9 @@ class ProfileController extends BaseController{
         if($jwt['result']){
             $upUser = $this->user->updateProfile($jwt['jwt']->id, $post_vars);
             if($upUser['result']){
-                echo $this->json_response($upUser['response'], 200, $jwt['token'], true);
+                $data = $this->user->getUserForId($jwt['jwt']->id);
+                $updateJwt = Token::updateDataToken($jwt['token'], ['username' => $data[0]->name]);
+                echo $this->json_response($upUser['response'], 200, $updateJwt, true);
             }else{
                 echo $this->json_response($upUser['response'], 200);
             }
