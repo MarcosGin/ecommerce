@@ -28,7 +28,11 @@ class ProfileController extends BaseController{
         }
         if($jwt['result']){
             $upUser = $this->user->updateProfile($jwt['jwt']->id, $post_vars);
-            echo $this->json_response($upUser, 200, $jwt['token'], true);
+            if($upUser['result']){
+                echo $this->json_response($upUser['response'], 200, $jwt['token'], true);
+            }else{
+                echo $this->json_response($upUser['response'], 200);
+            }
         }else{
             echo $this->json_response($jwt['response'], 200);
         }
@@ -44,8 +48,8 @@ class ProfileController extends BaseController{
             $dataUser = $this->user->getProfile($jwt['jwt']->id);
             if ($dataUser['result']) {
                 echo $this->json_response($dataUser['response'][0], 200, $jwt['token'], true);
-            } else {
-                echo $this->json_response($dataUser['response'], 200, $jwt['token'], false);
+            }else{
+                echo $this->json_response($dataUser['response'], 200);
             }
         }else{
                 echo $this->json_response($jwt['response'], 200);
