@@ -20,6 +20,30 @@ class Token
        return  \Firebase\JWT\JWT::encode($token, SECRET_KEY, ALGORITHM);
     }
 
+    public static function updateDataToken($token, $newData){
+
+        $chkToken = self::checkToken($token);
+
+            if($chkToken['result']){
+                $jwt = \Firebase\JWT\JWT::decode($chkToken['token'], SECRET_KEY, array(ALGORITHM));
+                $time = $jwt->exp - time();
+
+                foreach ($newData as $key => $value){
+                    foreach ($chkToken['jwt'] as $key2 => $value2){
+                        if($key === $key2){
+                            $chkToken['jwt']->$key2 = $value;
+                        }
+                    }
+                }
+                $data = json_decode(json_encode($chkToken['jwt']), true);
+                $newJwt = self::newToken($data, $time);
+                $token = $newJwt;
+            }
+
+        return $token;
+    }
+
+
     public static function checkToken($token){
 
         $message = array('result' => false);
