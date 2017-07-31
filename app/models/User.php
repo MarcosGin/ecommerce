@@ -33,7 +33,9 @@ class User
 
         return $data;
     }
-    public function getUserForId($id){
+
+    public function getUserForId($id)
+    {
         $dbObj = DB::getInstance();
         $query = $dbObj->getQuery("SELECT * FROM users WHERE id = :id LIMIT 1");
         $query->execute([
@@ -78,8 +80,8 @@ class User
     {
         $result = [];
         $dbObj = DB::getInstance();
-        $query = $dbObj->getQuery("INSERT INTO users (name, lastname, password, email, gender, dni, phone, rank, cash, dateuser, img, newlatter)
-            VALUES (:name, :lastname, :password, :email, :gender, :dni, :phone, :rank, :cash, :dateuser, :img, :newlatter)
+        $query = $dbObj->getQuery("INSERT INTO users (name, lastname, password, email, gender, dni, phone, rank, cash, dayBirth, monthBirth, yearBirth, img, newlatter)
+            VALUES (:name, :lastname, :password, :email, :gender, :dni, :phone, :rank, :cash, :dayBirth, :monthBirth, :yearBirth, :img, :newlatter)
         ");
 
         $validator = new Validator();
@@ -108,7 +110,9 @@ class User
                     'phone' => $post['newPhone'],
                     'rank' => 0,
                     'cash' => 0,
-                    'dateuser' => $post['newDay'] . '/' . $post['newMonth'] . '/' . $post['newYear'],
+                    'dayBirth' => $post['newDay'],
+                    'monthBirth' => $post['newMonth'],
+                    'yearBirth' => $post['newYear'],
                     'img' => "none.jpg",
                     'newlatter' => 0,
                 ]);
@@ -129,25 +133,27 @@ class User
         }
     }
 
-    public function generateTokenRegister($id){
-         $token = bin2hex(random_bytes(40));
-         $dbObj = DB::getInstance();
-         $query = $dbObj->getQuery("INSERT INTO users_activate (user_id, token) VALUES(:user_id, :token)");
-         $query->execute([
-             'user_id' => $id,
-             'token' => $token,
-         ]);
+    public function generateTokenRegister($id)
+    {
+        $token = bin2hex(random_bytes(40));
+        $dbObj = DB::getInstance();
+        $query = $dbObj->getQuery("INSERT INTO users_activate (user_id, token) VALUES(:user_id, :token)");
+        $query->execute([
+            'user_id' => $id,
+            'token' => $token,
+        ]);
 
-        return BASE_URL.'account/token/'.$token;
+        return BASE_URL . 'account/token/' . $token;
     }
 
-    public function insertPurchase($user_id, $cart = []){
+    public function insertPurchase($user_id, $cart = [])
+    {
         $result = array('result' => true);
         $buyId = uniqid();
         $time = time();
         $dbObj = DB::getInstance();
-        $errors =0;
-        foreach ($cart as $key => $value){
+        $errors = 0;
+        foreach ($cart as $key => $value) {
             $query = $dbObj->getQuery("INSERT INTO  myhistory (buy_id, user_id, produc_id, quantity, price, fecha) VALUES(:buy_id, :user_id, :produc_id, :quantity, :price, :fecha)");
             $data = $query->execute([
                 'buy_id' => $buyId,
@@ -157,7 +163,7 @@ class User
                 'price' => $cart[$key]['price'],
                 'fecha' => $time
             ]);
-            if(!$data){
+            if (!$data) {
                 $errors++;
             }
         }
@@ -171,7 +177,8 @@ class User
         }
     }
 
-    public function getProfile($user_id){
+    public function getProfile($user_id)
+    {
         $result = array('result' => false);
         $dbObj = DB::getInstance();
         $query = $dbObj->getQuery('SELECT name,lastname,dayBirth,monthBirth,yearBirth,dni,phone,gender,country FROM users WHERE id=:id');
@@ -179,17 +186,19 @@ class User
             'id' => $user_id,
         ]);
         $data = $query->fetchAll(\PDO::FETCH_ASSOC);
-                if($data){
-                    $result['result'] = true;
-                    $result['response'] = $data;
-                    return $result;
-                }else{
-                    $result['response'] = "Not found user";
-                    return $result;
-                }
+        if ($data) {
+            $result['result'] = true;
+            $result['response'] = $data;
+            return $result;
+        } else {
+            $result['response'] = "Not found user";
+            return $result;
+        }
 
     }
-    public function updateProfile($user_id, $data){
+
+    public function updateProfile($user_id, $data)
+    {
         $result = array('result' => false);
         $dbObj = DB::getInstance();
         $query = $dbObj->getQuery('UPDATE users SET name =:name, lastname=:lastname, dayBirth =:dayBirth, monthBirth=:monthBirth, yearBirth=:yearBirth, dni =:dni, phone=:phone, gender=:gender, country=:country WHERE id = :id');
@@ -207,15 +216,14 @@ class User
         ]);
 
 
-            if($data){
-                $result['result'] = true;
-                $result['response'] = "The profile was successfully modified";
-            }else{
-                $result['response'] = "Profile was not successfully modified";
-            }
+        if ($data) {
+            $result['result'] = true;
+            $result['response'] = "The profile was successfully modified";
+        } else {
+            $result['response'] = "Profile was not successfully modified";
+        }
 
         return $result;
     }
-
 
 }
