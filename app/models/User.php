@@ -149,6 +149,37 @@ class User
         return $data;
     }
 
+    public function downSession($user_id, $jwt){
+        $result = array('result' => false);
+        $dbObj = DB::getInstance();
+        $query = $dbObj->getQuery('UPDATE users_sessions SET activate = :activate WHERE user_id = :user_id AND jwt =:jwt');
+
+        $data = $query->execute([
+            'user_id' => $user_id,
+            'jwt' => $jwt,
+            'activate' => 0
+        ]);
+        if($data){
+            $result['result'] = true;
+        }
+        return $data;
+    }
+
+    public function downSessions($user_id){
+        $result = array('result' => false);
+        $dbObj = DB::getInstance();
+        $query = $dbObj->getQuery('UPDATE users_sessions SET activate = :activate WHERE user_id = :user_id');
+
+        $data = $query->execute([
+            'user_id' => $user_id,
+            'activate' => 0
+        ]);
+        if($data){
+            $result['result'] = true;
+        }
+        return $data;
+    }
+
 
 
     public function generateTokenRegister($id)
