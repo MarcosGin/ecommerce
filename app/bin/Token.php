@@ -29,7 +29,6 @@ class Token
             'jwt' => $token,
         ]);
         $data = $query->fetchAll(\PDO::FETCH_ASSOC);
-        if($data){
             if(!$token){
                 $message['response'] = 'Token empty!.';
                 return $message;
@@ -44,10 +43,16 @@ class Token
                     $newJwt = self::newToken($newData, 7200);
                     $token = $newJwt;
                 }
-                $message['result'] = true;
-                $message['jwt'] = $jwt->data;
-                $message['token'] = $token;
-                return $message;
+                if($data){
+                    $message['result'] = true;
+                    $message['jwt'] = $jwt->data;
+                    $message['token'] = $token;
+                    return $message;
+                }else{
+                    self::deleteToken();
+                    $message['response'] = 'You must log in again.';
+                    return $message;
+                }
             }catch (\FireBase\JWT\ExpiredException $e) {
                 self::deleteToken();
                 $message['response'] = 'Your session has expired! Re login.';
@@ -59,11 +64,7 @@ class Token
                 $message['response'] =  'You must be logged in.';
                 return $message;
             }
-        }else{
-            self::deleteToken();
-            $message['response'] = 'You must log in again.';
-            return $message;
-        }
+
     }
 
     private static function deleteToken(){
