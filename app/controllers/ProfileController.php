@@ -29,9 +29,17 @@ class ProfileController extends BaseController{
         if($jwt['result']){
             $upUser = $this->user->updateProfile($jwt['jwt']->id, $post_vars);
             if($upUser['result']){
-                $data = $this->user->getUserForId($jwt['jwt']->id);
-                $updateJwt = Token::updateDataToken($jwt['token'], ['username' => $data[0]->name]);
-                echo $this->json_response($upUser['response'], 200, $updateJwt, true);
+                $user = $this->user->getUserForId($jwt['jwt']->id);
+                $this->user->downSessions($user[0]->id);
+                $newJwt = Token::newToken(['id' => $user[0]->id,
+                                            'device' => $_SERVER['HTTP_USER_AGENT'],
+                                            'username' => $user[0]->name.' '.$user[0]->lastname,
+                                            'email' => $user[0]->email,
+                                            'admin' => $user[0]->rank], 7200);
+                $saveSession = $this->user->saveSession($user[0]->id, $newJwt);
+                if($saveSession){
+                    echo $this->json_response($upUser['response'], 200, $newJwt, true);
+                }
             }else{
                 echo $this->json_response($upUser['response'], 200);
             }
