@@ -230,7 +230,7 @@ class User
     {
         $result = array('result' => false);
         $dbObj = DB::getInstance();
-        $query = $dbObj->getQuery('SELECT name,lastname,dayBirth,monthBirth,yearBirth,dni,phone,gender,country FROM users WHERE id=:id');
+        $query = $dbObj->getQuery('SELECT name,lastname,email,dayBirth,monthBirth,yearBirth,dni,phone,gender,country FROM users WHERE id=:id');
         $query->execute([
             'id' => $user_id,
         ]);
