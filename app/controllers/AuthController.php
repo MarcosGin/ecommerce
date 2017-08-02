@@ -19,11 +19,16 @@ class AuthController extends BaseController {
                 if($user && password_verify($_POST['password'], $user[0]->password)){
                     if(!$this->user->getUserActivate($user[0]->id, "id")){
                         $jwt = Token::newToken(['id' => $user[0]->id,
+                                                'device' => $_SERVER['HTTP_USER_AGENT'],
                                                 'username' => $user[0]->name.' '.$user[0]->lastname,
                                                 'email' => $user[0]->email,
                                                 'admin' => $user[0]->rank], 7200);
-
-                        echo $this->json_response('You are logged in, wait a few seconds ...', 200, $jwt, true);
+                        $saveJwt = $this->user->saveSession($user[0]->id, $jwt);
+                        if($saveJwt){
+                            echo $this->json_response('You are logged in, wait a few seconds ...', 200, $jwt, true);
+                        }else{
+                            echo $this->json_response('Could not log in, try again', 200);
+                        }
                     }else{
                         echo $this->json_response('Your account is not activated, you must access your email and activate it', 200);
                     }

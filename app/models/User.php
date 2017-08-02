@@ -133,6 +133,24 @@ class User
         }
     }
 
+    public function saveSession($user_id, $jwt){
+        $result = array('result' => false);
+        $dbObj = DB::getInstance();
+        $query = $dbObj->getQuery('INSERT INTO users_sessions (user_id, jwt, activate) VALUES(:user_id, :jwt, :activate)');
+
+        $data = $query->execute([
+            'user_id' => $user_id,
+            'jwt' => $jwt,
+            'activate' => 1
+        ]);
+            if($data){
+                $result['result'] = true;
+            }
+        return $data;
+    }
+
+
+
     public function generateTokenRegister($id)
     {
         $token = bin2hex(random_bytes(40));
