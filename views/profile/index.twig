@@ -29,31 +29,13 @@
                         <div class="content change-password">
                             <div class="content-title"><span>Change password</span></div>
                             <div class="content-body">
-                                <div class="column">
-                                    <div class="reference">Your password</div>
-                                    <div class="value"><input type="password" id="myPassword"></div>
-                                </div>
-                                <div class="column">
-                                    <div class="reference">New password</div>
-                                    <div class="value"><input type="password" id="newPassword"></div>
-                                </div>
-                                <div class="column">
-                                    <div class="reference">Confirm password</div>
-                                    <div class="value"><input type="password" id="cofPassword"></div>
-                                </div>
+
                             </div>
                         </div>
                         <div class="content change-email">
                             <div class="content-title"><span>Change email</span></div>
                             <div class="content-body">
-                                <div class="column">
-                                    <div class="reference">Your email</div>
-                                    <div class="value disabled"><input type="email" value="email@example.com" disabled></div>
-                                </div>
-                                <div class="column">
-                                    <div class="reference">New email</div>
-                                    <div class="value"><input type="email" id="newEmail"></div>
-                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -102,6 +84,10 @@
                     }).done(function (data) {
                         if(data.result) {
                             Cookies.set('__token', data.jwt);
+                            var info = $('.data-right .data .body .info .content-body');
+                            var change_password = $('.data-right .data .body .change-password .content-body');
+                            var change_email = $('.data-right .data .body .change-email .content-body');
+
                             HTML = ' <form id="personalData">' +
                                 '<div class="column"><div class="reference">First name:</div>' +
                                 '<div class="value"><input type="text" id="firstName" value="' + data.message.name + '"></div>' +
@@ -171,8 +157,32 @@
                                 }
                             }
                             HTML += '</select></div></div></form>';
-                            $('.data-right .data .body .info .content-body').empty();
-                            $('.data-right .data .body .info .content-body').append(HTML);
+                            info.empty();
+                            info.append(HTML);
+                            HTML =  '<div class="column">'+
+                                    '<div class="reference">Your password</div>'+
+                                    '<div class="value"><input type="password" id="myPassword"></div>'+
+                                    '</div>'+
+                                    '<div class="column">'+
+                                    '<div class="reference">New password</div>'+
+                                    '<div class="value"><input type="password" id="newPassword"></div>'+
+                                    '</div>'+
+                                    '<div class="column">'+
+                                    '<div class="reference">Confirm password</div>'+
+                                    '<div class="value"><input type="password" id="cofPassword"></div>'+
+                                    '</div>';
+                            change_password.empty();
+                            change_password.append(HTML);
+                            HTML =  '<div class="column">'+
+                                    '<div class="reference">Your email</div>'+
+                                    '<div class="value disabled"><input type="email" value="' + data.message.email + '" disabled></div>'+
+                                    '</div>'+
+                                    '<div class="column">'+
+                                    '<div class="reference">New email</div>'+
+                                    '<div class="value"><input type="email" id="newEmail"></div>'+
+                                    '</div>';
+                            change_email.empty();
+                            change_email.append(HTML);
 
                             (function () {
                                 [].slice.call(document.querySelectorAll('select.cs-select')).forEach(function (el) {
@@ -282,8 +292,6 @@
                 j.preventDefault();
             });
         })(jQuery);
-
-
 
 
     });
