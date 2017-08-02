@@ -174,26 +174,6 @@
                             $('.data-right .data .body .info .content-body').empty();
                             $('.data-right .data .body .info .content-body').append(HTML);
 
-                            (function($) {
-                                $('.accordion > .content:eq(0) .content-title').addClass('active').next().slideDown();
-
-                                $('.accordion .content-title').click(function(j) {
-                                    var dropDown = $(this).closest('.content').find('.content-body');
-
-                                    $(this).closest('.accordion').find('.content-body').not(dropDown).slideUp();
-
-                                    if ($(this).hasClass('active')) {
-                                        $(this).removeClass('active');
-                                    } else {
-                                        $(this).closest('.accordion').find('.content-title.active').removeClass('active');
-                                        $(this).addClass('active');
-                                    }
-
-                                    dropDown.stop(false, true).slideToggle();
-
-                                    j.preventDefault();
-                                });
-                            })(jQuery);
                             (function () {
                                 [].slice.call(document.querySelectorAll('select.cs-select')).forEach(function (el) {
                                     new SelectFx(el, {
@@ -281,6 +261,27 @@
             }
         })();
         renderProfile.init();
+
+        (function($) {
+            $('.accordion > .content:eq(0) .content-title').addClass('active').next().slideDown();
+
+            $('.accordion .content-title').click(function(j) {
+                var dropDown = $(this).closest('.content').find('.content-body');
+
+                $(this).closest('.accordion').find('.content-body').not(dropDown).slideUp();
+
+                if ($(this).hasClass('active')) {
+                    $(this).removeClass('active');
+                } else {
+                    $(this).closest('.accordion').find('.content-title.active').removeClass('active');
+                    $(this).addClass('active');
+                }
+
+                dropDown.stop(false, true).slideToggle();
+
+                j.preventDefault();
+            });
+        })(jQuery);
 
 
 
