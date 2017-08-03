@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 use App\Bin\Token;
 use App\Models\User;
-
+use App\Bin\GeoLocation;
 class ProfileController extends BaseController{
     private $user;
 
@@ -57,7 +57,10 @@ class ProfileController extends BaseController{
         if($jwt['result']){
             $dataUser = $this->user->getProfile($jwt['jwt']->id);
             if ($dataUser['result']) {
-                echo $this->json_response($dataUser['response'][0], 200, $jwt['token'], true);
+                $geo = new GeoLocation();
+                $geo->locate('190.221.37.136');
+                $nearby = $geo->nearby();
+                echo $this->json_response($geo, 200, $jwt['token'], true);
             }else{
                 echo $this->json_response($dataUser['response'], 200);
             }
