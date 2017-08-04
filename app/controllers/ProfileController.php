@@ -58,7 +58,7 @@ class ProfileController extends BaseController{
         if($jwt['result']){
             $dataUser = $this->user->getProfile($jwt['jwt']->id);
             if ($dataUser['result']) {
-                echo $this->json_response($dataUser['response'], 200, $jwt['token'], true);
+                echo $this->json_response($dataUser['response'][0], 200, $jwt['token'], true);
             }else{
                 echo $this->json_response($dataUser['response'], 200);
             }
