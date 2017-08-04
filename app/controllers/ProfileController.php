@@ -33,6 +33,7 @@ class ProfileController extends BaseController{
                 $this->user->downSessions($user[0]->id);
                 $newJwt = Token::newToken(['id' => $user[0]->id,
                                             'device' => $_SERVER['HTTP_USER_AGENT'],
+                                            'ip' => $_SERVER['REMOTE_ADDR'],
                                             'username' => $user[0]->name.' '.$user[0]->lastname,
                                             'email' => $user[0]->email,
                                             'admin' => $user[0]->rank], 7200);
@@ -57,10 +58,7 @@ class ProfileController extends BaseController{
         if($jwt['result']){
             $dataUser = $this->user->getProfile($jwt['jwt']->id);
             if ($dataUser['result']) {
-                $geo = new GeoLocation();
-                $geo->locate('190.221.37.136');
-                $nearby = $geo->nearby();
-                echo $this->json_response($geo, 200, $jwt['token'], true);
+                echo $this->json_response($dataUser['response'], 200, $jwt['token'], true);
             }else{
                 echo $this->json_response($dataUser['response'], 200);
             }

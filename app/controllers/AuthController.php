@@ -20,6 +20,7 @@ class AuthController extends BaseController {
                     if(!$this->user->getUserActivate($user[0]->id, "id")){
                         $jwt = Token::newToken(['id' => $user[0]->id,
                                                 'device' => $_SERVER['HTTP_USER_AGENT'],
+                                                'ip' => $_SERVER['REMOTE_ADDR'],
                                                 'username' => $user[0]->name.' '.$user[0]->lastname,
                                                 'email' => $user[0]->email,
                                                 'admin' => $user[0]->rank], 7200);
