@@ -274,5 +274,47 @@ class User
 
         return $result;
     }
+    public function updatePassword($user_id, $passwords){
+        $result = array('result' => false);
+        $dbObj = DB::getInstance();
+        $query = $dbObj->getQuery('SELECT password FROM users WHERE id =:user_id');
+        $query->execute([
+            'user_id' => $user_id
+        ]);
+        $password = $query->fetchAll(\PDO::FETCH_ASSOC);
+
+        if($password){
+            if(password_verify($passwords['myPassword'], $password[0]['password'])) {
+                if(strlen($passwords['newPassword']) >= 10) {
+                    if($passwords['newPassword'] === $passwords['cofPassword']) {
+                        if(!password_verify($passwords['newPassword'], $password[0]['password'])) {
+                            $query = $dbObj->getQuery('UPDATE users SET password =:password WHERE id =:user_id');
+                            $data = $query->execute([
+                                'user_id' => $user_id,
+                                'password' => password_hash($passwords['newPassword'], PASSWORD_DEFAULT),
+                            ]);
+                            if ($data) {
+                                $result['result'] = true;
+                                $result['response'] = 'The password was changed';
+                            }
+                        }else{
+                            $result['response'] = 'The new password is identical to the current one';
+                        }
+                    }else{
+                        $result['response'] = 'The confirmation of new password does not match';
+                    }
+                }else{
+                    $result['response'] = 'The minimum the new password length is 10';
+                }
+            }else{
+                $result['response'] = 'Your password is incorrect';
+            }
+        }else{
+            $result['response'] = 'The user no exist.';
+        }
+
+
+        return $result;
+    }
 
 }
