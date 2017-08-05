@@ -293,6 +293,10 @@
                                     }).done(function (data) {
                                         if(data.result){
                                             Cookies.set('__token', data.jwt);
+                                            Notify(data.message,null, null, 'success');
+                                            renderProfile.init();
+                                        }else{
+                                            Notify(data.message,null, null, 'danger');
                                         }
                                         console.log(data);
                                     }).fail(function (err) {

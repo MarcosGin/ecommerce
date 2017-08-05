@@ -32,10 +32,10 @@ class ProfileController extends BaseController{
                 $upUser = [];
               switch ($params){
                   case 'information':
-                      $upUser = $this->user->updateProfile(12, $post_vars);
+                      $upUser = $this->user->updateProfile($jwt['jwt']->id, $post_vars);
                       break;
                   case 'password':
-                      $upUser = $this->user->updatePassword(23, $post_vars);
+                      $upUser = $this->user->updatePassword($jwt['jwt']->id, $post_vars);
                       break;
                   default:
                       $option = false;
