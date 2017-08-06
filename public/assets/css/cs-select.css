@@ -27,7 +27,7 @@ div.cs-select:focus {
 	display: block;
 	position: relative;
 	cursor: pointer;
-	padding: 10px;
+	padding: 8px 10px;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -52,7 +52,7 @@ div.cs-select:focus {
 	transform: rotate(45deg);
 	-webkit-transform: rotate(45deg);
 	right: 1em;
-	top: 1em;
+	top: 12px;
 	transition: transform 0.5s;
 }
 

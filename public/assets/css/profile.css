@@ -185,19 +185,19 @@
     text-align: center;
 }
 .cont-profile .data-right .body .content .content-body .column .value input{
-    border: none;
+    border: 1px solid #eee;
     outline: none;
-    color: rgb(51, 51, 51);
+    color: #48abf9;
     font-size: 14px;
     font-weight: 300;
     padding: 0px 35px 0px 10px;
     height: 32px;
-    background: rgba(0, 0, 0, 0.05);
+    background: rgba(231, 231, 231, 0.05);
     width: 100%;
     border-radius: 4px;
 }
-.cont-profile .data-right .body .content .content-body .column .disabled input{
-    background: rgba(0, 0, 0, 0.15);
+.cont-profile .data-right .body .content .content-body .column .value input:focus{
+    border-color: #75c8f9;
 }
 .cont-profile .data-right .body .content .content-body .column .disabled::after{
     font: normal normal normal 14px/1 FontAwesome;
