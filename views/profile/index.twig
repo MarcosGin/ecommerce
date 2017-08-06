@@ -23,19 +23,40 @@
                         <div class="content info">
                             <div class="content-title"><span>Personal Information</span></div>
                             <div class="content-body">
+                                <div class="flex">
+                                    <div class="form">
 
+                                    </div>
+                                    <div class="text">
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci aspernatur, commodi esse facere rerum tempora. Cum deserunt dolores, enim impedit ipsam, itaque non nostrum repellat repudiandae tempora totam ut vitae?</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="content change-password">
                             <div class="content-title"><span>Change password</span></div>
                             <div class="content-body">
+                                <div class="flex">
+                                     <div class="form">
 
+                                     </div>
+                                     <div class="text">
+                                         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci aspernatur, commodi esse facere rerum tempora. Cum deserunt dolores, enim impedit ipsam, itaque non nostrum repellat repudiandae tempora totam ut vitae?</p>
+                                     </div>
+                                </div>
                             </div>
                         </div>
                         <div class="content change-email">
                             <div class="content-title"><span>Change email</span></div>
                             <div class="content-body">
+                                <div class="flex">
+                                    <div class="form">
 
+                                    </div>
+                                    <div class="text">
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci aspernatur, commodi esse facere rerum tempora. Cum deserunt dolores, enim impedit ipsam, itaque non nostrum repellat repudiandae tempora totam ut vitae?</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -84,9 +105,9 @@
                     }).done(function (data) {
                         if(data.result) {
                             Cookies.set('__token', data.jwt);
-                            var info = $('.data-right .data .body .info .content-body');
-                            var change_password = $('.data-right .data .body .change-password .content-body');
-                            var change_email = $('.data-right .data .body .change-email .content-body');
+                            var info = $('.data-right .data .body .info .content-body .form');
+                            var change_password = $('.data-right .data .body .change-password .content-body .form');
+                            var change_email = $('.data-right .data .body .change-email .content-body .form');
 
                             HTML = ' <form id="personalData">' +
                                 '<div class="column"><div class="reference">First name:</div>' +
