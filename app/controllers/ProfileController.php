@@ -20,6 +20,27 @@ class ProfileController extends BaseController{
     public function getHistory(){
         return $this->render('profile/history.twig', []);
     }
+    public function getMyhistory(){
+        $xhr = '';
+        foreach (getallheaders() as $key => $value){
+            if($key == 'Authorization'){
+                $xhr = $value;
+            }
+        }
+        $jwt = Token::checkToken($xhr);
+        if($jwt['result']){
+            $user = $this->user->getHistory($jwt['jwt']->id);
+
+            if($user['result']){
+                echo $this->json_response($user['response'], 200, $jwt['token'], true);
+            }
+
+        }else{
+            echo $this->json_response($jwt['response'], 200);
+        }
+
+
+    }
     public function putSettings($params = null){
         parse_str(file_get_contents("php://input"),$post_vars);//data amazing
 
