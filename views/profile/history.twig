@@ -64,3 +64,37 @@
 
 
 {% endblock %}
+{% block scripts_footer %}
+    <script>
+        $(function () {
+           var renderHistory = (function () {
+               var HTML = '';
+
+               return {
+                   init: function () {
+                       $.ajax({
+                           url: 'http://localhost/ecommerce/public/profile/myhistory',
+                           type: 'GET',
+                           data: {},
+                           contentType: 'application/json; charset=utf-8',
+                           datatype: 'json',
+                           cache: false,
+                           beforeSend: function (xhr) {
+                               xhr.setRequestHeader("Authorization", Cookies.get('__token'));
+                           }
+                       }).done(function (data) {
+                           if(data.result){
+
+                           }
+
+                           console.log(data);
+                       }).fail(function (err) {
+                           console.log(err);
+                       });
+                   }
+               }
+           })();
+           renderHistory.init();
+        });
+    </script>
+{% endblock %}
