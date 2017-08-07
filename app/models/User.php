@@ -247,6 +247,44 @@ class User
 
     }
 
+    public function getHistory($user_id)
+    {
+        $result = array('result' => false);
+        $dbObj = DB::getInstance();
+        $query = $dbObj->getQuery('SELECT * FROM users_carts WHERE user_id=:id');
+        $query->execute([
+            'id' => $user_id,
+        ]);
+        $data = $query->fetchAll(\PDO::FETCH_ASSOC);
+        if ($data) {
+            $myHistory = array();
+            foreach ($data as $key => $value){
+                $cart_id = $data[$key]['cart_id'];
+                $cart_time = $data[$key]['created_at'];
+                $query = $dbObj->getQuery('SELECT price,produc_id,quantity FROM myhistory WHERE buy_id=:cart_id');
+                $query->execute([
+                    'cart_id' => $cart_id,
+                ]);
+                $cart_products = $query->fetchAll(\PDO::FETCH_ASSOC);
+                if($cart_products){
+                    $products = [];
+                    foreach ($cart_products as $key => $value){
+                         $products[$cart_products[$key]['produc_id']]= array('price' => $cart_products[$key]['price'], 'quantity' => $cart_products[$key]['quantity']);
+                    }
+                    $myHistory[$cart_id]['products'] = $products;
+                    $myHistory[$cart_id]['date'] = $cart_time;
+                }
+            }
+            $result['result'] = true;
+            $result['response'] = $myHistory;
+            return $result;
+        } else {
+            $result['response'] = "Your history is empty!";
+            return $result;
+        }
+
+    }
+
     public function updateProfile($user_id, $data)
     {
         $result = array('result' => false);
