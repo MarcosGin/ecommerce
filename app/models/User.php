@@ -182,14 +182,15 @@ class User
 
 
 
-    public function generateTokenRegister($id)
+    public function generateTokenRegister($id, $change_email = false)
     {
         $token = bin2hex(random_bytes(40));
         $dbObj = DB::getInstance();
-        $query = $dbObj->getQuery("INSERT INTO users_activate (user_id, token) VALUES(:user_id, :token)");
+        $query = $dbObj->getQuery("INSERT INTO users_activate (user_id, token, change_email) VALUES(:user_id, :token, :change_email)");
         $query->execute([
             'user_id' => $id,
             'token' => $token,
+            'change_email' => $change_email
         ]);
 
         return BASE_URL . 'account/token/' . $token;
@@ -314,6 +315,64 @@ class User
         }
 
 
+        return $result;
+    }
+    public function updateEmail($user_id, $email){
+        $result = array('result' => false);
+        $dbObj = DB::getInstance();
+        $validator = new Validator();
+        $validator->add(array(
+            'newEmail' => 'email()',
+        ));
+        if($validator->validate($email)){
+            $user = self::getUserForId($user_id);
+            if($user[0]->email !== $email['newEmail']){
+                $chkChangeEmail = self::checkIfChangeEmail($user_id);
+                if(!$chkChangeEmail['result']){
+                    $urlToken = self::generateTokenRegister($user_id, true);
+                    $mail = new Mail();
+                    $mail->sedMailForChangeEmail($email['newEmail'], $urlToken);
+                    $query = $dbObj->getQuery('INSERT INTO users_change_email (user_id, mail) VALUES(:user_id, :mail)');
+                    $data = $query->execute([
+                        'user_id' => $user_id,
+                        'mail' => $email['newEmail']
+                    ]);
+                    if($data){
+                        $result['result'] = true;
+                        $result['response'] = 'The mail is change';
+                    }else{
+                        $result['response'] = 'The mail is not change';
+                    }
+                }else{
+                    $result['response'] = 'A change of mail already exists, you must confirm that to be able to make another one.';
+                }
+            }else{
+                $result['response'] = 'The email is the same.';
+            }
+
+
+        }else{
+            $result['response'] = 'The email is invalid.';
+        }
+
+
+        return $result;
+    }
+
+    public function checkIfChangeEmail($user_id){
+        $result = array('result' => false);
+        $dbObj = DB::getInstance();
+        $query = $dbObj->getQuery('SELECT * FROM users_change_email WHERE user_id =:user_id');
+        $query->execute([
+            'user_id' => $user_id
+        ]);
+        $data = $query->fetchAll(\PDO::FETCH_ASSOC);
+        if($data){
+            $result['result'] = true;
+            $result['response'] = $data;
+        }else{
+            $result['response'] = 'Not found mail change.';
+        }
         return $result;
     }
 
