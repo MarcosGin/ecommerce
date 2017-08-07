@@ -97,11 +97,14 @@
     text-align: center;
     color: #1d94dc;
 }
-.cont-profile .data-right .body{
+.cont-profile .data-right .data > .body{
     margin-top: 20px;
+}
+.cont-profile .data-right .accordion{
     border: 1px solid #eee;
     border-radius: 4px;
 }
+
 .cont-profile .data-right .body .content{
     border-bottom: 1px solid #eee;
 }

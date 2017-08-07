@@ -17,6 +17,9 @@ class ProfileController extends BaseController{
     public function getIndex(){
         return $this->render('profile/index.twig', []);
     }
+    public function getHistory(){
+        return $this->render('profile/history.twig', []);
+    }
     public function putSettings($params = null){
         parse_str(file_get_contents("php://input"),$post_vars);//data amazing
 
