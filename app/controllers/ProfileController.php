@@ -39,6 +39,9 @@ class ProfileController extends BaseController{
                       $closeSessions = true;
                       $upUser = $this->user->updatePassword($jwt['jwt']->id, $post_vars);
                       break;
+                  case 'email':
+                      $upUser = $this->user->updateEmail($jwt['jwt']->id, $post_vars);
+                      break;
                   default:
                       $option = false;
               }
