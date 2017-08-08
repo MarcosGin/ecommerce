@@ -3,9 +3,9 @@
 namespace App\Models;
 
 use App\Bin\Database\DB;
+use App\Models\Product;
 use App\Bin\Mail\Mail;
 use Sirius\Validation\Validator;
-
 class User
 {
 
@@ -258,6 +258,7 @@ class User
         $data = $query->fetchAll(\PDO::FETCH_ASSOC);
         if ($data) {
             $myHistory = array();
+            $product = new Product();
             foreach ($data as $key => $value){
                 $cart_id = $data[$key]['cart_id'];
                 $cart_time = $data[$key]['created_at'];
@@ -268,11 +269,26 @@ class User
                 $cart_products = $query->fetchAll(\PDO::FETCH_ASSOC);
                 if($cart_products){
                     $products = [];
-                    foreach ($cart_products as $key => $value){
-                         $products[$cart_products[$key]['produc_id']]= array('price' => $cart_products[$key]['price'], 'quantity' => $cart_products[$key]['quantity']);
+                    $total = 0;
+                    $quantity=0;
+
+                    foreach ($cart_products as $key2 => $value2){
+                         $total += $cart_products[$key2]['price'] * $cart_products[$key2]['quantity'];
+                         $quantity += $cart_products[$key2]['quantity'];
+                         $dataProduct = $product->getProduct($cart_products[$key2]['produc_id']);
+                         if($dataProduct['result']){
+                             $products[$key2]= array('id' => $cart_products[$key2]['produc_id'],
+                                 'name' => $dataProduct['response'][0]->nombre,
+                                 'url_img' => $dataProduct['response'][0]->carpet . '/' . $dataProduct['response'][0]->portada,
+                                 'price' => $cart_products[$key2]['price'],
+                                 'quantity' => $cart_products[$key2]['quantity']);
+                         }
+
                     }
                     $myHistory[$cart_id]['products'] = $products;
                     $myHistory[$cart_id]['date'] = $cart_time;
+                    $myHistory[$cart_id]['total'] = $total;
+                    $myHistory[$cart_id]['quantity'] = $quantity;
                 }
             }
             $result['result'] = true;
