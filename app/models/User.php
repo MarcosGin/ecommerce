@@ -261,7 +261,7 @@ class User
             foreach ($data as $key => $value){
                 $cart_id = $data[$key]['cart_id'];
                 $cart_time = $data[$key]['created_at'];
-                $query = $dbObj->getQuery('SELECT price,produc_id,quantity FROM myhistory WHERE buy_id=:cart_id');
+                $query = $dbObj->getQuery('SELECT price,produc_id,quantity FROM myhistory WHERE cart_id=:cart_id');
                 $query->execute([
                     'cart_id' => $cart_id,
                 ]);

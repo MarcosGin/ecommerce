@@ -28,33 +28,8 @@
                                 <div class="th">Date</div>
                             </div>
                             <div class="body">
-                                <div class="row">
-                                    <div class="td">Moto, Galaxy, Huawei</div>
-                                    <div class="td">3</div>
-                                    <div class="td">$ 34.000</div>
-                                    <div class="td">Hace un día</div>
-                                </div>
-                                <div class="row">
-                                    <div class="td">Moto, Galaxy, Huawei</div>
-                                    <div class="td">3</div>
-                                    <div class="td">$ 34.000</div>
-                                    <div class="td">Hace un día</div>
-                                </div>
-                                <div class="row">
-                                    <div class="td">Moto, Galaxy, Huawei</div>
-                                    <div class="td">3</div>
-                                    <div class="td">$ 34.000</div>
-                                    <div class="td">Hace un día</div>
-                                </div>
-                                <div class="row">
-                                    <div class="td">Moto, Galaxy, Huawei</div>
-                                    <div class="td">3</div>
-                                    <div class="td">$ 34.000</div>
-                                    <div class="td">Hace un día</div>
-                                </div>
+
                             </div>
-
-
                         </div>
                     </div>
                 </div>
@@ -72,6 +47,7 @@
 
                return {
                    init: function () {
+                       var history = $('.data-right .data .body .history .body');
                        $.ajax({
                            url: 'http://localhost/ecommerce/public/profile/myhistory',
                            type: 'GET',
@@ -84,16 +60,25 @@
                            }
                        }).done(function (data) {
                            if(data.result){
-
+                               for(var cart in data.message){
+                                   console.log(data.message[cart]);
+                                   HTML +=  '<div class="row">'+
+                                            '<div class="td">' + cart  + '</div>'+
+                                            '<div class="td">-</div>'+
+                                            '<div class="td">$ -</div>'+
+                                            '<div class="td">' + data.message[cart].date + '</div>'+
+                                            '</div>';
+                               }
+                               history.append(HTML);
+                               console.log(HTML);
                            }
-
                            console.log(data);
                        }).fail(function (err) {
                            console.log(err);
                        });
                    }
                }
-           })();
+        })();
            renderHistory.init();
         });
     </script>

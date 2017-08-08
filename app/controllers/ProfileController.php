@@ -33,6 +33,8 @@ class ProfileController extends BaseController{
 
             if($user['result']){
                 echo $this->json_response($user['response'], 200, $jwt['token'], true);
+            }else{
+                echo $this->json_response($user['response'], 200);
             }
 
         }else{
