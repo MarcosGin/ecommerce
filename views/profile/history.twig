@@ -11,9 +11,9 @@
                     <div class="name">Marcos Gin</div>
                 </div>
                 <ul class="menu">
-                    <li class=""><div class="icon"><i class="fa fa-cog" aria-hidden="true"></i></div> Settings</li>
-                    <li class="active"><div class="icon"><i class="fa fa-history" aria-hidden="true"></i></div> My history</li>
-                    <li class=""><div class="icon"><i class="fa fa-shield" aria-hidden="true"></i></div> Security and privacity</li>
+                    <li class=""><a href="http://localhost/ecommerce/public/profile"><div class="icon"><i class="fa fa-cog" aria-hidden="true"></i></div> Settings</a></li>
+                    <li class="active"><a href="http://localhost/ecommerce/public/profile/history"><div class="icon"><i class="fa fa-history" aria-hidden="true"></i></div> My history</a></li>
+                    <li class=""><a href=""><div class="icon"><i class="fa fa-shield" aria-hidden="true"></i></div> Security and privacity</a></li>
                 </ul>
             </div>
             <div class="data-right">
@@ -69,6 +69,7 @@
                            }
                        }).done(function (data) {
                            if(data.result){
+                               Cookies.set('__token', data.jwt);
                                for(var cart in data.message){
                                    HTML +=  '<div class="row">'+
                                             '<div class="td">';
@@ -87,7 +88,6 @@
                                HTML += '<div class="row"><div class="td td-full">' + data.message + '</div></div>'
                                history.append(HTML);
                            }
-                           console.log(data);
                        }).fail(function (err) {
                            console.log(err);
                        });

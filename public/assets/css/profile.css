@@ -41,6 +41,8 @@
 }
 .cont-profile .menu-left .menu li{
     list-style: none;
+}
+.cont-profile .menu-left .menu li a{
     display: flex;
     padding: 10px;
     margin-bottom: 5px;
@@ -48,7 +50,7 @@
     color: #57b3ff;
     cursor: pointer;
 }
-.cont-profile .menu-left .menu .active:after{
+.cont-profile .menu-left .menu .active a:after{
     content: '';
     position: absolute;
     border: solid #57b3ff;
@@ -61,7 +63,7 @@
     right: 0;
     top: 0;
 }
-.cont-profile .menu-left .menu li:before {
+.cont-profile .menu-left .menu li a:before {
     left: 0;
     bottom: 0;
     width: 100%;
@@ -72,13 +74,13 @@
     position: absolute;
     transition: transform .5s ease;
 }
-.cont-profile .menu-left .menu .active:before{
+.cont-profile .menu-left .menu .active a:before{
     transform: scaleX(1);
 }
-.cont-profile .menu-left .menu li:hover:before {
+.cont-profile .menu-left .menu li a:hover:before {
     transform: scaleX(1);
 }
-.cont-profile .menu-left .menu li .icon{
+.cont-profile .menu-left .menu li a .icon{
     width:20px;
     font-size: 14px;
     text-align: center;
