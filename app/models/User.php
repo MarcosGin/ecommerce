@@ -50,12 +50,13 @@ class User
     {
         $dbObj = DB::getInstance();
         if ($type == "id") {
-            $query = $dbObj->getQuery("SELECT * FROM users_activate WHERE user_id = :token LIMIT 1");
+            $query = $dbObj->getQuery("SELECT * FROM users_activate WHERE user_id = :token AND change_email = :chn_mail LIMIT 1");
         } else {
-            $query = $dbObj->getQuery("SELECT * FROM users_activate WHERE token = :token LIMIT 1");
+            $query = $dbObj->getQuery("SELECT * FROM users_activate WHERE token = :token AND change_email = :chn_mail LIMIT 1");
         }
         $result = $query->execute([
             'token' => $token,
+            'chn_mail' => 0
         ]);
         $data = $query->fetchAll(\PDO::FETCH_OBJ);
 
