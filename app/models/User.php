@@ -203,15 +203,19 @@ class User
         $time = time();
         $dbObj = DB::getInstance();
         $errors = 0;
+        $query = $dbObj->getQuery("INSERT INTO  users_carts (cart_id, user_id, created_at) VALUES(:cart_id, :user_id, :created_at)");
+        $query->execute([
+            'cart_id' => $buyId,
+            'user_id' => $user_id,
+            'created_at' => $time
+        ]);
         foreach ($cart as $key => $value) {
-            $query = $dbObj->getQuery("INSERT INTO  myhistory (buy_id, user_id, produc_id, quantity, price, fecha) VALUES(:buy_id, :user_id, :produc_id, :quantity, :price, :fecha)");
+            $query = $dbObj->getQuery("INSERT INTO  myhistory (cart_id, produc_id, quantity, price) VALUES(:cart_id, :produc_id, :quantity, :price)");
             $data = $query->execute([
-                'buy_id' => $buyId,
-                'user_id' => $user_id,
+                'cart_id' => $buyId,
                 'produc_id' => $cart[$key]['id'],
                 'quantity' => $cart[$key]['quantity'],
                 'price' => $cart[$key]['price'],
-                'fecha' => $time
             ]);
             if (!$data) {
                 $errors++;
