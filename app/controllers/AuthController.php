@@ -72,10 +72,23 @@ class AuthController extends BaseController {
     }
 
     public function getLogout(){
-        session_destroy();
-        unset($_COOKIE['__token']);
-        setcookie("__token", "", time()-3600, "/");
-        header("Location: " . BASE_URL . "index");
+        $xhr = '';
+        foreach (getallheaders() as $key => $value){
+            if($key == 'Authorization'){
+                $xhr = $value;
+            }
+        }
+        $jwt = Token::checkToken($xhr);
+        if($jwt['result']){
+            $downSession = $this->user->downSession($jwt['jwt']->id,$xhr);
+            if($downSession['result']){
+                echo $this->json_response('', 200, $jwt['jwt'], true);
+            }else{
+                echo $this->json_response('The session was not closed!', 200);
+            }
+        }else{
+            echo $this->json_response($jwt['response'], 200);
+        }
     }
 
 

@@ -163,7 +163,7 @@ class User
         if($data){
             $result['result'] = true;
         }
-        return $data;
+        return $result;
     }
 
     public function downSessions($user_id){
