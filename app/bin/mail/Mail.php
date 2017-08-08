@@ -31,5 +31,21 @@ class Mail extends \PHPMailer{
         return $send;
 
     }
+    public function sedMailForChangeEmail($address, $url){
+        $this->setFrom('mundotecnologia@gmail.com', 'Mundotecnologia');
+        $this->addAddress($address);
+
+
+        $this->isHTML(true);
+
+        $this->Subject = 'Verify the email change of your account in Mundotecnologia';
+        $this->Body    = 'You have requested the change of your mail, if so, access this <a href="'.$url.'">link</a> to confirm the change of mail, for security will close all sections on the devices.';
+        $this->AltBody = '?';
+
+        $send = $this->send();
+
+        return $send;
+
+    }
 
 }

@@ -1,0 +1,406 @@
+{% extends 'layout.twig' %}
+
+{% block container %}
+    <div class="containerCentral">
+       <div class="header-profile"><h2> <i class="fa fa-cogs" aria-hidden="true"></i>
+               Account settings</h2></div>
+        <div class="cont-profile">
+            <div class="menu-left">
+                <div class="data-user">
+                    <div class="img-icon"><img src="http://lorempixel.com/150/150/people/" alt=""></div>
+                    <div class="name">Marcos Gin</div>
+                </div>
+                <ul class="menu">
+                    <li class="active"><a href="http://localhost/ecommerce/public/profile"><div class="icon"><i class="fa fa-cog" aria-hidden="true"></i></div> Settings</a></li>
+                    <li class=""><a href="http://localhost/ecommerce/public/profile/history"><div class="icon"><i class="fa fa-history" aria-hidden="true"></i></div> My history</a></li>
+                    <li class=""><a href=""><div class="icon"><i class="fa fa-shield" aria-hidden="true"></i></div> Security and privacity</a></li>
+                </ul>
+            </div>
+            <div class="data-right">
+                <div class="data">
+                    <div class="header-tittle"><h2>Your configuration</h2></div>
+                    <div class="body accordion">
+                        <div class="content info">
+                            <div class="content-title"><span>Personal Information</span></div>
+                            <div class="content-body">
+                                <div class="flex">
+                                    <div class="form">
+
+                                    </div>
+                                    <div class="text">
+                                    <p>These are your personal data, you can modify them whenever you want.<br>
+                                        Please note that all changes you make will be saved.</p>
+                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="content change-password">
+                            <div class="content-title"><span>Change password</span></div>
+                            <div class="content-body">
+                                <div class="flex">
+                                     <div class="form">
+
+                                     </div>
+                                     <div class="text">
+                                      <p>In order to change your password you have to enter the current one, for security.<br>
+                                          If you change your password, your sessions on all devices except the current one will be closed</p>
+                                       </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="content change-email">
+                            <div class="content-title"><span>Change email</span></div>
+                            <div class="content-body">
+                                <div class="flex">
+                                    <div class="form">
+
+                                    </div>
+                                    <div class="text">
+                                        <p>If you change your mail, this will not be immediate, you will have to access the email and confirm it there, then it will be discharged to the current mail.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="cont-changes"></div>
+    </div>
+
+{% endblock %}
+{% block scripts_footer %}
+<script>
+    $(function () {
+
+        var renderProfile = (function () {
+            var HTML = '';
+            var countrys = {
+                'ar': 'Argentina',
+                'bo': 'Bolivia',
+                'br': 'Brazil',
+                'cl': 'Chile',
+                'co': 'Colombia',
+                'ec': 'Ecuador',
+                'mx': 'México',
+                'pe': 'Perú',
+                'py': 'Paraguay',
+                'uy': 'Uruaguay',
+                've': 'Venezuela'
+            };
+            var genders = {
+                'male': 'Male',
+                'female': 'Female'
+            };
+            return {
+                init: function () {
+                    $.ajax({
+                        url: 'http://localhost/ecommerce/public/profile/user',
+                        type: 'GET',
+                        data: {},
+                        contentType: 'application/json; charset=utf-8',
+                        datatype: 'json',
+                        cache: false,
+                        beforeSend: function (xhr) {
+                            xhr.setRequestHeader("Authorization", Cookies.get('__token'));
+                        }
+                    }).done(function (data) {
+                        if(data.result) {
+                            Cookies.set('__token', data.jwt);
+                            var info = $('.data-right .data .body .info .content-body .form');
+                            var change_password = $('.data-right .data .body .change-password .content-body .form');
+                            var change_email = $('.data-right .data .body .change-email .content-body .form');
+
+                            HTML = ' <form id="personalData">' +
+                                '<div class="column"><div class="reference">First name:</div>' +
+                                '<div class="value"><input type="text" id="firstName" value="' + data.message.name + '"></div>' +
+                                '</div>' +
+                                '<div class="column"><div class="reference">Last name:</div>' +
+                                '<div class="value"><input type="text" id="lastName" value="' + data.message.lastname + '"></div>' +
+                                '</div>' +
+                                '<div class="column"><div class="reference">Birthdate:</div>' +
+                                '<div class="value multiple-selects">' +
+                                '<select class="cs-select cs-skin-elastic scroll dayBirth">' +
+                                '<option value="" disabled>Day</option>';
+                            for (var i = 1; i <= 31; i++) {
+                                if (i === data.message.dayBirth) {
+                                    HTML += '<option value="' + i + '" data-class="cs-selected" selected>' + i + '</option>';
+                                } else {
+                                    HTML += '<option value="' + i + '">' + i + '</option>';
+                                }
+                            }
+                            HTML += '</select>' +
+                                '<select class="cs-select cs-skin-elastic scroll monthBirth">' +
+                                '<option value="" disabled>Month</option>';
+                            for (var i = 1; i <= 12; i++) {
+                                if (i === data.message.monthBirth) {
+                                    HTML += '<option value="' + i + '" data-class="cs-selected" selected>' + i + '</option>';
+                                } else {
+                                    HTML += '<option value="' + i + '">' + i + '</option>';
+                                }
+                            }
+                            HTML += '</select>' +
+                                '<select class="cs-select cs-skin-elastic scroll yearBirth">' +
+                                '<option value="" disabled>Year</option>';
+                            for (var i = 2000; i >= 1970; i--) {
+                                if (i === data.message.yearBirth) {
+                                    HTML += '<option value="' + i + '" data-class="cs-selected" selected>' + i + '</option>';
+                                } else {
+                                    HTML += '<option value="' + i + '">' + i + '</option>';
+                                }
+                            }
+                            HTML += '</select></div></div>' +
+                                '<div class="column"><div class="reference">Document:</div>' +
+                                '<div class="value"><input id="document" type="text" value="' + data.message.dni + '"></div>' +
+                                '</div>' +
+                                '<div class="column"><div class="reference">Phone number:</div>' +
+                                '<div class="value"><input id="phoneNumber" type="text" value="' + data.message.phone + '"></div>' +
+                                '</div>' +
+                                '<div class="column"><div class="reference">Gender:</div>' +
+                                '<div class="value">' +
+                                '<select class="cs-select cs-skin-elastic gender">' +
+                                '<option value="" disabled>Select Gender</option>';
+                            for (var gender in genders) {
+                                if (data.message.gender === gender) {
+                                    HTML += '<option value="' + gender + '" data-class="icon gender-' + gender + ' cs-selected" selected>' + genders[gender] + '</option>';
+                                } else {
+                                    HTML += '<option value="' + gender + '" data-class="icon gender-' + gender + '">' + genders[gender] + '</option>';
+                                }
+                            }
+                            HTML += '</select></div></div>' +
+                                '<div class="column"><div class="reference">Country:</div>' +
+                                '<div class="value">' +
+                                '<select class="cs-select cs-skin-elastic country">' +
+                                '<option value="" disabled>Select Country</option>';
+                            for (var country in countrys) {
+                                if (country === data.message.country) {
+                                    HTML += '<option value="' + country + '" data-class="flag-' + country + ' cs-selected" selected>' + countrys[country] + '</option>';
+                                } else {
+                                    HTML += '<option value="' + country + '" data-class="flag-' + country + '">' + countrys[country] + '</option>';
+                                }
+                            }
+                            HTML += '</select></div></div></form>';
+                            info.empty();
+                            info.append(HTML);
+                            HTML =  '<div class="column">'+
+                                    '<div class="reference">Your password</div>'+
+                                    '<div class="value"><input type="password" id="myPassword"></div>'+
+                                    '</div>'+
+                                    '<div class="column">'+
+                                    '<div class="reference">New password</div>'+
+                                    '<div class="value"><input type="password" id="newPassword"></div>'+
+                                    '</div>'+
+                                    '<div class="column">'+
+                                    '<div class="reference">Confirm password</div>'+
+                                    '<div class="value"><input type="password" id="cofPassword"></div>'+
+                                    '</div>' +
+                                    '<div class="column-button"><button type="submit" id="btnPassword">Change</button></div>';
+                            change_password.empty();
+                            change_password.append(HTML);
+                            HTML =  '<div class="column">'+
+                                    '<div class="reference">Your email</div>'+
+                                    '<div class="value disabled"><input type="email" value="' + data.message.email + '" disabled></div>'+
+                                    '</div>'+
+                                    '<div class="column">'+
+                                    '<div class="reference">New email</div>'+
+                                    '<div class="value"><input type="email" id="newEmail"></div>'+
+                                    '</div>'+
+                                    '<div class="column-button"><button type="submit" id="btnEmail">Change</button></div>';
+                            change_email.empty();
+                            change_email.append(HTML);
+
+                            (function () {
+                                [].slice.call(document.querySelectorAll('select.cs-select')).forEach(function (el) {
+                                    new SelectFx(el, {
+                                        onChange: function () {
+                                            showSaveChanges();
+                                        }
+                                    });
+                                });
+                            })();
+                            var form = (function () {
+                                var inputs = $('#personalData input');
+                                var data = {};
+                                return {
+                                    value: function () {
+                                        $.each(inputs, function (key, el) {
+                                            data[$(el).attr('id')] = $(el).val();
+                                        });
+                                        var day = $('.dayBirth .cs-options .cs-selected').attr('data-value');
+                                        var month = $('.monthBirth .cs-options .cs-selected').attr('data-value');
+                                        var year = $('.yearBirth .cs-options .cs-selected').attr('data-value');
+                                        var gender = $('.gender .cs-options .cs-selected').attr('data-value');
+                                        var country = $('.country .cs-options .cs-selected').attr('data-value')
+                                        data['day'] = day ? day : null;
+                                        data['month'] = month ? month : null;
+                                        data['year'] = year ? year : null;
+                                        data['gender'] = gender ? gender : null;
+                                        data['country'] = country ? country : null;
+                                        return data;
+                                    },
+                                    valid: function () {
+                                        $.each(inputs, function (key, el) {
+                                            $(el).bind("change", function (e) {
+                                                showSaveChanges();
+                                            });
+                                        });
+                                    }
+                                }
+                            })();
+                            form.valid();
+                            var showSaveChanges = function () {
+                                var structure = '<div class="save-changes">' +
+                                    '<button id="cancelChanges" class="button-profile button-red"><i class="fa fa-ban"></i> Cancel</button>' +
+                                    '<button id="saveChanges" class="button-profile button-white"><i class="fa fa-check"></i> Save</button>' +
+                                    '</div>';
+                                var container = $('.cont-changes');
+                                container.empty();
+                                container.append(structure);
+
+                                $('#saveChanges').on('click', function (e) {
+                                    e.preventDefault();
+                                    $.ajax({
+                                        url: 'http://localhost/ecommerce/public/profile/settings/information',
+                                        type: 'PUT',
+                                        data: form.value(),
+                                        contentType: 'application/json; charset=utf-8',
+                                        datatype: 'json',
+                                        beforeSend: function (xhr) {
+                                            xhr.setRequestHeader ("Authorization", Cookies.get('__token'));
+                                        }
+                                    }).done(function (data) {
+                                        if(data.result){
+                                            Cookies.set('__token', data.jwt);
+                                            Notify(data.message, null, null, "success");
+                                            container.empty();
+                                        }else{
+                                            Notify(data.message, null, null, "danger");
+                                            container.empty();
+                                        }
+                                    }).fail(function (e) {
+                                        console.log(e);
+                                    });
+                                });
+                                $('#cancelChanges').on('click', function (){
+                                    container.empty();
+                                    renderProfile.init();
+                                });
+                            };
+                            var formPasswords = (function () {
+                                 var data = {};
+                                 return{
+                                     value: function () {
+                                         var inputs = $(change_password).find('input');
+                                         $.each(inputs, function (key, el) {
+                                             data[$(el).attr('id')] = $(el).val();
+                                         });
+                                         return data;
+                                     }
+                                 }
+                             })();
+                            var formEmail = (function () {
+                                var data = {};
+                                return{
+                                    value: function () {
+                                        var inputs = $(change_email).find('input');
+                                        $.each(inputs, function (key, el) {
+                                            if(typeof $(el).attr('id') !== 'undefined'){
+                                                data[$(el).attr('id')] = $(el).val();
+                                            }
+                                        });
+                                        return data;
+                                    }
+                                }
+                            })();
+
+                            var changePassword = function () {
+                                var button = $(change_password).find('.column-button #btnPassword');
+
+                                $(button).on('click', function (e) {
+                                    e.preventDefault();
+                                    $.ajax({
+                                        url: 'http://localhost/ecommerce/public/profile/settings/password',
+                                        type: 'PUT',
+                                        data:  formPasswords.value(),
+                                        contentType: 'application/json; charset=utf-8',
+                                        datatype: 'json',
+                                        beforeSend: function (xhr) {
+                                            xhr.setRequestHeader('Authorization', Cookies.get('__token'))
+                                        },
+                                    }).done(function (data) {
+                                        if(data.result){
+                                            Cookies.set('__token', data.jwt);
+                                            Notify(data.message,null, null, 'success');
+                                            renderProfile.init();
+                                        }else{
+                                            Notify(data.message,null, null, 'danger');
+                                        }
+                                    }).fail(function (err) {
+                                        console.log(err);
+                                    })
+                                });
+                            };
+                            changePassword();
+                            var changeEmail = function () {
+                                var button = $(change_email).find('.column-button #btnEmail');
+
+                                $(button).on('click', function (e) {
+                                    e.preventDefault();
+                                    $.ajax({
+                                        url: 'http://localhost/ecommerce/public/profile/settings/email',
+                                        type: 'PUT',
+                                        data:  formEmail.value(),
+                                        contentType: 'application/json; charset=utf-8',
+                                        datatype: 'json',
+                                        beforeSend: function (xhr) {
+                                            xhr.setRequestHeader('Authorization', Cookies.get('__token'))
+                                        },
+                                    }).done(function (data) {
+                                        if(data.result){
+                                            Cookies.set('__token', data.jwt);
+                                            Notify(data.message,null, null, 'success');
+                                        }else{
+                                            Notify(data.message,null, null, 'danger');
+                                        }
+                                    }).fail(function (err) {
+                                        console.log(err);
+                                    })
+                                });
+                            };
+                            changeEmail();
+                        }else{
+                            console.log(data.message);
+                        }
+                    }).fail(function (e) {
+                        console.log(e);
+                    })
+                }
+            }
+        })();
+        renderProfile.init();
+
+        (function($) {
+            $('.accordion > .content:eq(0) .content-title').addClass('active').next().slideDown();
+
+            $('.accordion .content-title').click(function(j) {
+                var dropDown = $(this).closest('.content').find('.content-body');
+
+                $(this).closest('.accordion').find('.content-body').not(dropDown).slideUp();
+
+                if ($(this).hasClass('active')) {
+                    $(this).removeClass('active');
+                } else {
+                    $(this).closest('.accordion').find('.content-title.active').removeClass('active');
+                    $(this).addClass('active');
+                }
+
+                dropDown.stop(false, true).slideToggle();
+
+                j.preventDefault();
+            });
+        })(jQuery);
+
+
+    });
+</script>
+{% endblock %}
