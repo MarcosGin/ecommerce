@@ -132,19 +132,21 @@ class Product {
         }
         return $message;
     }
-    public function createComment($product_id, $user_id, $username, $coment, $fecha) {
+    public function createComment($product_id, $user_id, $comment, $time) {
         $message = array('result' => false);
-        if($coment){
-            if(strlen($coment) < 150) {
+        $objUser = new User();
+        $user = $objUser->getUserForId($user_id);
+        if($comment){
+            if(strlen($comment) < 150) {
                 if($this->getCommentByUserId($user_id, $product_id) === false) {
                     $dbObj = DB::getInstance();
                     $query = $dbObj->getQuery("INSERT INTO product_comment (product_id,user_id, username, coment, fecha) VALUES(:product_id, :user_id, :username, :coment, :fecha)");
                     $result = $query->execute([
                         'product_id' => $product_id,
                         'user_id' => $user_id,
-                        'username' => $username,
-                        'coment' => $coment,
-                        'fecha' => $fecha,
+                        'username' => $user[0]->name . ' ' . $user[0]->lastname,
+                        'coment' => $comment,
+                        'fecha' => $time,
                     ]);
                     if ($result) {
                         $message['result'] = true;
