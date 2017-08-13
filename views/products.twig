@@ -48,7 +48,7 @@
                                             '<a href="">' + data.message[category].name + '</a>'+
                                             '</div><ul class="marks">';
                                      for (var mark in data.message[category].marks){
-                                         HTML +=  '<li><a href="">' + data.message[category].marks[mark].name + '</a></li>';
+                                         HTML +=  '<li data-value=" ' + data.message[category].marks[mark].id + '"><a href="">' + data.message[category].marks[mark].name + '</a></li>';
                                      }
 
                                     HTML += '</ul></li>';
@@ -116,57 +116,110 @@
                                 datatype: 'json',
                                 cache: false
                             }).done(function (data) {
-                                $('#pagination-container').pagination({
-                                    dataSource: data.message,
-                                    pageSize: 6,
-                                    showPrevious: false,
-                                    showNext: false,
-                                    callback: function (data, pagination) {
-                                        var html = template(data);
-                                        $(container).empty();
-                                        $(container).append(html);
-                                    }
-                                });
-                                var menu = $('.sidebar-menu > li .row');
-                                menu.click(function(j) {
-                                    var data = $(this).attr('data-value') ? $(this).attr('data-value') : 0;
-                                    $.ajax({
-                                        url: 'http://localhost/ecommerce/public/products/product/' + data,
-                                        type: 'GET',
-                                        data: {},
-                                        contentType: 'application/json; charset=utf-8',
-                                        datatype: 'json',
-                                        cache: false
-                                    }).done(function (data) {
-                                        $('#pagination-container').pagination({
-                                            dataSource: data.message,
-                                            pageSize: 6,
-                                            showPrevious: false,
-                                            showNext: false,
-                                            callback: function (data, pagination) {
-                                                var html = template(data);
-                                                $(container).empty();
-                                                $(container).append(html);
-                                            }
-                                        });
-                                    }).fail(function (err) {
-                                        console.log(err);
+                                if(data.result) {
+                                    $('#pagination-container').pagination({
+                                        dataSource: data.message,
+                                        pageSize: 6,
+                                        showPrevious: false,
+                                        showNext: false,
+                                        callback: function (data, pagination) {
+                                            var html = template(data);
+                                            $(container).empty();
+                                            $(container).append(html);
+                                        }
                                     });
-                                    var dropDown = $(this).closest('li').find('.marks');
+                                    var menu = $('.sidebar-menu > li .row');
+                                    menu.click(function (j) {
+                                        if (!$(this).hasClass('active')) {
+                                            var category = $(this).attr('data-value') ? $(this).attr('data-value') : 0;
+                                            $.ajax({
+                                                url: 'http://localhost/ecommerce/public/products/product/' + category,
+                                                type: 'GET',
+                                                data: {},
+                                                contentType: 'application/json; charset=utf-8',
+                                                datatype: 'json',
+                                                cache: false
+                                            }).done(function (data) {
+                                                if (data.result) {
+                                                    $('#pagination-container').pagination({
+                                                        dataSource: data.message,
+                                                        pageSize: 6,
+                                                        showPrevious: false,
+                                                        showNext: false,
+                                                        callback: function (data, pagination) {
+                                                            var html = template(data);
+                                                            $(container).empty();
+                                                            $(container).append(html);
+                                                        }
+                                                    });
+                                                    var submenu = $('.sidebar-menu > li .marks li');
+                                                    submenu.click(function (e) {
+                                                        if (!$(this).hasClass('active')) {
+                                                            var mark = $(this).attr('data-value') ? $(this).attr('data-value') : 0;
+                                                            var category = $(this).closest('.sidebar-menu').find('.row.active').attr('data-value') ? $(this).closest('.sidebar-menu').find('.row.active').attr('data-value') : 0;
+                                                            console.log(category);
+                                                            $.ajax({
+                                                                url: 'http://localhost/ecommerce/public/products/product/' + category + '/' + mark,
+                                                                type: 'GET',
+                                                                data: {},
+                                                                contentType: 'application/json; charset=utf-8',
+                                                                datatype: 'json',
+                                                                cache: false
+                                                            }).done(function (data) {
+                                                                if (data.result) {
+                                                                    $('#pagination-container').pagination({
+                                                                        dataSource: data.message,
+                                                                        pageSize: 6,
+                                                                        showPrevious: false,
+                                                                        showNext: false,
+                                                                        callback: function (data, pagination) {
+                                                                            var html = template(data);
+                                                                            $(container).empty();
+                                                                            $(container).append(html);
+                                                                        }
+                                                                    });
+                                                                } else {
+                                                                    $(container).empty();
+                                                                    $(container).append('<p>' + data.message + '</p>');
+                                                                }
+                                                                console.log(data);
+                                                            }).fail(function (err) {
+                                                                console.log(err);
+                                                            });
+                                                        }
+                                                        if ($(this).hasClass('active')) {
+                                                        } else {
+                                                            $(this).closest('.marks').find('li.active').removeClass('active');
+                                                            $(this).addClass('active');
+                                                        }
+                                                        e.preventDefault();
+                                                    });
+                                                } else {
+                                                    $(container).empty();
+                                                    $(container).append('<p>' + data.message + '</p>');
+                                                }
+                                            }).fail(function (err) {
+                                                console.log(err);
+                                            });
+                                        }
+                                        var dropDown = $(this).closest('li').find('.marks');
 
-                                    $(this).closest('.sidebar-menu').find('.marks').not(dropDown).slideUp();
+                                        $(this).closest('.sidebar-menu').find('.marks').not(dropDown).slideUp();
 
-                                    if ($(this).hasClass('active')) {
-                                        $(this).removeClass('active');
-                                    } else {
-                                        $(this).closest('.sidebar-menu').find('.row.active').removeClass('active');
-                                        $(this).addClass('active');
-                                    }
+                                        if ($(this).hasClass('active')) {
+                                        } else {
+                                            $(this).closest('.sidebar-menu').find('.row.active').removeClass('active');
+                                            $(this).addClass('active');
+                                        }
 
-                                    dropDown.stop(false, true).slideToggle();
+                                        dropDown.stop(false, true).slideToggle();
 
-                                    j.preventDefault();
-                                });
+                                        j.preventDefault();
+                                    });
+                                }else{
+                                    $(container).empty();
+                                    $(container).append('<p>' + data.message + '</p>');
+                                }
                             }).fail(function (err) {
                                 console.log(err);
                             });
