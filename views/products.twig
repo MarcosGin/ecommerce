@@ -38,12 +38,12 @@
                             cache: false
                         }).done(function (data) {
                             if(data.result){
-                                HTML += '<li class="active" data-value="">'+
-                                        '<div class="row"><span class="icon"><i class="fa fa-star-o"></i></span><a href="">All</a></div>'+
+                                HTML += '<li>'+
+                                        '<div class="row active" data-value=""><span class="icon"><i class="fa fa-star-o"></i></span><a href="">All</a></div>'+
                                         '</li>';
                                 for(var category in data.message){
-                                    HTML += '<li class="" data-value="'  + data.message[category].id + '">'+
-                                            '<div class="row">'+
+                                    HTML += '<li>'+
+                                            '<div class="row" data-value="'  + data.message[category].id + '">'+
                                             '<span class="icon"><i class="fa ' + data.message[category].icon + '"></i></span>'+
                                             '<a href="">' + data.message[category].name + '</a>'+
                                             '</div><ul class="marks">';
@@ -127,10 +127,8 @@
                                         $(container).append(html);
                                     }
                                 });
-                                var menu = $('.sidebar .sidebar-menu > li');
-                                console.log(menu);
-                                menu.on('click', function (e) {
-                                    e.preventDefault();
+                                var menu = $('.sidebar-menu > li .row');
+                                menu.click(function(j) {
                                     var data = $(this).attr('data-value') ? $(this).attr('data-value') : 0;
                                     $.ajax({
                                         url: 'http://localhost/ecommerce/public/products/product/' + data,
@@ -154,8 +152,21 @@
                                     }).fail(function (err) {
                                         console.log(err);
                                     });
-                                });
+                                    var dropDown = $(this).closest('li').find('.marks');
 
+                                    $(this).closest('.sidebar-menu').find('.marks').not(dropDown).slideUp();
+
+                                    if ($(this).hasClass('active')) {
+                                        $(this).removeClass('active');
+                                    } else {
+                                        $(this).closest('.sidebar-menu').find('.row.active').removeClass('active');
+                                        $(this).addClass('active');
+                                    }
+
+                                    dropDown.stop(false, true).slideToggle();
+
+                                    j.preventDefault();
+                                });
                             }).fail(function (err) {
                                 console.log(err);
                             });

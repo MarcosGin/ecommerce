@@ -96,7 +96,7 @@
     display: flex;
     align-items: center;
 }
-.products-cont .sidebar .sidebar-menu > li.active .row{
+.products-cont .sidebar .sidebar-menu > li .row.active{
     color: #1583dc;
     background: #f8f8f8;
 }
@@ -117,9 +117,6 @@
 }
 .products-cont .sidebar .sidebar-menu > li .marks{
     display: none;
-}
-.products-cont .sidebar .sidebar-menu > li.active .marks{
-    display: block;
 }
 .products-cont .sidebar .sidebar-menu > li .marks li{
     list-style: none;
