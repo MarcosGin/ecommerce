@@ -27,7 +27,11 @@ class ProductController extends BaseController{
     public function getIndex() {
         $products = $this->product->getAll();
         $categories = $this->categories->getCategories();
-        return $this->render('products.twig', ['products' => $products, 'categories' => $categories]);
+        return $this->render('products.twig');
+    }
+    public function getCategories() {
+        $categories = $this->categories->getCategories();
+        echo $this->json_response($categories, 200, '', true);
     }
     public function getSearch($param = null, $param2= null) {
         $products = $this->product->getProductForSearch($param, $param2);
