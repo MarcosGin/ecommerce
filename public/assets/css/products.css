@@ -123,7 +123,9 @@
     font-size: 14px;
     padding: 5px 45px;
 }
-
+.products-cont .sidebar .sidebar-menu > li .marks li.active{
+    color: #1583dc;
+}
 /* the medias queries */
 @media(max-width:840px){
     .products-cont .list-products .products .row{

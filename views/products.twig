@@ -46,7 +46,8 @@
                                             '<div class="row" data-value="'  + data.message[category].id + '">'+
                                             '<span class="icon"><i class="fa ' + data.message[category].icon + '"></i></span>'+
                                             '<a href="">' + data.message[category].name + '</a>'+
-                                            '</div><ul class="marks">';
+                                            '</div><ul class="marks">'+
+                                            '<li data-value=""><a href="">All</a></li>';
                                      for (var mark in data.message[category].marks){
                                          HTML +=  '<li data-value=" ' + data.message[category].marks[mark].id + '"><a href="">' + data.message[category].marks[mark].name + '</a></li>';
                                      }
@@ -131,6 +132,8 @@
                                     var menu = $('.sidebar-menu > li .row');
                                     menu.click(function (j) {
                                         if (!$(this).hasClass('active')) {
+                                            $(this).closest('li').find('.marks').children('.active').removeClass('active');
+                                            $(this).closest('li').find('.marks').children('li:eq(0)').addClass('active');
                                             var category = $(this).attr('data-value') ? $(this).attr('data-value') : 0;
                                             $.ajax({
                                                 url: 'http://localhost/ecommerce/public/products/product/' + category,
