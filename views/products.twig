@@ -9,12 +9,12 @@
                 </div>
                 <ul class="sidebar-menu">
                 </ul>
+                <div id="pagination-container">
+
+                </div>
             </div>
             <div class="list-products left">
                 <div class="products">
-
-                </div>
-                <div id="pagination-container">
 
                 </div>
             </div>
@@ -121,6 +121,8 @@
                                 $('#pagination-container').pagination({
                                     dataSource: data.message,
                                     pageSize: 6,
+                                    showPrevious: false,
+                                    showNext: false,
                                     callback: function(data, pagination) {
                                         var html = template(data);
                                         $(container).empty();
