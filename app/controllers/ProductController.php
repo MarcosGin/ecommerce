@@ -33,8 +33,12 @@ class ProductController extends BaseController{
         $categories = $this->categories->getCategories();
         echo $this->json_response($categories, 200, '', true);
     }
-    public function getProduct($param) {
-        $products = $this->product->getProductForSearch($param, null);
+    public function getProduct($param = null) {
+        if($param){
+            $products = $this->product->getProductForSearch($param, null);
+        }else{
+            $products = $this->product->getAll();
+        }
         echo $this->json_response($products, 200, '', true);
     }
     public function getBusq($name = null){

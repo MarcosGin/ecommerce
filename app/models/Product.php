@@ -23,7 +23,7 @@ class Product {
 
     public function getAll(){
         $dbObj = DB::getInstance();
-        $query = $dbObj->getQuery("SELECT * FROM productos");
+        $query = $dbObj->getQuery("SELECT nombre,carpet,portada,precio,offer,offer_number FROM productos");
         $query->execute();
         $data = $query->fetchall(\PDO::FETCH_ASSOC);
         if(!$data){

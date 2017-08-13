@@ -38,11 +38,11 @@
                             cache: false
                         }).done(function (data) {
                             if(data.result){
-                                HTML += '<li class="active">'+
+                                HTML += '<li class="active" data-value="">'+
                                         '<div class="row"><span class="icon"><i class="fa fa-star-o"></i></span><a href="">All</a></div>'+
                                         '</li>';
                                 for(var category in data.message){
-                                    HTML += '<li class="">'+
+                                    HTML += '<li class="" data-value="'  + data.message[category].id + '">'+
                                             '<div class="row">'+
                                             '<span class="icon"><i class="fa ' + data.message[category].icon + '"></i></span>'+
                                             '<a href="">' + data.message[category].name + '</a>'+
@@ -56,7 +56,6 @@
                                 container.empty();
                                 container.append(HTML);
                             }
-                            console.log(data);
                         }).fail(function (err) {
                             console.log(err);
                         });
@@ -109,30 +108,57 @@
                 };
                 return {
                     init: function () {
-                        $.ajax({
-                            url: 'http://localhost/ecommerce/public/products/product/1',
-                            type: 'GET',
-                            data: {},
-                            contentType: 'application/json; charset=utf-8',
-                            datatype: 'json',
-                            cache: false
-                        }).done(function (data) {
-                            if(data.result){
+                            $.ajax({
+                                url: 'http://localhost/ecommerce/public/products/product/',
+                                type: 'GET',
+                                data: {},
+                                contentType: 'application/json; charset=utf-8',
+                                datatype: 'json',
+                                cache: false
+                            }).done(function (data) {
                                 $('#pagination-container').pagination({
                                     dataSource: data.message,
                                     pageSize: 6,
                                     showPrevious: false,
                                     showNext: false,
-                                    callback: function(data, pagination) {
+                                    callback: function (data, pagination) {
                                         var html = template(data);
                                         $(container).empty();
-                                        $(container).append(html);}
+                                        $(container).append(html);
+                                    }
+                                });
+                                var menu = $('.sidebar .sidebar-menu > li');
+                                console.log(menu);
+                                menu.on('click', function (e) {
+                                    e.preventDefault();
+                                    var data = $(this).attr('data-value') ? $(this).attr('data-value') : 0;
+                                    $.ajax({
+                                        url: 'http://localhost/ecommerce/public/products/product/' + data,
+                                        type: 'GET',
+                                        data: {},
+                                        contentType: 'application/json; charset=utf-8',
+                                        datatype: 'json',
+                                        cache: false
+                                    }).done(function (data) {
+                                        $('#pagination-container').pagination({
+                                            dataSource: data.message,
+                                            pageSize: 6,
+                                            showPrevious: false,
+                                            showNext: false,
+                                            callback: function (data, pagination) {
+                                                var html = template(data);
+                                                $(container).empty();
+                                                $(container).append(html);
+                                            }
+                                        });
+                                    }).fail(function (err) {
+                                        console.log(err);
                                     });
-                            }
-                            console.log(data);
-                        }).fail(function (err) {
-                            console.log(err);
-                        });
+                                });
+
+                            }).fail(function (err) {
+                                console.log(err);
+                            });
                     }
                 }
             })();
