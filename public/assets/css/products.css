@@ -22,11 +22,11 @@
 }
 
 /* styles for the products*/
-.products-cont .list-products{
+.products-cont .list-products .products{
     display: flex;
     flex-wrap: wrap;
 }
-.products-cont .list-products .row{
+.products-cont .list-products .products .row{
     width: 33.333333333333%;
     margin-bottom: 2em;
     padding: 0 15px;
