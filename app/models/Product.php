@@ -23,13 +23,17 @@ class Product {
 
     public function getAll(){
         $dbObj = DB::getInstance();
+        $result = ['result' => false];
         $query = $dbObj->getQuery("SELECT nombre,carpet,portada,precio,offer,offer_number FROM productos");
         $query->execute();
-        $data = $query->fetchall(\PDO::FETCH_ASSOC);
-        if(!$data){
-            throw new \Exception('Not Found Products!.');
+        $data = $query->fetchAll(\PDO::FETCH_ASSOC);
+        if($data){
+            $result['result'] = true;
+            $result['response'] = $data;
+        }else{
+            $result['response'] = "Not found products!.";
         }
-        return $data;
+        return $result;
     }
     public function getProduct($produc){
         $message = array('result' => false);
@@ -83,6 +87,7 @@ class Product {
         return $data;
     }
     public function getProductForSearch($cat, $marc){
+        $result = ['result' => false];
         $dbObj = DB::getInstance();
         if($marc){
             $query = $dbObj->getQuery("SELECT nombre,carpet,portada,precio,offer,offer_number FROM productos WHERE category_id =:cat AND marca =:marc");
@@ -97,10 +102,13 @@ class Product {
              ]);
         }
         $data = $query->fetchAll(\PDO::FETCH_ASSOC);
-        if(!$data){
-            throw new \Exception ("Not found products!");
+        if($data){
+            $result['result'] = true;
+            $result['response'] = $data;
+        }else{
+            $result['response'] = "Not found products for this filters.";
         }
-        return $data;
+        return $result;
     }
     public function getImgs($carpet, $type = "max"){
         $dbObj = DB::getInstance();
