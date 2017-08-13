@@ -8,24 +8,6 @@
                     <span>Categories</span>
                 </div>
                 <ul class="sidebar-menu">
-                    <li class="active">
-                        <div class="row"><span class="icon"><i class="fa fa-star-o"></i></span><a href="{{ 'products' | url }}">All</a></div>
-                    </li>
-
-                    {% for category in categories %}
-                    <li class="">
-                        <div class="row">
-                            <span class="icon"><i class="fa {{ category.icon }}"></i></span>
-                            <a href="{{ ('products/search/' ~ category.id) | url}}">{{ category.name }}</a>
-                            </div>
-                        <ul class="marks">
-                            {% for mark in category.marks %}
-                                <li><a href="{{ ('products/search/' ~ category.id ~ '/' ~ mark.id) | url }}">{{ mark.name }}</a></li>
-                            {% endfor %}
-                        </ul>
-                    </li>
-
-                    {% endfor %}
                 </ul>
             </div>
             <div class="list-products left">
@@ -52,4 +34,50 @@
             </div>
         </div>
     </div>
+{% endblock %}
+{% block scripts_footer %}
+    <script type="text/javascript">
+        $(function (){
+            var renderCategories = (function () {
+                var container = $('.sidebar .sidebar-menu');
+                var HTML = '';
+                return {
+                    init: function () {
+                        $.ajax({
+                            url: 'http://localhost/ecommerce/public/products/categories',
+                            type: 'GET',
+                            data: {},
+                            contentType: 'application/json; charset=utf-8',
+                            datatype: 'json',
+                            cache: false
+                        }).done(function (data) {
+                            if(data.result){
+                                HTML += '<li class="active">'+
+                                        '<div class="row"><span class="icon"><i class="fa fa-star-o"></i></span><a href="">All</a></div>'+
+                                        '</li>';
+                                for(var category in data.message){
+                                    HTML += '<li class="">'+
+                                            '<div class="row">'+
+                                            '<span class="icon"><i class="fa ' + data.message[category].icon + '"></i></span>'+
+                                            '<a href="">' + data.message[category].name + '</a>'+
+                                            '</div><ul class="marks">';
+                                     for (var mark in data.message[category].marks){
+                                         HTML +=  '<li><a href="">' + data.message[category].marks[mark].name + '</a></li>';
+                                     }
+
+                                    HTML += '</ul></li>';
+                                }
+                                container.empty();
+                                container.append(HTML);
+                            }
+                            console.log(data);
+                        }).fail(function (err) {
+                            console.log(err);
+                        });
+                    }
+                }
+            })();
+            renderCategories.init();
+        });
+    </script>
 {% endblock %}
