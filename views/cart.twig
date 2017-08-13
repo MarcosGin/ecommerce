@@ -242,6 +242,7 @@
                     if(data.result){
                         localStorage.removeItem('cart');
                         renderTable();
+                        changeCart.init();
                         Notify(data.message,null,null,'success');
                     }else{
                         Notify(data.message,null,null,'danger');
