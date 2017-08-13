@@ -11,26 +11,7 @@
                 </ul>
             </div>
             <div class="list-products left">
-                    {% for product in products %}
-                        <div class="row">
-                            <a href="{{ ('products/profile/' ~ product.nombre) | url }}">
-                                <div class="img">
-                                    <img src="{{  (product.carpet ~ '/' ~ product.portada)  | url_image }}" alt="img" title="{{ product.nombre }}">
-                                </div>
-                            </a>
 
-                            <div class="data">
-                                <div class="tittle">
-                                    <a href="{{ ('products/profile/' ~ product.nombre) | url }}"><span>{{ product.nombre }}</span></a>
-                                </div>
-                                <div class="price offer">
-                                        <span class="base">$ {{ product.precio }}</span>
-                                        <span class="with-offer">$ {{ product.precio}}</span>
-                                        <span class="value-offer">14 % OFF</span>
-                                </div>
-                            </div>
-                        </div>
-                    {% endfor %}
             </div>
         </div>
     </div>
@@ -78,6 +59,69 @@
                 }
             })();
             renderCategories.init();
+
+            var renderProducts = (function () {
+                var container = $('.list-products');
+                var HTML = '';
+                var getDiscount = function (price, discount) {
+
+                    return Number(price) - ( Number(price)* Number(discount)/100 );
+                };
+                Number.prototype.formatMoney = function(c, d, t){
+                    var n = this,
+                        c = isNaN(c = Math.abs(c)) ? 2 : c,
+                        d = d == undefined ? "." : d,
+                        t = t == undefined ? "," : t,
+                        s = n < 0 ? "-" : "",
+                        i = String(parseInt(n = Math.abs(Number(n) || 0).toFixed(c))),
+                        j = (j = i.length) > 3 ? j % 3 : 0;
+                    return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
+                };
+                return {
+                    init: function () {
+                        $.ajax({
+                            url: 'http://localhost/ecommerce/public/products/product/1',
+                            type: 'GET',
+                            data: {},
+                            contentType: 'application/json; charset=utf-8',
+                            datatype: 'json',
+                            cache: false
+                        }).done(function (data) {
+                            if(data.result){
+                                for (var product in data.message){
+                                    var offer = '', offer_price = 0, offer_number = 0;
+                                    if(data.message[product].offer){
+                                        offer = 'offer';
+                                        offer_number = data.message[product].offer_number ? data.message[product].offer_number : 0;
+                                        offer_price = getDiscount(data.message[product].precio, offer_number);
+                                    }
+                                    HTML += '<div class="row">'+
+                                            '<a href="products/profile/'+ data.message[product].nombre +'">'+
+                                            '<div class="img">'+
+                                            '<img src="assets/img/products/'+ data.message[product].carpet + '/' + data.message[product].portada + '" alt="img" title="' + data.message[product].nombre + '">'+
+                                            '</div></a>'+
+                                            '<div class="data">'+
+                                            '<div class="tittle">'+
+                                            '<a href="products/profile/'+  data.message[product].nombre + '"><span> '+ data.message[product].nombre +'</span></a>'+
+                                            '</div>'+
+                                            '<div class="price ' + offer +'">'+
+                                            '<span class="base">$ ' + parseInt(data.message[product].precio).formatMoney(0, ',', '.') +  ' </span>'+
+                                            '<span class="with-offer">$ ' + offer_price.formatMoney(0, ',', '.') + '</span>'+
+                                            '<span class="value-offer">' + offer_number +' % OFF</span>'+
+                                            '</div></div></div>';
+                                }
+                                container.empty();
+                                container.append(HTML);
+
+                            }
+                            console.log(data);
+                        }).fail(function (err) {
+                            console.log(err);
+                        });
+                    }
+                }
+            })();
+            renderProducts.init();
         });
     </script>
 {% endblock %}

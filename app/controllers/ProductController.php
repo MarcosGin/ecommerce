@@ -33,10 +33,9 @@ class ProductController extends BaseController{
         $categories = $this->categories->getCategories();
         echo $this->json_response($categories, 200, '', true);
     }
-    public function getSearch($param = null, $param2= null) {
-        $products = $this->product->getProductForSearch($param, $param2);
-        $categories = $this->categories->getCategories();
-        return $this->render('products.twig', ['products' => $products, 'categories' => $categories, 'param' => $param, 'param2' => $param]);
+    public function getProduct($param) {
+        $products = $this->product->getProductForSearch($param, null);
+        echo $this->json_response($products, 200, '', true);
     }
     public function getBusq($name = null){
         $products = $this->product->getProductLike($name, true);
