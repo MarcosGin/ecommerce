@@ -33,13 +33,17 @@ class ProductController extends BaseController{
         $categories = $this->categories->getCategories();
         echo $this->json_response($categories, 200, '', true);
     }
-    public function getProduct($param = null) {
-        if($param){
-            $products = $this->product->getProductForSearch($param, null);
+    public function getProduct($param = null, $param2=null) {
+        if($param or $param2){
+            $products = $this->product->getProductForSearch($param, $param2);
         }else{
             $products = $this->product->getAll();
         }
-        echo $this->json_response($products, 200, '', true);
+        if($products['result']){
+            echo $this->json_response($products['response'], 200, '', true);
+        }else{
+            echo $this->json_response($products['response'], 200);
+        }
     }
     public function getBusq($name = null){
         $products = $this->product->getProductLike($name, true);
