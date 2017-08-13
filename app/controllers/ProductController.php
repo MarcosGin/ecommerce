@@ -27,12 +27,23 @@ class ProductController extends BaseController{
     public function getIndex() {
         $products = $this->product->getAll();
         $categories = $this->categories->getCategories();
-        return $this->render('products.twig', ['products' => $products, 'categories' => $categories]);
+        return $this->render('products.twig');
     }
-    public function getSearch($param = null, $param2= null) {
-        $products = $this->product->getProductForSearch($param, $param2);
+    public function getCategories() {
         $categories = $this->categories->getCategories();
-        return $this->render('products.twig', ['products' => $products, 'categories' => $categories, 'param' => $param, 'param2' => $param]);
+        echo $this->json_response($categories, 200, '', true);
+    }
+    public function getProduct($param = null, $param2=null) {
+        if($param or $param2){
+            $products = $this->product->getProductForSearch($param, $param2);
+        }else{
+            $products = $this->product->getAll();
+        }
+        if($products['result']){
+            echo $this->json_response($products['response'], 200, '', true);
+        }else{
+            echo $this->json_response($products['response'], 200);
+        }
     }
     public function getBusq($name = null){
         $products = $this->product->getProductLike($name, true);
@@ -65,7 +76,7 @@ class ProductController extends BaseController{
         }
         if($jwt['result'] == true){
             $this->product->getProduct($_POST['product_id']);
-            $createComment = $this->product->createComment($_POST['product_id'],$jwt['jwt']->id, $jwt['jwt']->username, $_POST['coment'], time());
+            $createComment = $this->product->createComment($_POST['product_id'],$jwt['jwt']->id, $_POST['coment'], time());
 
             if($createComment['result']){
                 echo $this->json_response($createComment['response'], 200, $jwt['token'], true);

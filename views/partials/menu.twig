@@ -6,7 +6,7 @@
                     <a href="{{ 'adm' | url }}" class="link-nav" style="float:left;"><i class="fa fa-user"></i> Administración</a>
                  {% endif %}
             <a href="{{ 'profile' | url }}" class="link-nav"><i class="fa fa-user"></i> Mi cuenta</a>
-            <a href="{{ 'account/logout' | url }}" class="link-nav"><i class="fa fa-sign-out"></i> Cerrar sesión  </a>
+            <a href="" id="closed_session" class="link-nav"><i class="fa fa-sign-out"></i> Cerrar sesión  </a>
             {% endfor %}
         {% else %}
             <a href="{{ 'account/login' | url }}" class="link-nav"><i class="fa fa-sign-in"></i> Iniciar sesión</a>

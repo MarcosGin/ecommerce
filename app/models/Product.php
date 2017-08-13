@@ -23,13 +23,17 @@ class Product {
 
     public function getAll(){
         $dbObj = DB::getInstance();
-        $query = $dbObj->getQuery("SELECT * FROM productos");
+        $result = ['result' => false];
+        $query = $dbObj->getQuery("SELECT nombre,carpet,portada,precio,offer,offer_number FROM productos");
         $query->execute();
-        $data = $query->fetchall(\PDO::FETCH_ASSOC);
-        if(!$data){
-            throw new \Exception('Not Found Products!.');
+        $data = $query->fetchAll(\PDO::FETCH_ASSOC);
+        if($data){
+            $result['result'] = true;
+            $result['response'] = $data;
+        }else{
+            $result['response'] = "Not found products!.";
         }
-        return $data;
+        return $result;
     }
     public function getProduct($produc){
         $message = array('result' => false);
@@ -83,24 +87,28 @@ class Product {
         return $data;
     }
     public function getProductForSearch($cat, $marc){
+        $result = ['result' => false];
         $dbObj = DB::getInstance();
         if($marc){
-            $query = $dbObj->getQuery("SELECT * FROM productos WHERE category_id =:cat AND marca =:marc");
+            $query = $dbObj->getQuery("SELECT nombre,carpet,portada,precio,offer,offer_number FROM productos WHERE category_id =:cat AND marca =:marc");
             $query->execute([
                'cat' => $cat,
                'marc' => $marc,
             ]);
         }else{
-             $query = $dbObj->getQuery("SELECT * FROM productos WHERE category_id = :cat");
+             $query = $dbObj->getQuery("SELECT nombre,carpet,portada,precio,offer,offer_number FROM productos WHERE category_id = :cat");
              $query->execute([
                 'cat' => $cat,
              ]);
         }
         $data = $query->fetchAll(\PDO::FETCH_ASSOC);
-        if(!$data){
-            throw new \Exception ("Not found products!");
+        if($data){
+            $result['result'] = true;
+            $result['response'] = $data;
+        }else{
+            $result['response'] = "Not found products for this filters.";
         }
-        return $data;
+        return $result;
     }
     public function getImgs($carpet, $type = "max"){
         $dbObj = DB::getInstance();
@@ -132,19 +140,21 @@ class Product {
         }
         return $message;
     }
-    public function createComment($product_id, $user_id, $username, $coment, $fecha) {
+    public function createComment($product_id, $user_id, $comment, $time) {
         $message = array('result' => false);
-        if($coment){
-            if(strlen($coment) < 150) {
+        $objUser = new User();
+        $user = $objUser->getUserForId($user_id);
+        if($comment){
+            if(strlen($comment) < 150) {
                 if($this->getCommentByUserId($user_id, $product_id) === false) {
                     $dbObj = DB::getInstance();
                     $query = $dbObj->getQuery("INSERT INTO product_comment (product_id,user_id, username, coment, fecha) VALUES(:product_id, :user_id, :username, :coment, :fecha)");
                     $result = $query->execute([
                         'product_id' => $product_id,
                         'user_id' => $user_id,
-                        'username' => $username,
-                        'coment' => $coment,
-                        'fecha' => $fecha,
+                        'username' => $user[0]->name . ' ' . $user[0]->lastname,
+                        'coment' => $comment,
+                        'fecha' => $time,
                     ]);
                     if ($result) {
                         $message['result'] = true;
