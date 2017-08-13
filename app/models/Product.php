@@ -85,13 +85,13 @@ class Product {
     public function getProductForSearch($cat, $marc){
         $dbObj = DB::getInstance();
         if($marc){
-            $query = $dbObj->getQuery("SELECT * FROM productos WHERE category_id =:cat AND marca =:marc");
+            $query = $dbObj->getQuery("SELECT nombre,carpet,portada,precio,offer,offer_number FROM productos WHERE category_id =:cat AND marca =:marc");
             $query->execute([
                'cat' => $cat,
                'marc' => $marc,
             ]);
         }else{
-             $query = $dbObj->getQuery("SELECT * FROM productos WHERE category_id = :cat");
+             $query = $dbObj->getQuery("SELECT nombre,carpet,portada,precio,offer,offer_number FROM productos WHERE category_id = :cat");
              $query->execute([
                 'cat' => $cat,
              ]);
