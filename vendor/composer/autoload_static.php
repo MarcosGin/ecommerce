@@ -8,6 +8,7 @@ class ComposerStaticInit20c21e6cbe05927a5b30745fa33cfa9a
 {
     public static $files = array (
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
+        '253c157292f75eb38082b5acb06f3f01' => __DIR__ . '/..' . '/nikic/fast-route/src/functions.php',
         '3917c79c5052b270641b5a200963dbc2' => __DIR__ . '/..' . '/kint-php/kint/init.php',
     );
 
@@ -19,15 +20,23 @@ class ComposerStaticInit20c21e6cbe05927a5b30745fa33cfa9a
         'S' => 
         array (
             'Symfony\\Polyfill\\Mbstring\\' => 26,
+            'Slim\\' => 5,
             'Sirius\\Validation\\' => 18,
         ),
         'P' => 
         array (
+            'Psr\\Http\\Message\\' => 17,
+            'Psr\\Container\\' => 14,
             'Phroute\\Phroute\\' => 16,
+        ),
+        'I' => 
+        array (
+            'Interop\\Container\\' => 18,
         ),
         'F' => 
         array (
             'Firebase\\JWT\\' => 13,
+            'FastRoute\\' => 10,
         ),
         'D' => 
         array (
@@ -48,17 +57,37 @@ class ComposerStaticInit20c21e6cbe05927a5b30745fa33cfa9a
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-mbstring',
         ),
+        'Slim\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/slim/slim/Slim',
+        ),
         'Sirius\\Validation\\' => 
         array (
             0 => __DIR__ . '/..' . '/siriusphp/validation/src',
+        ),
+        'Psr\\Http\\Message\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/http-message/src',
+        ),
+        'Psr\\Container\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/container/src',
         ),
         'Phroute\\Phroute\\' => 
         array (
             0 => __DIR__ . '/..' . '/phroute/phroute/src/Phroute',
         ),
+        'Interop\\Container\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/container-interop/container-interop/src/Interop/Container',
+        ),
         'Firebase\\JWT\\' => 
         array (
             0 => __DIR__ . '/..' . '/firebase/php-jwt/src',
+        ),
+        'FastRoute\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/nikic/fast-route/src',
         ),
         'Dotenv\\' => 
         array (
@@ -76,6 +105,13 @@ class ComposerStaticInit20c21e6cbe05927a5b30745fa33cfa9a
             'Twig_' => 
             array (
                 0 => __DIR__ . '/..' . '/twig/twig/lib',
+            ),
+        ),
+        'P' => 
+        array (
+            'Pimple' => 
+            array (
+                0 => __DIR__ . '/..' . '/pimple/pimple/src',
             ),
         ),
     );

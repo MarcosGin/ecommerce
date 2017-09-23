@@ -34,6 +34,18 @@ class User
         return $data;
     }
 
+    public function getLogin($email)
+    {
+        $dbObj = DB::getInstance();
+        $query = $dbObj->getQuery("SELECT id, email, rank, password FROM users WHERE email = :email LIMIT 1");
+        $query->execute([
+            'email' => $email
+        ]);
+        $data = $query->fetchAll(\PDO::FETCH_OBJ);
+
+        return $data;
+    }
+
     public function getUserForId($id)
     {
         $dbObj = DB::getInstance();

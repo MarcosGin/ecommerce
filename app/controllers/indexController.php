@@ -1,16 +1,13 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: marcos
- * Date: 18/06/17
- * Time: 13:52
- */
 
 namespace App\Controllers;
 
-class IndexController extends BaseController{
+use Slim\Http\Request;
+use Slim\Http\Response;
 
-    public function anyIndex(){
-        return $this->render('index.twig', []);
+class IndexController {
+
+    public function home(Request $request, Response $response, $args){
+        return $response->withJson(['message' =>'The api worsk!']);
     }
 }
