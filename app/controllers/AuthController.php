@@ -28,18 +28,18 @@ class AuthController {
                         'admin' => $user[0]->rank], 7200);
                     $saveJwt = $this->user->saveSession($user[0]->id, $jwt);
                     if($saveJwt){
-                        return $response->withJson(['status' => true,'message' =>'You are logged in', 'jwt' => $jwt]);
+                        return $response->withJson(['status' => true,'response' =>'You are logged in', 'jwt' => $jwt]);
                     }else{
-                        return $response->withJson(['status' => false,'message' =>'Could not log in, try again']);
+                        return $response->withJson(['status' => false,'response' =>'Could not log in, try again']);
                     }
                 }else{
-                    return $response->withJson(['status' => false,'message' =>'Your account is not activated, you must access your email and activate it']);
+                    return $response->withJson(['status' => false,'response' =>'Your account is not activated, you must access your email and activate it']);
                 }
             }else{
-                return $response->withJson(['status' => false,'message' =>'Your email address and / or your password is incorrect']);
+                return $response->withJson(['status' => false,'response' =>'Your email address and / or your password is incorrect']);
             }
         }else {
-            return $response->withJson(['status' => false,'message' =>'You must complete all the fields', 'params' => $params]);
+            return $response->withJson(['status' => false,'response' =>'You must complete all the fields', 'params' => $params]);
         }
 
     }
@@ -51,15 +51,15 @@ class AuthController {
             if($jwt['result']){
                 $downSession = $this->user->downSession($jwt['jwt']->id, $jwt_header[0]);
                 if($downSession['result']){
-                    return $response->withJson(['status' => true,'message' =>'The session was closed']);
+                    return $response->withJson(['status' => true,'response' =>'The session was closed']);
                 }else{
-                    return $response->withJson(['status' => false,'message' =>'The session was not closed', 'jwt' => $jwt['token']]);
+                    return $response->withJson(['status' => false,'response' =>'The session was not closed', 'jwt' => $jwt['token']]);
                 }
             }else{
-                return $response->withJson(['status' => false,'message' => $jwt['response'], 'jwt' => $jwt_header], 401);
+                return $response->withJson(['status' => false,'response' => $jwt['response'], 'jwt' => $jwt_header], 401);
             }
         }else{
-            return $response->withJson(['status' => false,'message' =>'Authorization failed'],401);
+            return $response->withJson(['status' => false,'response' =>'Authorization failed'],401);
         }
     }
 

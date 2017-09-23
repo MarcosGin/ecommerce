@@ -30,15 +30,22 @@ $app->add(function ($req, $res, $next) {
         ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
 });
 
-$app->group(API_ROUTE, function () use ($app){
+$app->group(API_ROUTE, function () use ($app) {
     $app->get('/', App\Controllers\indexController::class . ':home');
-    $app->group('/auth', function () use ($app){
-       $app->post('/login', App\Controllers\AuthController::class . ':login');
-       $app->get('/logout', App\Controllers\AuthController::class . ':logout');
-       $app->options('/logout', function ($request, $response, $args) {
+    $app->group('/auth', function () use ($app) {
+        $app->post('/login', App\Controllers\AuthController::class . ':login');
+        $app->get('/logout', App\Controllers\AuthController::class . ':logout');
+        $app->options('/logout', function ($request, $response, $args) {
             return $response;
         });
+
+    });
+    $app->group('/users', function () use ($app){
+        $app->get('/list', App\Controllers\UserController::class . ':getAll');
+        $app->get('/get/{id}', App\Controllers\UserController::class . ':get');
+        $app->put('/update/{id}', App\Controllers\UserController::class . ':update');
     });
 });
+
 
 $app->run();

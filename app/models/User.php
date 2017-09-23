@@ -34,6 +34,16 @@ class User
         return $data;
     }
 
+    public function getUsers()
+    {
+        $dbObj = DB::getInstance();
+        $query = $dbObj->getQuery("SELECT id,firstname,lastname,username,document,email,phone,country,city,address,postalcode FROM users  LIMIT 50");
+        $query->execute();
+        $data = $query->fetchAll(\PDO::FETCH_OBJ);
+        return $data;
+    }
+
+
     public function getLogin($email)
     {
         $dbObj = DB::getInstance();
@@ -49,7 +59,7 @@ class User
     public function getUserForId($id)
     {
         $dbObj = DB::getInstance();
-        $query = $dbObj->getQuery("SELECT * FROM users WHERE id = :id LIMIT 1");
+        $query = $dbObj->getQuery("SELECT id,firstname,lastname,username,document,email,phone,country,city,address,postalcode FROM users WHERE id = :id");
         $query->execute([
             'id' => $id,
         ]);
@@ -321,27 +331,34 @@ class User
     public function updateProfile($user_id, $data)
     {
         $result = array('result' => false);
-        $dbObj = DB::getInstance();
-        $query = $dbObj->getQuery('UPDATE users SET name =:name, lastname=:lastname, dayBirth =:dayBirth, monthBirth=:monthBirth, yearBirth=:yearBirth, dni =:dni, phone=:phone, gender=:gender, country=:country WHERE id = :id');
-        $data = $query->execute([
-            'name' => $data['firstName'],
-            'lastname' => $data['lastName'],
-            'dayBirth' => $data['day'],
-            'monthBirth' => $data['month'],
-            'yearBirth' => $data['year'],
-            'dni' => $data['document'],
-            'phone' => $data['phoneNumber'],
-            'gender' => $data['gender'],
-            'country' => $data['country'],
-            'id' => $user_id,
-        ]);
+        if(isset($data['firstname']) && isset($data['lastname']) && isset($data['username']) && isset($data['document'])
+            && isset($data['email']) && isset($data['phone']) && isset($data['country']) && isset($data['city'])
+               && isset($data['address']) && isset($data['postalcode'])) {
+            $dbObj = DB::getInstance();
+            $query = $dbObj->getQuery('UPDATE users SET firstname =:firstname, lastname=:lastname, username =:username, document=:document, email=:email, phone =:phone, country=:country, city=:city, address=:address, postalcode=:postalcode WHERE id = :id');
+            $data = $query->execute([
+                'firstname' => $data['firstname'],
+                'lastname' => $data['lastname'],
+                'username' => $data['username'],
+                'document' => $data['document'],
+                'email' => $data['email'],
+                'phone' => $data['phone'],
+                'country' => $data['country'],
+                'city' => $data['city'],
+                'address' => $data['address'],
+                'postalcode' => $data['postalcode'],
+                'id' => $user_id,
+            ]);
 
 
-        if ($data) {
-            $result['result'] = true;
-            $result['response'] = "The profile was successfully modified";
-        } else {
-            $result['response'] = "Profile was not successfully modified";
+            if ($data) {
+                $result['result'] = true;
+                $result['response'] = "The profile was successfully modified";
+            } else {
+                $result['response'] = "Profile was not successfully modified";
+            }
+        }else{
+            $result['response'] = "You must complete all the fields";
         }
 
         return $result;
