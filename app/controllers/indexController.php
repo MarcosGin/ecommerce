@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controllers;
+namespace App;
 
 use Slim\Http\Request;
 use Slim\Http\Response;
