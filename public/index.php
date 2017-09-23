@@ -43,6 +43,7 @@ $app->group(API_ROUTE, function () use ($app) {
     $app->group('/users', function () use ($app){
         $app->get('/list', App\Controllers\UserController::class . ':getAll');
         $app->get('/get/{id}', App\Controllers\UserController::class . ':get');
+        $app->get('/search/{value}', App\Controllers\UserController::class . ':search');
         $app->put('/update/{id}', App\Controllers\UserController::class . ':update');
     });
 });

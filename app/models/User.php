@@ -56,6 +56,18 @@ class User
         return $data;
     }
 
+    public function searchUsers($value)
+    {
+        $dbObj = DB::getInstance();
+        $query = $dbObj->getQuery("SELECT id,firstname,lastname,username,document,email,phone,country,city,address,postalcode FROM users WHERE (firstname LIKE :firstname) OR (email LIKE :email)");
+        $query->execute([
+            'firstname' => '%'.$value.'%',
+            'email' => '%'.$value.'%'
+        ]);
+        $data = $query->fetchAll(\PDO::FETCH_OBJ);
+        return $data;
+    }
+
     public function getUserForId($id)
     {
         $dbObj = DB::getInstance();

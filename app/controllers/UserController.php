@@ -37,6 +37,15 @@ class UserController
         }
 
     }
+    public function search(Request $request, Response $response, $args){
+
+        $users = $this->user->searchUsers($args['value']);
+        if($users){
+            return $response->withJson(['status' => true, 'response' => $users]);
+        }else{
+            return $response->withJson(['status' => false, 'response' => 'Not found users']);
+        }
+    }
 
     public function update(Request $request, Response $response, $args){
         $user = $this->user->getUserForId($args['id']);
