@@ -82,7 +82,7 @@ class ComposerStaticInit20c21e6cbe05927a5b30745fa33cfa9a
         ),
         'App\\' => 
         array (
-            0 => __DIR__ . '/../..' . '/app/controllers',
+            0 => __DIR__ . '/../..' . '/app',
         ),
     );
 
@@ -97,12 +97,20 @@ class ComposerStaticInit20c21e6cbe05927a5b30745fa33cfa9a
     );
 
     public static $classMap = array (
+        'App\\Bin\\Database\\DB' => __DIR__ . '/../..' . '/app/bin/database/DB.php',
+        'App\\Bin\\GeoLocation' => __DIR__ . '/../..' . '/app/bin/GeoLocation.php',
+        'App\\Bin\\Mail\\Mail' => __DIR__ . '/../..' . '/app/bin/mail/Mail.php',
+        'App\\Bin\\Token' => __DIR__ . '/../..' . '/app/bin/Token.php',
         'App\\Controllers\\AuthController' => __DIR__ . '/../..' . '/app/controllers/AuthController.php',
         'App\\Controllers\\CartController' => __DIR__ . '/../..' . '/app/controllers/CartController.php',
+        'App\\Controllers\\IndexController' => __DIR__ . '/../..' . '/app/controllers/indexController.php',
         'App\\Controllers\\ProductController' => __DIR__ . '/../..' . '/app/controllers/ProductController.php',
         'App\\Controllers\\ProfileController' => __DIR__ . '/../..' . '/app/controllers/ProfileController.php',
         'App\\Controllers\\UserController' => __DIR__ . '/../..' . '/app/controllers/UserController.php',
-        'App\\IndexController' => __DIR__ . '/../..' . '/app/controllers/indexController.php',
+        'App\\Models\\Category' => __DIR__ . '/../..' . '/app/models/Category.php',
+        'App\\Models\\Mark' => __DIR__ . '/../..' . '/app/models/Mark.php',
+        'App\\Models\\Product' => __DIR__ . '/../..' . '/app/models/Product.php',
+        'App\\Models\\User' => __DIR__ . '/../..' . '/app/models/User.php',
         'Dotenv\\Dotenv' => __DIR__ . '/..' . '/vlucas/phpdotenv/src/Dotenv.php',
         'Dotenv\\Exception\\ExceptionInterface' => __DIR__ . '/..' . '/vlucas/phpdotenv/src/Exception/ExceptionInterface.php',
         'Dotenv\\Exception\\InvalidCallbackException' => __DIR__ . '/..' . '/vlucas/phpdotenv/src/Exception/InvalidCallbackException.php',

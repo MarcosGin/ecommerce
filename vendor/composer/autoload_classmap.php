@@ -6,12 +6,20 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'App\\Bin\\Database\\DB' => $baseDir . '/app/bin/database/DB.php',
+    'App\\Bin\\GeoLocation' => $baseDir . '/app/bin/GeoLocation.php',
+    'App\\Bin\\Mail\\Mail' => $baseDir . '/app/bin/mail/Mail.php',
+    'App\\Bin\\Token' => $baseDir . '/app/bin/Token.php',
     'App\\Controllers\\AuthController' => $baseDir . '/app/controllers/AuthController.php',
     'App\\Controllers\\CartController' => $baseDir . '/app/controllers/CartController.php',
+    'App\\Controllers\\IndexController' => $baseDir . '/app/controllers/indexController.php',
     'App\\Controllers\\ProductController' => $baseDir . '/app/controllers/ProductController.php',
     'App\\Controllers\\ProfileController' => $baseDir . '/app/controllers/ProfileController.php',
     'App\\Controllers\\UserController' => $baseDir . '/app/controllers/UserController.php',
-    'App\\IndexController' => $baseDir . '/app/controllers/indexController.php',
+    'App\\Models\\Category' => $baseDir . '/app/models/Category.php',
+    'App\\Models\\Mark' => $baseDir . '/app/models/Mark.php',
+    'App\\Models\\Product' => $baseDir . '/app/models/Product.php',
+    'App\\Models\\User' => $baseDir . '/app/models/User.php',
     'Dotenv\\Dotenv' => $vendorDir . '/vlucas/phpdotenv/src/Dotenv.php',
     'Dotenv\\Exception\\ExceptionInterface' => $vendorDir . '/vlucas/phpdotenv/src/Exception/ExceptionInterface.php',
     'Dotenv\\Exception\\InvalidCallbackException' => $vendorDir . '/vlucas/phpdotenv/src/Exception/InvalidCallbackException.php',
