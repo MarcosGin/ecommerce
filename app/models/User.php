@@ -59,7 +59,7 @@ class User
     public function searchUsers($value)
     {
         $dbObj = DB::getInstance();
-        $query = $dbObj->getQuery("SELECT id,firstname,lastname,username,document,email,phone,country,city,address,postalcode FROM users WHERE (firstname LIKE :firstname) OR (email LIKE :email)");
+        $query = $dbObj->getQuery("SELECT id,firstname,lastname,username,document,email,phone,country,city,address,postalcode FROM users WHERE UPPER(firstname) LIKE UPPER(:firstname) OR UPPER(email) LIKE UPPER(:email)");
         $query->execute([
             'firstname' => '%'.$value.'%',
             'email' => '%'.$value.'%'
