@@ -66,4 +66,19 @@ class UserController
         }
     }
 
+    public function delete(Request $request, Response $response, $args){
+        $user = $this->user->getUserForId($args['id']);
+
+        if($user) {
+            $delete = $this->user->deleteUser($user[0]->id);
+            if($delete['result']){
+                return $response->withJson(['status' => true, 'response' => 'The user was deleted successfully']);
+            }else{
+                return $response->withJson(['status' => false, 'response' => $delete['response']]);
+            }
+        }else{
+            return $response->withJson(['status' => false, 'response' => 'The user was not deleted because it does not exist']);
+        }
+    }
+
 }

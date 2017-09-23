@@ -45,6 +45,7 @@ $app->group(API_ROUTE, function () use ($app) {
         $app->get('/get/{id}', App\Controllers\UserController::class . ':get');
         $app->get('/search/{value}', App\Controllers\UserController::class . ':search');
         $app->put('/update/{id}', App\Controllers\UserController::class . ':update');
+        $app->delete('/delete/{id}', App\Controllers\UserController::class .':delete');
     });
 });
 

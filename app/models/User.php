@@ -67,6 +67,21 @@ class User
         $data = $query->fetchAll(\PDO::FETCH_OBJ);
         return $data;
     }
+    public function deleteUser($value)
+    {
+        $result = array('result' => false);
+        $dbObj = DB::getInstance();
+        $query = $dbObj->getQuery("DELETE FROM users WHERE id = :id");
+        $data = $query->execute([
+            'id' => $value
+        ]);
+        if($data){
+            $result['result'] = true;
+        }else{
+            $result['response'] = 'The user wat no deleted';
+        }
+        return $result;
+    }
 
     public function getUserForId($id)
     {
