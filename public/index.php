@@ -51,6 +51,7 @@ $app->group(API_ROUTE, function () use ($app) {
         $app->get('/list', App\Controllers\ProductController::class . ':getAll');
         $app->get('/get/{id}', App\Controllers\ProductController::class . ':get');
         $app->put('/update/{id}', App\Controllers\ProductController::class . ':update');
+        $app->get('/search/{value}', App\Controllers\ProductController::class . ':search');
         $app->get('/marks/list', App\Controllers\ProductController::class . ':getAllMark');
         $app->get('/marks/get/{id}', App\Controllers\ProductController::class . ':getMark');
         $app->get('/categories/list', App\Controllers\ProductController::class . ':getAllCategory');

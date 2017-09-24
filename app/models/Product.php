@@ -98,7 +98,6 @@ class Product {
         $data = $query->fetchAll(\PDO::FETCH_ASSOC);
         return $data;
     }
-
     public function updateProduct($id, $data){
         $result = array('result' => false);
         if(isset($data['title']) && isset($data['description']) && isset($data['category'])
@@ -126,135 +125,19 @@ class Product {
         return $result;
 
     }
-
-    public function getProductLike($name, $json){
-        $data = array();
+    public function searchProducts($value)
+    {
         $dbObj = DB::getInstance();
-        $query = $dbObj->getQuery("SELECT * FROM productos WHERE nombre  LIKE ? ");
-        $query->execute([
-            "%$name%",
+        $query = $dbObj->getQuery("SELECT products.id,products.title,
+                                                  categories.id AS category_id,categories.name AS category_name,categories.icon AS category_icon,
+                                                    marks.id AS mark_id,marks.name AS mark_name,
+                                                    products.price,products.stock,products.created_at,products.updated_at FROM products 
+                                                       INNER JOIN marks ON products.mark = marks.id 
+                                                           INNER JOIN categories ON products.category = categories.id WHERE UPPER(products.title) LIKE UPPER(:title) ORDER BY products.id ASC LIMIT 10 ");
+         $query->execute([
+            'title' => '%'.$value.'%'
         ]);
-        $products = $query->fetchAll(\PDO::FETCH_OBJ);
-        foreach($products as $product){
-            $data[] = $product->nombre;
-        }
-        if($json){
-            return json_encode($data);
-        }else{
-            if(!$products){
-                throw new \Exception('Not found products!');
-            }
-            return $products;
-        }
-    }
-
-    public function getProductForSearch($cat, $marc){
-        $result = ['result' => false];
-        $dbObj = DB::getInstance();
-        if($marc){
-            $query = $dbObj->getQuery("SELECT nombre,carpet,portada,precio,offer,offer_number FROM productos WHERE category_id =:cat AND marca =:marc");
-            $query->execute([
-               'cat' => $cat,
-               'marc' => $marc,
-            ]);
-        }else{
-             $query = $dbObj->getQuery("SELECT nombre,carpet,portada,precio,offer,offer_number FROM productos WHERE category_id = :cat");
-             $query->execute([
-                'cat' => $cat,
-             ]);
-        }
-        $data = $query->fetchAll(\PDO::FETCH_ASSOC);
-        if($data){
-            $result['result'] = true;
-            $result['response'] = $data;
-        }else{
-            $result['response'] = "Not found products for this filters.";
-        }
-        return $result;
-    }
-    public function getImgs($carpet, $type = "max"){
-        $dbObj = DB::getInstance();
-        $query = $dbObj->getQuery("SELECT * FROM producimgs WHERE carpet = :carpet AND type =:type");
-        $query->execute([
-            'carpet' => $carpet,
-            'type' => $type,
-        ]);
-        $data = $query->fetchAll(\PDO::FETCH_ASSOC);
-        if(!$data){
-            throw new \Exception('Not founds thes imgs for this product');
-        }
+        $data = $query->fetchAll(\PDO::FETCH_OBJ);
         return $data;
     }
-    public function getComments($id) {
-        $message = array('result' => false);
-        $dbObj = DB::getInstance();
-        $query = $dbObj->getQuery("SELECT * FROM product_comment WHERE product_id = :id ORDER BY fecha DESC");
-        $query->execute([
-            'id' => $id,
-        ]);
-        $data = $query->fetchAll(\PDO::FETCH_ASSOC);
-
-        if($data){
-            $message['result'] = true;
-            $message['response'] = $data;
-        }else{
-            $message['response'] = 'This product has not comments';
-        }
-        return $message;
-    }
-    public function createComment($product_id, $user_id, $comment, $time) {
-        $message = array('result' => false);
-        $objUser = new User();
-        $user = $objUser->getUserForId($user_id);
-        if($comment){
-            if(strlen($comment) < 150) {
-                if($this->getCommentByUserId($user_id, $product_id) === false) {
-                    $dbObj = DB::getInstance();
-                    $query = $dbObj->getQuery("INSERT INTO product_comment (product_id,user_id, username, coment, fecha) VALUES(:product_id, :user_id, :username, :coment, :fecha)");
-                    $result = $query->execute([
-                        'product_id' => $product_id,
-                        'user_id' => $user_id,
-                        'username' => $user[0]->name . ' ' . $user[0]->lastname,
-                        'coment' => $comment,
-                        'fecha' => $time,
-                    ]);
-                    if ($result) {
-                        $message['result'] = true;
-                        $message['response'] = 'The comment has created successfully';
-                        return $message;
-                    } else {
-                        $message['response'] = 'The comment could not be created, try again';
-                        return $message;
-                    }
-                }else{
-                    $message['response'] = 'You can not comment more than once on this comment';
-                    return $message;
-                }
-            }else{
-                $message['response'] = 'Your comment is too long, only 150 characters are allowed.';
-                return $message;
-            }
-        }else{
-            $message['response'] = 'You need to enter a comment';
-            return $message;
-        }
-    }
-    public function getCommentByUserId($user_id, $product_id){
-        $dbObj = DB::getInstance();
-        $query = $dbObj->getQuery("SELECT id FROM product_comment WHERE user_id = :user_id AND product_id = :product_id");
-        $result = $query->execute([
-            'user_id' => $user_id,
-            'product_id' => $product_id,
-        ]);
-        $data = $query->fetchAll(\PDO::FETCH_ASSOC);
-
-            if($data){
-                return $data;
-            }
-
-        return false;
-    }
-
-
-
 }

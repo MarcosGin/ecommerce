@@ -53,8 +53,16 @@ class ProductController {
             return $response->withJson(['status' => false, 'response' => 'The product was not found']);
         }
     }
+    public function search(Request $request, Response $response, $args) {
+        $products = $this->product->searchProducts($args['value']);
+        if($products){
+            return $response->withJson(['status' => true, 'response' => $products]);
+        }else{
+            return $response->withJson(['status' => false, 'response' => 'Not found products']);
+        }
+    }
 
-    public function getMark(Request $request, Response $response, $args){
+        public function getMark(Request $request, Response $response, $args){
         $mark = $this->mark->getMark($args['id']);
         if ($mark) {
             return $response->withJson(['status' => true, 'response' => $mark[0]]);
