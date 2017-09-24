@@ -138,6 +138,23 @@ class Product {
             'title' => '%'.$value.'%'
         ]);
         $data = $query->fetchAll(\PDO::FETCH_OBJ);
-        return $data;
+        if($data){
+            $products = [];
+            foreach ($data as $product){
+                $products[] = [
+                    'id' => $product->id,
+                    'title' => $product->title,
+                    'mark' => ['id' => $product->mark_id, 'name' => $product->mark_name],
+                    'category' =>['id' => $product->category_id, 'name' => $product->category_name, 'icon' => $product->category_icon],
+                    'price' => $product->price,
+                    'stock' => $product->stock,
+                    'created_at' => $product->created_at,
+                    'updated_at' => $product->updated_at
+                ];
+            }
+            return $products;
+        }else{
+            return $data;
+        }
     }
 }
