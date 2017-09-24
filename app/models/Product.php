@@ -23,36 +23,110 @@ class Product {
 
     public function getAll(){
         $dbObj = DB::getInstance();
-        $result = ['result' => false];
-        $query = $dbObj->getQuery("SELECT nombre,carpet,portada,precio,offer,offer_number FROM productos");
+        $query = $dbObj->getQuery("SELECT products.id,products.title,
+                                                  categories.id AS category_id,categories.name AS category_name,categories.icon AS category_icon,
+                                                    marks.id AS mark_id,marks.name AS mark_name,
+                                                    products.price,products.stock,products.created_at,products.updated_at FROM products 
+                                                       INNER JOIN marks ON products.mark = marks.id 
+                                                           INNER JOIN categories ON products.category = categories.id ORDER BY products.id ASC LIMIT 10 ");
         $query->execute();
-        $data = $query->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $query->fetchAll(\PDO::FETCH_OBJ);
         if($data){
-            $result['result'] = true;
-            $result['response'] = $data;
+            $products = [];
+            foreach ($data as $product){
+                $products[] = [
+                    'id' => $product->id,
+                    'title' => $product->title,
+                    'mark' => ['id' => $product->mark_id, 'name' => $product->mark_name],
+                    'category' =>['id' => $product->category_id, 'name' => $product->category_name, 'icon' => $product->category_icon],
+                    'price' => $product->price,
+                    'stock' => $product->stock,
+                    'created_at' => $product->created_at,
+                    'updated_at' => $product->updated_at
+                ];
+            }
+            return $products;
         }else{
-            $result['response'] = "Not found products!.";
+            return $data;
+        }
+    }
+    public function getProduct($id){
+        $dbObj = DB::getInstance();
+        $query = $dbObj->getQuery("SELECT products.id,products.title,products.description,
+                                                  categories.id AS category_id,categories.name AS category_name,categories.icon AS category_icon,
+                                                    marks.id AS mark_id,marks.name AS mark_name,
+                                                    products.price,products.stock,products.created_at,products.updated_at FROM products 
+                                                       INNER JOIN marks ON products.mark = marks.id 
+                                                           INNER JOIN categories ON products.category = categories.id WHERE products.id = :id ORDER BY products.id");
+        $query->execute(['id'=>$id]);
+        $data =$query->fetchAll(\PDO::FETCH_OBJ);
+        if ($data) {
+            $products = [];
+            foreach ($data as $product){
+                $products[] = [
+                    'id' => $product->id,
+                    'title' => $product->title,
+                    'description' => $product->description,
+                    'mark' => ['id' => $product->mark_id, 'name' => $product->mark_name],
+                    'category' =>['id' => $product->category_id, 'name' => $product->category_name, 'icon' => $product->category_icon],
+                    'price' => $product->price,
+                    'stock' => $product->stock,
+                    'created_at' => $product->created_at,
+                    'updated_at' => $product->updated_at
+                ];
+            }
+            return $products;
+        }else{
+            return $data;
+        }
+    }
+    public function getProductForCategory($id){
+        $dbObj = DB::getInstance();
+        $query = $dbObj->getQuery("SELECT id FROM products WHERE category = :id");
+        $query->execute([
+            'id' => $id,
+        ]);
+        $data = $query->fetchAll(\PDO::FETCH_ASSOC);
+        return $data;
+    }
+    public function getProductForMark($id){
+        $dbObj = DB::getInstance();
+        $query = $dbObj->getQuery("SELECT id FROM products WHERE mark = :id");
+        $query->execute([
+            'id' => $id,
+        ]);
+        $data = $query->fetchAll(\PDO::FETCH_ASSOC);
+        return $data;
+    }
+
+    public function updateProduct($id, $data){
+        $result = array('result' => false);
+        if(isset($data['title']) && isset($data['description']) && isset($data['category'])
+            && isset($data['mark']) && isset($data['price']) && isset($data['stock'])){
+            $dbObj = DB::getInstance();
+            $query = $dbObj->getQuery("UPDATE products SET title = :title, description = :description, category = :category, mark = :mark, price = :price, stock = :stock WHERE id = :id");
+            $data = $query->execute([
+                'title' => $data['title'],
+                'description' => $data['description'],
+                'category' => $data['category'],
+                'mark' => $data['mark'],
+                'price' => $data['price'],
+                'stock' => $data['stock'],
+                'id' => $id
+            ]);
+            if ($data) {
+                $result['result'] = true;
+                $result['response'] = "The product was successfully modified";
+            } else {
+                $result['response'] = "The product was not successfully modified";
+            }
+        }else{
+            $result['response'] = "You must complete all the fields";
         }
         return $result;
+
     }
-    public function getProduct($produc){
-        $message = array('result' => false);
-        $dbObj = DB::getInstance();
-        $query = $dbObj->getQuery("SELECT * FROM productos WHERE nombre =:name OR id=:id LIMIT 1");
-        $query->execute([
-           'name' =>  $produc,
-           'id'   =>  $produc,
-        ]);
-        $data =$query->fetchAll(\PDO::FETCH_OBJ);
-            if($data){
-                $message['result'] = true;
-                $message['response'] = $data;
-               return $message;
-            }else{
-                $message['response'] = 'Not found product';
-                return $message;
-            }
-    }
+
     public function getProductLike($name, $json){
         $data = array();
         $dbObj = DB::getInstance();
@@ -74,18 +148,6 @@ class Product {
         }
     }
 
-    public function getProductForCategory($id){
-        $dbObj = DB::getInstance();
-        $query = $dbObj->getQuery("SELECT * FROM productos WHERE category_id = :id");
-        $query->execute([
-            'id' => $id,
-        ]);
-        $data = $query->fetchAll(\PDO::FETCH_ASSOC);
-        if(!$data){
-            throw new \Exception ("Not Found Products!");
-        }
-        return $data;
-    }
     public function getProductForSearch($cat, $marc){
         $result = ['result' => false];
         $dbObj = DB::getInstance();

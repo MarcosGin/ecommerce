@@ -12,6 +12,13 @@ use App\Bin\Database\DB;
 class Category{
     private $name;
     private $icon;
+    private $product;
+
+    public function __construct()
+    {
+        $this->product = new Product();
+    }
+
 
 
     public function getAll(){
@@ -19,52 +26,28 @@ class Category{
         $query = $dbObj->getQuery("SELECT * FROM categories");
         $query->execute();
         $data = $query->fetchAll(\PDO::FETCH_OBJ);
-        return $data;
-    }
-
-    public function getCategoryWithMarks(){
-        $dbObj = DB::getInstance();
-        $query = $dbObj->getQuery("SELECT * FROM catmarc");
-        $query->execute();
-        $data = $query->fetchAll(\PDO::FETCH_OBJ);
-        return $data;
-    }
-
-    public function getCategories(){
-        $vec = array();
-        $cont = 0;
-        $objMark = new Mark();
-        $marks = $objMark->getAll();
-
-        foreach($this->getAll() as $category){
-            $vec[$cont]['id'] = $category->id;
-            $vec[$cont]['name'] = $category->name;
-            $vec[$cont]['icon'] = $category->icon;
-            foreach($this->getCategoryWithMarks() as $val){
-                if($category->id === $val->catId){
-                    $cont2 = 0;
-                    foreach($marks as $mark){
-                        if($mark->id === $val->marcId){
-                            $vec[$cont]['marks'][$cont2]['id'] = $mark->id;
-                            $vec[$cont]['marks'][$cont2]['name'] = $mark->name;
-                        }
-                        $cont2++;
-                    }
-                }
+        if ($data){
+            $categories = [];
+            foreach ($data as $category){
+                $products = $this->product->getProductForCategory($category->id);
+                $categories[] = [
+                    'id' => $category->id,
+                    'name' => $category->name,
+                    'products' => count($products),
+                ];
             }
-            $cont++;
+            return $categories;
+        }else{
+            return $data;
         }
-        return $vec;
     }
-
-    public function getCategoryForId($id){
+    public function getCategory($id){
         $dbObj = DB::getInstance();
-        $query = $dbObj->getQuery("SELECT name FROM categories WHERE id = :id");
+        $query = $dbObj->getQuery("SELECT * FROM categories WHERE id = :id");
         $query->execute([
-            'id' => $id,
+            'id' => $id
         ]);
         $data = $query->fetchAll(\PDO::FETCH_OBJ);
-
         return $data;
     }
 

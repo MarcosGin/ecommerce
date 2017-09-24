@@ -1,102 +1,86 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: marcos
- * Date: 18/06/17
- * Time: 16:56
- */
+
 namespace App\Controllers;
 
-use App\Bin\Token;
 use App\Models\Category;
 use App\Models\Mark;
 use App\Models\Product;
-use Sirius\Validation\Validator;
+use Slim\Http\Request;
+use Slim\Http\Response;
 
-class ProductController extends BaseController{
+class ProductController {
+
     private $product;
-    private $categories;
-    private $marks;
+    private $mark;
+    private $category;
     public function __construct(){
-        parent::__construct();
         $this->product = new Product();
-        $this->categories = new Category();
-        $this->marks = new Mark();
+        $this->mark = new Mark();
+        $this->category = new Category();
     }
 
-    public function getIndex() {
+    public function getAll(Request $request, Response $response, $args) {
         $products = $this->product->getAll();
-        $categories = $this->categories->getCategories();
-        return $this->render('products.twig');
-    }
-    public function getCategories() {
-        $categories = $this->categories->getCategories();
-        echo $this->json_response($categories, 200, '', true);
-    }
-    public function getProduct($param = null, $param2=null) {
-        if($param or $param2){
-            $products = $this->product->getProductForSearch($param, $param2);
-        }else{
-            $products = $this->product->getAll();
-        }
-        if($products['result']){
-            echo $this->json_response($products['response'], 200, '', true);
-        }else{
-            echo $this->json_response($products['response'], 200);
-        }
-    }
-    public function getBusq($name = null){
-        $products = $this->product->getProductLike($name, true);
-        header('Content-Type: application/json');
 
-        return $products;
-    }
-    public function getName($name = null){
-        $products = $this->product->getProductLike($name, false);
-        $categories = $this->categories->getCategories();
-        return $this->render('products.twig', ['products' => $products, 'categories' => $categories]);
-    }
-    public function getProfile($param = null) {
-        $products = $this->product->getProduct($param);
-        if($products['result']){
-            $imgs_max = $this->product->getImgs($products['response'][0]->carpet);
-            $imgs_min = $this->product->getImgs($products['response'][0]->carpet, "min");
-            return $this->render('product-profile.twig', ['products' => $products['response'], 'imgs_max' => $imgs_max, 'imgs_min' => $imgs_min]);
-        }else{
-            throw new  \Exception($products['response']);
+        if($products) {
+            return $response->withJson(['status' => true, 'response' => $products]);
+        } else {
+            return $response->withJson(['status' => false, 'response' => 'The products was not found']);
         }
-
     }
-    public function postComment(){
-        $jwt = [];
-        foreach (getallheaders() as $key => $value){
-            if($key == 'Authorization'){
-                $jwt = Token::checkToken($value);
-            }
-        }
-        if($jwt['result'] == true){
-            $this->product->getProduct($_POST['product_id']);
-            $createComment = $this->product->createComment($_POST['product_id'],$jwt['jwt']->id, $_POST['coment'], time());
+    public function get(Request $request, Response $response, $args) {
+        $product = $this->product->getProduct($args['id']);
 
-            if($createComment['result']){
-                echo $this->json_response($createComment['response'], 200, $jwt['token'], true);
+        if($product) {
+            return $response->withJson(['status' => true, 'response' => $product[0]]);
+        } else {
+            return $response->withJson(['status' => false, 'response' => 'The product was not found']);
+        }
+    }
+    public function update(Request $request, Response $response, $args) {
+        $product = $this->product->getProduct($args['id']);
+
+        if($product) {
+            $params = json_decode( $request->getBody(), true);
+            $update = $this->product->updateProduct($product[0]['id'],$params);
+            if($update['result']){
+                $product = $this->product->getProduct($product[0]['id']);
+                return $response->withJson(['status' => true, 'response' => ['message' => 'Product update','data' => $product[0]]]);
             }else{
-                echo $this->json_response($createComment['response'], 200);
+                return $response->withJson(['status' => false, 'response' => $update['response']]);
             }
-
-        }else{
-            echo $this->json_response($jwt['response'], 200);
+        } else {
+            return $response->withJson(['status' => false, 'response' => 'The product was not found']);
         }
     }
 
-    public function getComment($id){
-        $comments = $this->product->getComments($id);
-        if($comments['result']){
-            echo $this->json_response($comments['response'], 200, '', true);
+    public function getMark(Request $request, Response $response, $args){
+        $mark = $this->mark->getMark($args['id']);
+        if ($mark) {
+            return $response->withJson(['status' => true, 'response' => $mark[0]]);
         }else{
-            echo $this->json_response($comments['response'], 200);
+            return $response->withJson(['status' => false, 'response' => 'The mark was not found']);
         }
     }
+
+    public function getAllMark(Request $request, Response $response, $args){
+        $marks = $this->mark->getAll();
+        if ($marks) {
+            return $response->withJson(['status' => true, 'response' => $marks]);
+        }else{
+            return $response->withJson(['status' => false, 'response' => 'The marks was not found']);
+        }
+    }
+    public function getAllCategory(Request $request, Response $response, $args){
+        $categories = $this->category->getAll();
+        if ($categories) {
+            return $response->withJson(['status' => true, 'response' => $categories]);
+        }else{
+            return $response->withJson(['status' => false, 'response' => 'The categories was not found']);
+        }
+    }
+
+
 
 
 }
