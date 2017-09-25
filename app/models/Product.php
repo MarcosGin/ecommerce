@@ -28,7 +28,7 @@ class Product {
                                                     marks.id AS mark_id,marks.name AS mark_name,
                                                     products.price,products.stock,products.created_at,products.updated_at FROM products 
                                                        INNER JOIN marks ON products.mark = marks.id 
-                                                           INNER JOIN categories ON products.category = categories.id ORDER BY products.id ASC LIMIT 10 ");
+                                                           INNER JOIN categories ON products.category = categories.id ORDER BY products.id ASC");
         $query->execute();
         $data = $query->fetchAll(\PDO::FETCH_OBJ);
         if($data){
@@ -67,6 +67,38 @@ class Product {
                     'id' => $product->id,
                     'title' => $product->title,
                     'description' => $product->description,
+                    'mark' => ['id' => $product->mark_id, 'name' => $product->mark_name],
+                    'category' =>['id' => $product->category_id, 'name' => $product->category_name, 'icon' => $product->category_icon],
+                    'price' => $product->price,
+                    'stock' => $product->stock,
+                    'created_at' => $product->created_at,
+                    'updated_at' => $product->updated_at
+                ];
+            }
+            return $products;
+        }else{
+            return $data;
+        }
+    }
+    public function searchProducts($value)
+    {
+        $dbObj = DB::getInstance();
+        $query = $dbObj->getQuery("SELECT products.id,products.title,
+                                                  categories.id AS category_id,categories.name AS category_name,categories.icon AS category_icon,
+                                                    marks.id AS mark_id,marks.name AS mark_name,
+                                                    products.price,products.stock,products.created_at,products.updated_at FROM products 
+                                                       INNER JOIN marks ON products.mark = marks.id 
+                                                           INNER JOIN categories ON products.category = categories.id WHERE UPPER(products.title) LIKE UPPER(:title) ORDER BY products.id ASC");
+        $query->execute([
+            'title' => '%'.$value.'%'
+        ]);
+        $data = $query->fetchAll(\PDO::FETCH_OBJ);
+        if($data){
+            $products = [];
+            foreach ($data as $product){
+                $products[] = [
+                    'id' => $product->id,
+                    'title' => $product->title,
                     'mark' => ['id' => $product->mark_id, 'name' => $product->mark_name],
                     'category' =>['id' => $product->category_id, 'name' => $product->category_name, 'icon' => $product->category_icon],
                     'price' => $product->price,
@@ -125,36 +157,19 @@ class Product {
         return $result;
 
     }
-    public function searchProducts($value)
-    {
+    public function deleteProduct($id){
+        $result = array('result' => false);
         $dbObj = DB::getInstance();
-        $query = $dbObj->getQuery("SELECT products.id,products.title,
-                                                  categories.id AS category_id,categories.name AS category_name,categories.icon AS category_icon,
-                                                    marks.id AS mark_id,marks.name AS mark_name,
-                                                    products.price,products.stock,products.created_at,products.updated_at FROM products 
-                                                       INNER JOIN marks ON products.mark = marks.id 
-                                                           INNER JOIN categories ON products.category = categories.id WHERE UPPER(products.title) LIKE UPPER(:title) ORDER BY products.id ASC LIMIT 10 ");
-         $query->execute([
-            'title' => '%'.$value.'%'
+        $query = $dbObj->getQuery("DELETE FROM products WHERE id = :id");
+        $data = $query->execute([
+            'id' => $id
         ]);
-        $data = $query->fetchAll(\PDO::FETCH_OBJ);
-        if($data){
-            $products = [];
-            foreach ($data as $product){
-                $products[] = [
-                    'id' => $product->id,
-                    'title' => $product->title,
-                    'mark' => ['id' => $product->mark_id, 'name' => $product->mark_name],
-                    'category' =>['id' => $product->category_id, 'name' => $product->category_name, 'icon' => $product->category_icon],
-                    'price' => $product->price,
-                    'stock' => $product->stock,
-                    'created_at' => $product->created_at,
-                    'updated_at' => $product->updated_at
-                ];
-            }
-            return $products;
-        }else{
-            return $data;
+        if ($data) {
+            $result['result'] = true;
+            $result['response'] = "The product was successfully delete";
+        } else {
+            $result['response'] = "The product was not successfully modified";
         }
+        return $result;
     }
 }

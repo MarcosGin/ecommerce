@@ -37,22 +37,6 @@ class ProductController {
             return $response->withJson(['status' => false, 'response' => 'The product was not found']);
         }
     }
-    public function update(Request $request, Response $response, $args) {
-        $product = $this->product->getProduct($args['id']);
-
-        if($product) {
-            $params = json_decode( $request->getBody(), true);
-            $update = $this->product->updateProduct($product[0]['id'],$params);
-            if($update['result']){
-                $product = $this->product->getProduct($product[0]['id']);
-                return $response->withJson(['status' => true, 'response' => ['message' => 'Product update','data' => $product[0]]]);
-            }else{
-                return $response->withJson(['status' => false, 'response' => $update['response']]);
-            }
-        } else {
-            return $response->withJson(['status' => false, 'response' => 'The product was not found']);
-        }
-    }
     public function search(Request $request, Response $response, $args) {
         $products = $this->product->searchProducts($args['value']);
         if($products){
@@ -61,8 +45,39 @@ class ProductController {
             return $response->withJson(['status' => false, 'response' => 'Not found products']);
         }
     }
+    public function update(Request $request, Response $response, $args) {
+        $product = $this->product->getProduct($args['id']);
 
-        public function getMark(Request $request, Response $response, $args){
+        if($product) {
+            $params = json_decode( $request->getBody(), true);
+            $update = $this->product->updateProduct($product[0]['id'],$params);
+            if($update['result']){
+                $product = $this->product->getProduct($product[0]['id']);
+                return $response->withJson(['status' => true, 'response' => ['message' => $update['response'],'data' => $product[0]]]);
+            }else{
+                return $response->withJson(['status' => false, 'response' => $update['response']]);
+            }
+        } else {
+            return $response->withJson(['status' => false, 'response' => 'The product was not found']);
+        }
+    }
+    public function delete(Request $request, Response $response, $args) {
+        $product = $this->product->getProduct($args['id']);
+
+        if($product) {
+            $delete = $this->product->deleteProduct($product[0]['id']);
+
+            if($delete['result']){
+                return $response->withJson(['status' => true, 'response' => $delete['response']]);
+            } else {
+                return $response->withJson(['status' => false, 'response' => $delete['response']]);
+            }
+
+        } else {
+            return $response->withJson(['status' => false, 'response' => 'The product was not found']);
+        }
+    }
+    public function getMark(Request $request, Response $response, $args){
         $mark = $this->mark->getMark($args['id']);
         if ($mark) {
             return $response->withJson(['status' => true, 'response' => $mark[0]]);
@@ -70,7 +85,6 @@ class ProductController {
             return $response->withJson(['status' => false, 'response' => 'The mark was not found']);
         }
     }
-
     public function getAllMark(Request $request, Response $response, $args){
         $marks = $this->mark->getAll();
         if ($marks) {
