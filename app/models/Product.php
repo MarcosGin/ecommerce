@@ -130,6 +130,32 @@ class Product {
         $data = $query->fetchAll(\PDO::FETCH_ASSOC);
         return $data;
     }
+    public function addProduct($data) {
+        $result = array('result' => false);
+        if(isset($data['title']) && isset($data['description']) && isset($data['category'])
+            && isset($data['mark']) && isset($data['price']) && isset($data['stock'])){
+            $dbObj = DB::getInstance();
+            $query = $dbObj->getQuery("INSERT INTO products (title,description,category,mark,price,stock,created_at) VALUES(:title,:description,:category,:mark,:price,:stock,:created_at)");
+            $data = $query->execute([
+                'title' => $data['title'],
+                'description' => $data['description'],
+                'category' => $data['category'],
+                'mark' => $data['mark'],
+                'price' => $data['price'],
+                'stock' => $data['stock'],
+                'created_at' => date("Y-m-d H:i:s")
+            ]);
+            if ($data) {
+                $result['result'] = true;
+                $result['response'] = "The product was successfully add";
+            } else {
+                $result['response'] = "The product was not successfully add";
+            }
+        } else{
+            $result['response'] = "You must complete all the fields";
+        }
+        return $result;
+    }
     public function updateProduct($id, $data){
         $result = array('result' => false);
         if(isset($data['title']) && isset($data['description']) && isset($data['category'])

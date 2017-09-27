@@ -45,6 +45,15 @@ class ProductController {
             return $response->withJson(['status' => false, 'response' => 'Not found products']);
         }
     }
+    public function add(Request $request, Response $response, $args) {
+        $params = json_decode( $request->getBody(), true);
+        $add = $this->product->addProduct($params);
+        if($add['result']){
+            return $response->withJson(['status' => true, 'response' => ['message' => $add['response']]]);
+        }else{
+            return $response->withJson(['status' => false, 'response' => $add['response']]);
+        }
+    }
     public function update(Request $request, Response $response, $args) {
         $product = $this->product->getProduct($args['id']);
 
