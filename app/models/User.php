@@ -33,7 +33,6 @@ class User
 
         return $data;
     }
-
     public function getUsers()
     {
         $dbObj = DB::getInstance();
@@ -42,8 +41,6 @@ class User
         $data = $query->fetchAll(\PDO::FETCH_OBJ);
         return $data;
     }
-
-
     public function getLogin($email)
     {
         $dbObj = DB::getInstance();
@@ -55,7 +52,6 @@ class User
 
         return $data;
     }
-
     public function searchUsers($value)
     {
         $dbObj = DB::getInstance();
@@ -82,7 +78,6 @@ class User
         }
         return $result;
     }
-
     public function getUserForId($id)
     {
         $dbObj = DB::getInstance();
@@ -94,7 +89,6 @@ class User
 
         return $data;
     }
-
     public function getUserActivate($token, $type = null)
     {
         $dbObj = DB::getInstance();
@@ -111,7 +105,6 @@ class User
 
         return $data;
     }
-
     public function activateUser($token)
     {
         if ($this->getUserActivate($token)) {
@@ -125,7 +118,6 @@ class User
             return false;
         }
     }
-
     public function insertUser($post)
     {
         $result = [];
@@ -182,7 +174,6 @@ class User
             return $result;
         }
     }
-
     public function saveSession($user_id, $jwt){
         $result = array('result' => false);
         $dbObj = DB::getInstance();
@@ -198,7 +189,6 @@ class User
             }
         return $data;
     }
-
     public function downSession($user_id, $jwt){
         $result = array('result' => false);
         $dbObj = DB::getInstance();
@@ -214,7 +204,6 @@ class User
         }
         return $result;
     }
-
     public function downSessions($user_id){
         $result = array('result' => false);
         $dbObj = DB::getInstance();
@@ -229,9 +218,6 @@ class User
         }
         return $data;
     }
-
-
-
     public function generateTokenRegister($id, $change_email = false)
     {
         $token = bin2hex(random_bytes(40));
@@ -245,7 +231,6 @@ class User
 
         return BASE_URL . 'account/token/' . $token;
     }
-
     public function insertPurchase($user_id, $cart = [])
     {
         $result = array('result' => true);
@@ -280,7 +265,6 @@ class User
             return $result;
         }
     }
-
     public function getProfile($user_id)
     {
         $result = array('result' => false);
@@ -300,7 +284,6 @@ class User
         }
 
     }
-
     public function getHistory($user_id)
     {
         $result = array('result' => false);
@@ -354,7 +337,6 @@ class User
         }
 
     }
-
     public function updateProfile($user_id, $data)
     {
         $result = array('result' => false);
@@ -473,7 +455,6 @@ class User
 
         return $result;
     }
-
     public function checkIfChangeEmail($user_id){
         $result = array('result' => false);
         $dbObj = DB::getInstance();
@@ -490,5 +471,4 @@ class User
         }
         return $result;
     }
-
 }

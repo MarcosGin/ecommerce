@@ -25,7 +25,6 @@ class UserController
         }
 
     }
-
     public function getAll(Request $request, Response $response, $args){
 
         $users = $this->user->getUsers();
@@ -46,7 +45,6 @@ class UserController
             return $response->withJson(['status' => false, 'response' => 'Not found users']);
         }
     }
-
     public function update(Request $request, Response $response, $args){
         $user = $this->user->getUserForId($args['id']);
 
@@ -65,7 +63,6 @@ class UserController
             return $response->withJson(['status' => false, 'response' => 'The user was not found']);
         }
     }
-
     public function delete(Request $request, Response $response, $args){
         $user = $this->user->getUserForId($args['id']);
 
@@ -80,5 +77,4 @@ class UserController
             return $response->withJson(['status' => false, 'response' => 'The user was not deleted because it does not exist']);
         }
     }
-
 }

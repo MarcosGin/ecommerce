@@ -14,7 +14,7 @@ return array(
     'App\\Controllers\\CartController' => $baseDir . '/app/controllers/CartController.php',
     'App\\Controllers\\IndexController' => $baseDir . '/app/controllers/indexController.php',
     'App\\Controllers\\ProductController' => $baseDir . '/app/controllers/ProductController.php',
-    'App\\Controllers\\ProfileController' => $baseDir . '/app/controllers/ProfileController.php',
+    'App\\Controllers\\AccountController' => $baseDir . '/app/controllers/AccountController.php',
     'App\\Controllers\\UserController' => $baseDir . '/app/controllers/UserController.php',
     'App\\Models\\Category' => $baseDir . '/app/models/Category.php',
     'App\\Models\\Mark' => $baseDir . '/app/models/Mark.php',

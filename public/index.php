@@ -40,6 +40,13 @@ $app->group(API_ROUTE, function () use ($app) {
         });
 
     });
+    $app->group('/account', function () use ($app) {
+        $app->get('/profile', App\Controllers\AccountController::class . ':get');
+        $app->put('/profile',App\Controllers\AccountController::class . ':update');
+        $app->options('/profile', function ($request, $response, $args) {
+            return $response;
+        });
+    });
     $app->group('/users', function () use ($app){
         $app->get('/list', App\Controllers\UserController::class . ':getAll');
         $app->get('/get/{id}', App\Controllers\UserController::class . ':get');

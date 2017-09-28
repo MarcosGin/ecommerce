@@ -105,7 +105,7 @@ class ComposerStaticInit20c21e6cbe05927a5b30745fa33cfa9a
         'App\\Controllers\\CartController' => __DIR__ . '/../..' . '/app/controllers/CartController.php',
         'App\\Controllers\\IndexController' => __DIR__ . '/../..' . '/app/controllers/indexController.php',
         'App\\Controllers\\ProductController' => __DIR__ . '/../..' . '/app/controllers/ProductController.php',
-        'App\\Controllers\\ProfileController' => __DIR__ . '/../..' . '/app/controllers/ProfileController.php',
+        'App\\Controllers\\AccountController' => __DIR__ . '/../..' . '/app/controllers/AccountController.php',
         'App\\Controllers\\UserController' => __DIR__ . '/../..' . '/app/controllers/UserController.php',
         'App\\Models\\Category' => __DIR__ . '/../..' . '/app/models/Category.php',
         'App\\Models\\Mark' => __DIR__ . '/../..' . '/app/models/Mark.php',
