@@ -34,29 +34,19 @@ $app->group(API_ROUTE, function () use ($app) {
     $app->get('/', App\Controllers\indexController::class . ':home');
     $app->group('/auth', function () use ($app) {
         $app->post('/login', App\Controllers\AuthController::class . ':login');
-        $app->get('/logout', App\Controllers\AuthController::class . ':logout');
-        $app->options('/logout', function ($request, $response, $args) {
-            return $response;
-        });
-
+        $app->get('/logout', App\Controllers\AuthController::class . ':logout')->add(new App\Middleware\AuthMiddleware());
     });
     $app->group('/account', function () use ($app) {
         $app->get('/profile', App\Controllers\AccountController::class . ':get');
         $app->put('/profile',App\Controllers\AccountController::class . ':update');
-        $app->options('/profile', function ($request, $response, $args) {return $response;});
-    });
+    })->add(new App\Middleware\AuthMiddleware());
     $app->group('/users', function () use ($app){
         $app->get('/list', App\Controllers\UserController::class . ':getAll');
         $app->get('/get/{id}', App\Controllers\UserController::class . ':get');
         $app->get('/search/{value}', App\Controllers\UserController::class . ':search');
         $app->put('/update/{id}', App\Controllers\UserController::class . ':update');
         $app->delete('/delete/{id}', App\Controllers\UserController::class .':delete');
-        $app->options('/get/{id}', function ($request, $response, $args) {return $response;});
-        $app->options('/search/{value}', function ($request, $response, $args) {return $response;});
-        $app->options('/update/{id}', function ($request, $response, $args) {return $response;});
-        $app->options('/delete/{id}', function ($request, $response, $args) {return $response;});
-
-    });
+    })->add(new App\Middleware\AuthMiddleware());
     $app->group('/products', function () use ($app) {
         $app->get('/list', App\Controllers\ProductController::class . ':getAll');
         $app->get('/get/{id}', App\Controllers\ProductController::class . ':get');
@@ -67,12 +57,9 @@ $app->group(API_ROUTE, function () use ($app) {
         $app->get('/marks/list', App\Controllers\ProductController::class . ':getAllMark');
         $app->get('/marks/get/{id}', App\Controllers\ProductController::class . ':getMark');
         $app->get('/categories/list', App\Controllers\ProductController::class . ':getAllCategory');
-
-    });
+    })->add(new App\Middleware\AuthMiddleware());
     $app->group('/country', function () use ($app) {
         $app->get('/list', App\Controllers\CountryController::class . ':getAll');
-    });
+    })->add(new App\Middleware\AuthMiddleware());
 });
-
-
 $app->run();

@@ -44,23 +44,14 @@ class AuthController {
 
     }
     public function logout(Request $request, Response $response, $args){
-        $jwt_header = $request->getHeader('Authorization');
+        $user = $request->getAttribute('user');
+        $jwt = $request->getAttribute('jwt');
 
-        if ($jwt_header){
-            $jwt = Token::checkToken($jwt_header[0]);
-            if($jwt['result']){
-                $downSession = $this->user->downSession($jwt['jwt']->id, $jwt_header[0]);
-                if($downSession['result']){
-                    return $response->withJson(['status' => true,'response' =>'The session was closed']);
-                }else{
-                    return $response->withJson(['status' => false,'response' =>'The session was not closed', 'jwt' => $jwt['token']]);
-                }
-            }else{
-                return $response->withJson(['status' => false,'response' => $jwt['response'], 'jwt' => $jwt_header], 401);
-            }
+        $downSession = $this->user->downSession($user->id, $jwt);
+        if($downSession['result']){
+            return $response->withJson(['status' => true,'response' =>'The session was closed']);
         }else{
-            return $response->withJson(['status' => false,'response' =>'Authorization failed'],401);
+            return $response->withJson(['status' => false,'response' =>'The session was not closed', 'jwt' => $jwt]);
         }
     }
-
 }

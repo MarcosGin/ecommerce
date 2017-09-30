@@ -23,50 +23,30 @@ class AccountController
     }
 
     public function get(Request $request, Response $response, $args) {
-        $jwt_header = $request->getHeader('Authorization');
-
-        if ($jwt_header){
-            $jwt = Token::checkToken($jwt_header[0]);
-            if($jwt['result']){
-               $profile = $this->user->getUserForId($jwt['jwt']->id);
-               if($profile) {
-                   return $response->withJson(['status' => true,'response' => $profile[0], 'jwt' => $jwt_header]);
-               }else{
-                   return $response->withJson(['status' => false,'response' => 'fail', 'jwt' => $jwt_header]);
-               }
-            }else{
-                return $response->withJson(['status' => false,'response' => $jwt['response'], 'jwt' => $jwt_header], 401);
-            }
-        }else{
-            return $response->withJson(['status' => false,'response' =>'Authorization failed'],401);
+        $user = $request->getAttribute('user');
+        $jwt = $request->getAttribute('jwt');
+        $profile = $this->user->getUserForId($user->id);
+        if($profile) {
+            return $response->withJson(['status' => true,'response' => $profile[0], 'jwt' => $jwt]);
+        } else {
+            return $response->withJson(['status' => false,'response' => 'fail', 'jwt' => $jwt]);
         }
     }
     public function update(Request $request, Response $response, $args) {
-
-        $jwt_header = $request->getHeader('Authorization');
-
-        if ($jwt_header){
-            $jwt = Token::checkToken($jwt_header[0]);
-            if($jwt['result']){
-                $user = $this->user->getUserForId($jwt['jwt']->id);
-                if ($user){
-                    $params = json_decode( $request->getBody(), true);
-                    $update = $this->user->updateProfile($user[0]->id, $params);
-
-                    if($update['result']){
-                        $newData = $this->user->getUserForId($user[0]->id);
-                        return $response->withJson(['status' => false, 'response' => ['message' => 'The profile was successfully updated','data' => $newData[0]], 'jwt' => $jwt_header]);
-                    }else{
-                        return $response->withJson(['status' => false, 'response' => $update['response'], 'jwt' => $jwt_header]);
-                    }
-                } else {
-                    return $response->withJson(['status' => false, 'response' => 'The user was not found','jwt' => $jwt_header]);
-                }
-            }else{
-                return $response->withJson(['status' => false,'response' => $jwt['response'], 'jwt' => $jwt_header], 401);
+        $user = $request->getAttribute('user');
+        $jwt = $request->getAttribute('jwt');
+        $user = $this->user->getUserForId($user->id);
+        if($user){
+            $params = json_decode( $request->getBody(), true);
+            $update = $this->user->updateProfile($user[0]->id, $params);
+            if($update['result']){
+                $newData = $this->user->getUserForId($user[0]->id);
+                return $response->withJson(['status' => false, 'response' => ['message' => 'The profile was successfully updated','data' => $newData[0]], 'jwt' => $jwt]);
+            } else {
+                return $response->withJson(['status' => false, 'response' => $update['response'], 'jwt' => $jwt]);
             }
-        }else{
-            return $response->withJson(['status' => false,'response' =>'Authorization failed'],401);
+        } else {
+            return $response->withJson(['status' => false, 'response' => 'The user was not found','jwt' => $jwt]);
         }
     }
 

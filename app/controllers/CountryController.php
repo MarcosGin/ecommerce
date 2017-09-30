@@ -15,8 +15,9 @@ class CountryController {
     }
 
     public function getAll(Request $request, Response $response, $args) {
+        $jwt = $request->getAttribute('jwt');
         $countrys = $this->country->getAll();
-        return $response->withJson(['status' => true, 'response' => $countrys]);
+        return $response->withJson(['status' => true, 'response' => $countrys, 'jwt' => $jwt]);
     }
 
 }
