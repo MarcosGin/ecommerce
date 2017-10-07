@@ -1,7 +1,6 @@
 <?php
-
 $app->group(API_ROUTE, function () use ($app) {
-    $app->get('/', \App\Controllers\indexController::class . ':home');
+    $app->get('/', App\Controllers\indexController::class . ':home');
     $app->group('/auth', function () use ($app) {
         $app->post('/login', App\Controllers\AuthController::class . ':login');
         $app->get('/logout', App\Controllers\AuthController::class . ':logout')->add(new App\Middleware\AuthMiddleware());

@@ -4,12 +4,12 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit20c21e6cbe05927a5b30745fa33cfa9a
+class ComposerStaticInitcabbdceae86af38740cae77fe0ae21c9
 {
     public static $files = array (
         '253c157292f75eb38082b5acb06f3f01' => __DIR__ . '/..' . '/nikic/fast-route/src/functions.php',
-        '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         '3917c79c5052b270641b5a200963dbc2' => __DIR__ . '/..' . '/kint-php/kint/init.php',
+        '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -23,6 +23,7 @@ class ComposerStaticInit20c21e6cbe05927a5b30745fa33cfa9a
         array (
             'Psr\\Http\\Message\\' => 17,
             'Psr\\Container\\' => 14,
+            'Phroute\\Phroute\\' => 16,
         ),
         'I' => 
         array (
@@ -63,6 +64,10 @@ class ComposerStaticInit20c21e6cbe05927a5b30745fa33cfa9a
         'Psr\\Container\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/container/src',
+        ),
+        'Phroute\\Phroute\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phroute/phroute/src/Phroute',
         ),
         'Interop\\Container\\' => 
         array (
@@ -105,9 +110,9 @@ class ComposerStaticInit20c21e6cbe05927a5b30745fa33cfa9a
         'App\\Controllers\\AuthController' => __DIR__ . '/../..' . '/app/controllers/AuthController.php',
         'App\\Controllers\\CartController' => __DIR__ . '/../..' . '/app/controllers/CartController.php',
         'App\\Controllers\\CountryController' => __DIR__ . '/../..' . '/app/controllers/CountryController.php',
-        'App\\Controllers\\IndexController' => __DIR__ . '/../..' . '/app/controllers/indexController.php',
         'App\\Controllers\\ProductController' => __DIR__ . '/../..' . '/app/controllers/ProductController.php',
         'App\\Controllers\\UserController' => __DIR__ . '/../..' . '/app/controllers/UserController.php',
+        'App\\Controllers\\indexController' => __DIR__ . '/../..' . '/app/controllers/indexController.php',
         'App\\Middleware\\AuthMiddleware' => __DIR__ . '/../..' . '/app/middleware/AuthMiddleware.php',
         'App\\Models\\Category' => __DIR__ . '/../..' . '/app/models/Category.php',
         'App\\Models\\Country' => __DIR__ . '/../..' . '/app/models/Country.php',
@@ -228,6 +233,19 @@ class ComposerStaticInit20c21e6cbe05927a5b30745fa33cfa9a
         'PHPMailerOAuth' => __DIR__ . '/..' . '/phpmailer/phpmailer/class.phpmaileroauth.php',
         'PHPMailerOAuthGoogle' => __DIR__ . '/..' . '/phpmailer/phpmailer/class.phpmaileroauthgoogle.php',
         'POP3' => __DIR__ . '/..' . '/phpmailer/phpmailer/class.pop3.php',
+        'Phroute\\Phroute\\Dispatcher' => __DIR__ . '/..' . '/phroute/phroute/src/Phroute/Dispatcher.php',
+        'Phroute\\Phroute\\Exception\\BadRouteException' => __DIR__ . '/..' . '/phroute/phroute/src/Phroute/Exception/BadRouteException.php',
+        'Phroute\\Phroute\\Exception\\HttpException' => __DIR__ . '/..' . '/phroute/phroute/src/Phroute/Exception/HttpException.php',
+        'Phroute\\Phroute\\Exception\\HttpMethodNotAllowedException' => __DIR__ . '/..' . '/phroute/phroute/src/Phroute/Exception/HttpMethodNotAllowedException.php',
+        'Phroute\\Phroute\\Exception\\HttpRouteNotFoundException' => __DIR__ . '/..' . '/phroute/phroute/src/Phroute/Exception/HttpRouteNotFoundException.php',
+        'Phroute\\Phroute\\HandlerResolver' => __DIR__ . '/..' . '/phroute/phroute/src/Phroute/HandlerResolver.php',
+        'Phroute\\Phroute\\HandlerResolverInterface' => __DIR__ . '/..' . '/phroute/phroute/src/Phroute/HandlerResolverInterface.php',
+        'Phroute\\Phroute\\Route' => __DIR__ . '/..' . '/phroute/phroute/src/Phroute/Route.php',
+        'Phroute\\Phroute\\RouteCollector' => __DIR__ . '/..' . '/phroute/phroute/src/Phroute/RouteCollector.php',
+        'Phroute\\Phroute\\RouteDataArray' => __DIR__ . '/..' . '/phroute/phroute/src/Phroute/RouteDataArray.php',
+        'Phroute\\Phroute\\RouteDataInterface' => __DIR__ . '/..' . '/phroute/phroute/src/Phroute/RouteDataInterface.php',
+        'Phroute\\Phroute\\RouteDataProviderInterface' => __DIR__ . '/..' . '/phroute/phroute/src/Phroute/RouteDataProviderInterface.php',
+        'Phroute\\Phroute\\RouteParser' => __DIR__ . '/..' . '/phroute/phroute/src/Phroute/RouteParser.php',
         'Pimple\\Container' => __DIR__ . '/..' . '/pimple/pimple/src/Pimple/Container.php',
         'Pimple\\Exception\\ExpectedInvokableException' => __DIR__ . '/..' . '/pimple/pimple/src/Pimple/Exception/ExpectedInvokableException.php',
         'Pimple\\Exception\\FrozenServiceException' => __DIR__ . '/..' . '/pimple/pimple/src/Pimple/Exception/FrozenServiceException.php',
@@ -370,10 +388,10 @@ class ComposerStaticInit20c21e6cbe05927a5b30745fa33cfa9a
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit20c21e6cbe05927a5b30745fa33cfa9a::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit20c21e6cbe05927a5b30745fa33cfa9a::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit20c21e6cbe05927a5b30745fa33cfa9a::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInit20c21e6cbe05927a5b30745fa33cfa9a::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitcabbdceae86af38740cae77fe0ae21c9::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitcabbdceae86af38740cae77fe0ae21c9::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInitcabbdceae86af38740cae77fe0ae21c9::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInitcabbdceae86af38740cae77fe0ae21c9::$classMap;
 
         }, null, ClassLoader::class);
     }
