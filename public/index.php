@@ -13,6 +13,7 @@ require_once 'app/bin/database/DB.php';
 
 
 CONST API_ROUTE = '/api';
+CONST ROOT_IMAGES = 'public/images/';
 $api_config = [
     'settings' => [
         'displayErrorDetails' => true,
@@ -27,7 +28,7 @@ $app->add(function ($req, $res, $next) {
     $response = $next($req, $res);
     return $response
         ->withHeader('Access-Control-Allow-Origin', '*')
-        ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+        ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization, Upload-Content-Type')
         ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
 });
 

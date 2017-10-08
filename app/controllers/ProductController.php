@@ -7,6 +7,7 @@ use App\Models\Mark;
 use App\Models\Product;
 use Slim\Http\Request;
 use Slim\Http\Response;
+use Slim\Http\UploadedFile;
 
 class ProductController {
 
@@ -89,6 +90,30 @@ class ProductController {
             return $response->withJson(['status' => false, 'response' => 'The product was not found']);
         }
     }
+    public function updateImages(Request $request, Response $response, $args) {
+        $jwt = $request->getAttribute('jwt');
+        $files = $request->getUploadedFiles();
+        $uploads = ['images' => []];
+        $folder = uniqid();
+        if(isset($files['uploads']) && is_array($files['uploads'])) {
+            foreach ($files['uploads'] as $uploadedFile) {
+                if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
+                    $filename = $this->moveUploadedFile($folder . '/', $uploadedFile);
+                    if ($filename) {
+                        $uploads['images'][] = $filename;
+                    }
+                }
+            }
+        }
+        if($uploads['images']){
+            $uploads['folder'] = $folder;
+            return $response->withJson(['status' => true, 'response' => $uploads, 'jwt' => $jwt]);
+        }else{
+            return $response->withJson(['status' => false, 'response' => 'No images found', 'jwt' => $jwt]);
+        }
+
+
+    }
     public function getMark(Request $request, Response $response, $args){
         $jwt = $request->getAttribute('jwt');
         $mark = $this->mark->getMark($args['id']);
@@ -114,6 +139,21 @@ class ProductController {
             return $response->withJson(['status' => true, 'response' => $categories, 'jwt' => $jwt]);
         }else{
             return $response->withJson(['status' => false, 'response' => 'The categories was not found', 'jwt' => $jwt]);
+        }
+    }
+
+    function moveUploadedFile($directory, UploadedFile $uploadedFile)
+    {
+        if($uploadedFile->getClientMediaType() === 'image/jpeg' || $uploadedFile->getClientMediaType() === 'image/png') {
+            $extension = pathinfo($uploadedFile->getClientFilename(), PATHINFO_EXTENSION);
+            $basename = bin2hex(random_bytes(8));
+            $filename = sprintf('%s.%0.8s', $basename, $extension);
+            if (!file_exists(ROOT_IMAGES . $directory)){mkdir(ROOT_IMAGES . $directory);};
+            $uploadedFile->moveTo(ROOT_IMAGES . $directory . DIRECTORY_SEPARATOR . $filename);
+
+            return $filename;
+        }else{
+            return false;
         }
     }
 }
