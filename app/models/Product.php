@@ -52,7 +52,7 @@ class Product {
     }
     public function getProduct($id){
         $dbObj = DB::getInstance();
-        $query = $dbObj->getQuery("SELECT products.id,products.title,products.description,
+        $query = $dbObj->getQuery("SELECT products.id,products.title,products.description,products.image,products.folder,
                                                   categories.id AS category_id,categories.name AS category_name,categories.icon AS category_icon,
                                                     marks.id AS mark_id,marks.name AS mark_name,
                                                     products.price,products.stock,products.created_at,products.updated_at FROM products 
@@ -63,6 +63,7 @@ class Product {
         if ($data) {
             $products = [];
             foreach ($data as $product){
+                $image = $product->image ? 'http://' . $_SERVER['HTTP_HOST'] . '/' . ROOT_IMAGES . $product->image : null;
                 $products[] = [
                     'id' => $product->id,
                     'title' => $product->title,
@@ -70,6 +71,8 @@ class Product {
                     'mark' => ['id' => $product->mark_id, 'name' => $product->mark_name],
                     'category' =>['id' => $product->category_id, 'name' => $product->category_name, 'icon' => $product->category_icon],
                     'price' => $product->price,
+                    'folder' => $product->folder,
+                    'image' => $image,
                     'stock' => $product->stock,
                     'created_at' => $product->created_at,
                     'updated_at' => $product->updated_at
@@ -79,6 +82,25 @@ class Product {
         }else{
             return $data;
         }
+    }
+    public function getImages($folder) {
+        $dbObj = DB::getInstance();
+        $query = $dbObj->getQuery(" SELECT * FROM products_imgs WHERE folder = :folder");
+        $query->execute(['folder'=>$folder]);
+        $data = $query->fetchAll(\PDO::FETCH_OBJ);
+        if($data){
+            $images = [];
+            foreach ($data as $image){
+                $images[] = [
+                    'id' => $image->id,
+                    'url' => 'http://' . $_SERVER['HTTP_HOST'] . '/' . ROOT_IMAGES . $image->folder . '/' . $image->title
+                ];
+            }
+            return $images;
+        }else{
+            return $data;
+        }
+
     }
     public function searchProducts($value)
     {
@@ -156,6 +178,19 @@ class Product {
         }
         return $result;
     }
+    public function addImages($folder, $images) {
+        $result = array('result' => false);
+        $dbObj = DB::getInstance();
+        foreach ($images as $image){
+            $query = $dbObj->getQuery("INSERT INTO products_imgs (folder,title,sizes) VALUES(:folder,:title,:sizes)");
+            $query->execute([
+                'folder' => $folder,
+                'title' => $image,
+                'sizes' => 'normal'
+            ]);
+        }
+        return true;
+    }
     public function updateProduct($id, $data){
         $result = array('result' => false);
         if(isset($data['title']) && isset($data['description']) && isset($data['category'])
@@ -182,6 +217,22 @@ class Product {
         }
         return $result;
 
+    }
+    public function updateFolder($id, $folder) {
+        $result = array('result' => false);
+        $dbObj = DB::getInstance();
+        $query = $dbObj->getQuery("UPDATE products SET folder = :folder WHERE id = :id");
+        $data = $query->execute([
+            'folder' => $folder,
+            'id' => $id
+        ]);
+        if ($data) {
+            $result['result'] = true;
+            $result['response'] = 'The product folder updated successfully';
+        }else{
+            $result['response'] = 'The product folder was not updated correctly';
+        }
+        return $result;
     }
     public function deleteProduct($id){
         $result = array('result' => false);
