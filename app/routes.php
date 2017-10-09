@@ -23,7 +23,8 @@ $app->group(API_ROUTE, function () use ($app) {
         $app->post('/add', App\Controllers\ProductController::class . ':add');
         $app->put('/update/{id}', App\Controllers\ProductController::class . ':update');
         $app->delete('/delete/{id}', App\Controllers\ProductController::class . ':delete');
-        $app->post('/images/update/{id}',App\Controllers\ProductController::class . ':updateImages');
+        $app->get('/images/get/{id}', App\Controllers\ProductController::class . ':getImages');
+        $app->post('/images/add/{id}',App\Controllers\ProductController::class . ':addImages');
         $app->get('/marks/list', App\Controllers\ProductController::class . ':getAllMark');
         $app->get('/marks/get/{id}', App\Controllers\ProductController::class . ':getMark');
         $app->get('/categories/list', App\Controllers\ProductController::class . ':getAllCategory');
