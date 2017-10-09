@@ -90,29 +90,38 @@ class ProductController {
             return $response->withJson(['status' => false, 'response' => 'The product was not found']);
         }
     }
-    public function updateImages(Request $request, Response $response, $args) {
+    public function getImages(Request $request, Response $response, $args) {
         $jwt = $request->getAttribute('jwt');
-        $files = $request->getUploadedFiles();
-        $uploads = ['images' => []];
-        $folder = uniqid();
-        if(isset($files['uploads']) && is_array($files['uploads'])) {
-            foreach ($files['uploads'] as $uploadedFile) {
-                if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
-                    $filename = $this->moveUploadedFile($folder . '/', $uploadedFile);
-                    if ($filename) {
-                        $uploads['images'][] = $filename;
-                    }
-                }
+        $product = $this->product->getProduct($args['id']);
+        if($product) {
+            $images = $this->product->getImages($product[0]['folder']);
+            if($images) {
+                return $response->withJson(['status' => true, 'response' => $images, 'jwt' => $jwt]);
+            } else {
+                return $response->withJson(['status' => false, 'response' => 'The images was not found', 'jwt' => $jwt]);
             }
-        }
-        if($uploads['images']){
-            $uploads['folder'] = $folder;
-            return $response->withJson(['status' => true, 'response' => $uploads, 'jwt' => $jwt]);
-        }else{
-            return $response->withJson(['status' => false, 'response' => 'No images found', 'jwt' => $jwt]);
+        } else {
+            return $response->withJson(['status' => false, 'response' => 'The product was not found', 'jwt' => $jwt]);
         }
 
+    }
+    public function addImages(Request $request, Response $response, $args) {
+        $jwt = $request->getAttribute('jwt');
+        $product = $this->product->getProduct($args['id']);
+        if($product) {
+            $files = $request->getUploadedFiles();
+            $folder = $product[0]['folder'] ? $product[0]['folder'] : uniqid();
+            $this->product->updateFolder($product[0]['id'], $folder);
+            $upload = $this->uploadImages($files, $folder);
 
+            if($upload['result']){
+                return $response->withJson(['status' => true, 'response' => ['message' => $upload['message'], 'data' => $upload['data']], 'jwt' => $jwt]);
+            }else{
+                return $response->withJson(['status' => false, 'response' => $upload['message'], 'jwt' => $jwt]);
+            }
+        } else {
+            return $response->withJson(['status' => false, 'response' => 'The product was not found', 'jwt' => $jwt]);
+        }
     }
     public function getMark(Request $request, Response $response, $args){
         $jwt = $request->getAttribute('jwt');
@@ -142,6 +151,28 @@ class ProductController {
         }
     }
 
+
+    function uploadImages($files, $folder){
+        $result = array('result' => false);
+        if(isset($files['uploads']) && is_array($files['uploads'])) {
+            $uploads = ['folder' => $folder, 'images' => []];
+            foreach ($files['uploads'] as $uploadedFile) {
+                if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
+                    $filename = $this->moveUploadedFile($folder . '/', $uploadedFile);
+                    if ($filename) {
+                        $uploads['images'][] = $filename;
+                    }
+                }
+            }
+            $this->product->addImages($folder, $uploads['images']);
+            $result['result'] = true;
+            $result['message'] = 'The images saved successfully';
+            $result['data'] = $uploads;
+        }else{
+            $result['message'] = 'No images found for upload';
+        }
+        return $result;
+    }
     function moveUploadedFile($directory, UploadedFile $uploadedFile)
     {
         if($uploadedFile->getClientMediaType() === 'image/jpeg' || $uploadedFile->getClientMediaType() === 'image/png') {
