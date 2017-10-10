@@ -92,8 +92,8 @@ class Product {
             $images = [];
             foreach ($data as $image){
                 $images[] = [
-                    'id' => $image->id,
-                    'url' => 'http://' . $_SERVER['HTTP_HOST'] . '/' . ROOT_IMAGES . $image->folder . '/' . $image->title
+                    'name' => $image->title,
+                    'url' => 'http://' . $_SERVER['HTTP_HOST'] . '/ecommerce/' . ROOT_IMAGES . $image->folder . '/' . $image->title
                 ];
             }
             return $images;
@@ -185,7 +185,7 @@ class Product {
             $query = $dbObj->getQuery("INSERT INTO products_imgs (folder,title,sizes) VALUES(:folder,:title,:sizes)");
             $query->execute([
                 'folder' => $folder,
-                'title' => $image,
+                'title' => $image['name'],
                 'sizes' => 'normal'
             ]);
         }

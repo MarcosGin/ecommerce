@@ -160,7 +160,7 @@ class ProductController {
                 if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
                     $filename = $this->moveUploadedFile($folder . '/', $uploadedFile);
                     if ($filename) {
-                        $uploads['images'][] = $filename;
+                        $uploads['images'][] = ['name' => $filename, 'url' =>'http://' . $_SERVER['HTTP_HOST'] . '/ecommerce/' . ROOT_IMAGES . $folder . '/' . $filename];
                     }
                 }
             }
