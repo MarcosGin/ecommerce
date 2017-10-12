@@ -113,14 +113,30 @@ class ProductController {
             $folder = $product[0]['folder'] ? $product[0]['folder'] : uniqid();
             $this->product->updateFolder($product[0]['id'], $folder);
             $upload = $this->uploadImages($files, $folder);
-
-            if($upload['result']){
+            if ($upload['result']) {
                 return $response->withJson(['status' => true, 'response' => ['message' => $upload['message'], 'data' => $upload['data']], 'jwt' => $jwt]);
-            }else{
+            } else {
                 return $response->withJson(['status' => false, 'response' => $upload['message'], 'jwt' => $jwt]);
             }
         } else {
             return $response->withJson(['status' => false, 'response' => 'The product was not found', 'jwt' => $jwt]);
+        }
+    }
+    public function deleteImage(Request $request, Response $response, $args) {
+        $jwt = $request->getAttribute('jwt');
+        $image = $this->product->getImage($args['name']);
+        $product = $this->product->getProduct($args['id']);
+        $images = $this->product->getImages($product[0]['folder']);
+        if ($image) {
+            $delete = $this->product->deleteImage($args['name']);
+            $images = $this->product->getImages($product[0]['folder']);
+            if ($delete['result']) {
+                return $response->withJson(['status' => true, 'response' => ['message' => $delete['response'], 'data' => $images], 'jwt' => $jwt]);
+            }else{
+                return $response->withJson(['status' => false, 'response' => ['message' => $delete['response'], 'data' => $images], 'jwt' => $jwt]);
+            }
+        }else{
+            return $response->withJson(['status' => false, 'response' => ['message' => 'The image was not found', 'data' => $images], 'jwt' => $jwt]);
         }
     }
     public function getMark(Request $request, Response $response, $args){
@@ -160,7 +176,7 @@ class ProductController {
                 if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
                     $filename = $this->moveUploadedFile($folder . '/', $uploadedFile);
                     if ($filename) {
-                        $uploads['images'][] = ['name' => $filename, 'url' =>'http://' . $_SERVER['HTTP_HOST'] . '/ecommerce/' . ROOT_IMAGES . $folder . '/' . $filename];
+                        $uploads['images'][] = ['name' => $filename, 'url' => 'http://' . $_SERVER['HTTP_HOST'] . '/ecommerce/' . ROOT_IMAGES . $folder . '/' . $filename];
                     }
                 }
             }
