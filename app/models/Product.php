@@ -102,6 +102,25 @@ class Product {
         }
 
     }
+    public function getImage($name){
+        $dbObj = DB::getInstance();
+        $query = $dbObj->getQuery(" SELECT * FROM products_imgs WHERE title = :title");
+        $query->execute(['title'=>$name]);
+        $data = $query->fetchAll(\PDO::FETCH_OBJ);
+        if($data){
+            $images = [];
+            foreach ($data as $image){
+                $images[] = [
+                    'name' => $image->title,
+                    'url' => 'http://' . $_SERVER['HTTP_HOST'] . '/ecommerce/' . ROOT_IMAGES . $image->folder . '/' . $image->title
+                ];
+            }
+            return $images;
+        }else{
+            return $data;
+        }
+
+    }
     public function searchProducts($value)
     {
         $dbObj = DB::getInstance();
@@ -152,7 +171,7 @@ class Product {
         $data = $query->fetchAll(\PDO::FETCH_ASSOC);
         return $data;
     }
-    public function addProduct($data) {
+    public function addProduct($data){
         $result = array('result' => false);
         if(isset($data['title']) && isset($data['description']) && isset($data['category'])
             && isset($data['mark']) && isset($data['price']) && isset($data['stock'])){
@@ -178,7 +197,7 @@ class Product {
         }
         return $result;
     }
-    public function addImages($folder, $images) {
+    public function addImages($folder, $images){
         $result = array('result' => false);
         $dbObj = DB::getInstance();
         foreach ($images as $image){
@@ -245,7 +264,22 @@ class Product {
             $result['result'] = true;
             $result['response'] = "The product was successfully delete";
         } else {
-            $result['response'] = "The product was not successfully modified";
+            $result['response'] = "The product was not successfully delete";
+        }
+        return $result;
+    }
+    public function deleteImage($name){
+        $result = array('result' => false);
+        $dbObj = DB::getInstance();
+        $query = $dbObj->getQuery("DELETE FROM products_imgs WHERE title = :title");
+        $data = $query->execute([
+            'title' => $name
+        ]);
+        if ($data) {
+            $result['result'] = true;
+            $result['response'] = "The image was successfully delete";
+        } else {
+            $result['response'] = "The image was not successfully delete";
         }
         return $result;
     }
