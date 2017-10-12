@@ -25,6 +25,7 @@ $app->group(API_ROUTE, function () use ($app) {
         $app->delete('/delete/{id}', App\Controllers\ProductController::class . ':delete');
         $app->get('/images/get/{id}', App\Controllers\ProductController::class . ':getImages');
         $app->post('/images/add/{id}',App\Controllers\ProductController::class . ':addImages');
+        $app->delete('/images/delete/{id}/{name}', App\Controllers\ProductController::class . ':deleteImage');
         $app->get('/marks/list', App\Controllers\ProductController::class . ':getAllMark');
         $app->get('/marks/get/{id}', App\Controllers\ProductController::class . ':getMark');
         $app->get('/categories/list', App\Controllers\ProductController::class . ':getAllCategory');
