@@ -63,7 +63,7 @@ class Product {
         if ($data) {
             $products = [];
             foreach ($data as $product){
-                $image = $product->image ? 'http://' . $_SERVER['HTTP_HOST'] . '/' . ROOT_IMAGES . $product->image : null;
+                $image = $product->image ? 'http://' . $_SERVER['HTTP_HOST'] . '/ecommerce/' . ROOT_IMAGES . $product->folder . '/' . $product->image : null;
                 $products[] = [
                     'id' => $product->id,
                     'title' => $product->title,
@@ -198,7 +198,6 @@ class Product {
         return $result;
     }
     public function addImages($folder, $images){
-        $result = array('result' => false);
         $dbObj = DB::getInstance();
         foreach ($images as $image){
             $query = $dbObj->getQuery("INSERT INTO products_imgs (folder,title,sizes) VALUES(:folder,:title,:sizes)");
@@ -208,6 +207,16 @@ class Product {
                 'sizes' => 'normal'
             ]);
         }
+        return true;
+    }
+    public function addImage($folder, $images){
+        $dbObj = DB::getInstance();
+            $query = $dbObj->getQuery("UPDATE products SET image = :image WHERE folder = :folder");
+            $query->execute([
+                'folder' => $folder,
+                'image' => $images[0]['name']
+            ]);
+
         return true;
     }
     public function updateProduct($id, $data){
