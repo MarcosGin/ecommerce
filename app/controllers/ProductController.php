@@ -105,6 +105,23 @@ class ProductController {
         }
 
     }
+    public function addImage(Request $request, Response $response, $args) {
+        $jwt = $request->getAttribute('jwt');
+        $product = $this->product->getProduct($args['id']);
+        if($product) {
+            $files = $request->getUploadedFiles();
+            $folder = $product[0]['folder'] ? $product[0]['folder'] : uniqid();
+            $this->product->updateFolder($product[0]['id'], $folder);
+            $upload = $this->uploadImages($files, $folder, false);
+            if ($upload['result']) {
+                return $response->withJson(['status' => true, 'response' => ['message' => $upload['message'], 'data' => $upload['data']], 'jwt' => $jwt]);
+            } else {
+                return $response->withJson(['status' => false, 'response' => $upload['message'], 'jwt' => $jwt]);
+            }
+        } else {
+            return $response->withJson(['status' => false, 'response' => 'The product was not found', 'jwt' => $jwt]);
+        }
+    }
     public function addImages(Request $request, Response $response, $args) {
         $jwt = $request->getAttribute('jwt');
         $product = $this->product->getProduct($args['id']);
@@ -168,7 +185,7 @@ class ProductController {
     }
 
 
-    function uploadImages($files, $folder){
+    function uploadImages($files, $folder, $multiple = true){
         $result = array('result' => false);
         if(isset($files['uploads']) && is_array($files['uploads'])) {
             $uploads = ['folder' => $folder, 'images' => []];
@@ -180,10 +197,15 @@ class ProductController {
                     }
                 }
             }
-            $this->product->addImages($folder, $uploads['images']);
             $result['result'] = true;
-            $result['message'] = 'The images saved successfully';
             $result['data'] = $uploads;
+            if(!$multiple){
+                $this->product->addImage($folder, $uploads['images']);
+                $result['message'] = 'The image saved successfully';
+            }else{
+                $this->product->addImages($folder, $uploads['images']);
+                $result['message'] = 'The images saved successfully';
+            }
         }else{
             $result['message'] = 'No images found for upload';
         }
