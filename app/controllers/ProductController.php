@@ -114,9 +114,9 @@ class ProductController {
             $this->product->updateFolder($product[0]['id'], $folder);
             $upload = $this->uploadImages($files, $folder);
             if ($upload['result']) {
-               $del = $this->deleteFile( ROOT_IMAGES . $folder . '/' . $product[0]['image']['name']);
+                $this->deleteFile( ROOT_IMAGES . $folder . '/' . $product[0]['image']['name']);
                 $this->product->addImage($folder, $upload['data']['images']);
-                return $response->withJson(['status' => true, 'response' => ['del' => $del,'message' => 'The image saved successfully', 'data' => $upload['data']], 'jwt' => $jwt]);
+                return $response->withJson(['status' => true, 'response' => ['message' => 'The image saved successfully', 'data' => $upload['data']], 'jwt' => $jwt]);
             } else {
                 return $response->withJson(['status' => false, 'response' => $upload['message'], 'jwt' => $jwt]);
             }
@@ -224,9 +224,10 @@ class ProductController {
     }
     function deleteFile($file){
         if (!file_exists($file)){
-           return $file;
+           return false;
+        }else{
+            @unlink($file);
+            return true;
         }
-        unlink($file);
-        return true;
     }
 }
