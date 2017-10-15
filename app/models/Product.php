@@ -72,7 +72,7 @@ class Product {
                     'category' =>['id' => $product->category_id, 'name' => $product->category_name, 'icon' => $product->category_icon],
                     'price' => $product->price,
                     'folder' => $product->folder,
-                    'image' => $image,
+                    'image' => ['name' => $product->image, 'url' => $image],
                     'stock' => $product->stock,
                     'created_at' => $product->created_at,
                     'updated_at' => $product->updated_at
