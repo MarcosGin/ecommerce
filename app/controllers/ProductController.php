@@ -112,9 +112,11 @@ class ProductController {
             $files = $request->getUploadedFiles();
             $folder = $product[0]['folder'] ? $product[0]['folder'] : uniqid();
             $this->product->updateFolder($product[0]['id'], $folder);
-            $upload = $this->uploadImages($files, $folder, false);
+            $upload = $this->uploadImages($files, $folder);
             if ($upload['result']) {
-                return $response->withJson(['status' => true, 'response' => ['message' => $upload['message'], 'data' => $upload['data']], 'jwt' => $jwt]);
+               $del = $this->deleteFile( ROOT_IMAGES . $folder . '/' . $product[0]['image']['name']);
+                $this->product->addImage($folder, $upload['data']['images']);
+                return $response->withJson(['status' => true, 'response' => ['del' => $del,'message' => 'The image saved successfully', 'data' => $upload['data']], 'jwt' => $jwt]);
             } else {
                 return $response->withJson(['status' => false, 'response' => $upload['message'], 'jwt' => $jwt]);
             }
@@ -131,7 +133,8 @@ class ProductController {
             $this->product->updateFolder($product[0]['id'], $folder);
             $upload = $this->uploadImages($files, $folder);
             if ($upload['result']) {
-                return $response->withJson(['status' => true, 'response' => ['message' => $upload['message'], 'data' => $upload['data']], 'jwt' => $jwt]);
+                $this->product->addImages($folder, $upload['data']['images']);
+                return $response->withJson(['status' => true, 'response' => ['message' => 'The images saved successfully', 'data' => $upload['data']], 'jwt' => $jwt]);
             } else {
                 return $response->withJson(['status' => false, 'response' => $upload['message'], 'jwt' => $jwt]);
             }
@@ -148,6 +151,7 @@ class ProductController {
             $delete = $this->product->deleteImage($args['name']);
             $images = $this->product->getImages($product[0]['folder']);
             if ($delete['result']) {
+                $this->deleteFile( ROOT_IMAGES . $product[0]['folder'] . '/' . $args['name']);
                 return $response->withJson(['status' => true, 'response' => ['message' => $delete['response'], 'data' => $images], 'jwt' => $jwt]);
             }else{
                 return $response->withJson(['status' => false, 'response' => ['message' => $delete['response'], 'data' => $images], 'jwt' => $jwt]);
@@ -185,7 +189,7 @@ class ProductController {
     }
 
 
-    function uploadImages($files, $folder, $multiple = true){
+    function uploadImages($files, $folder){
         $result = array('result' => false);
         if(isset($files['uploads']) && is_array($files['uploads'])) {
             $uploads = ['folder' => $folder, 'images' => []];
@@ -199,13 +203,6 @@ class ProductController {
             }
             $result['result'] = true;
             $result['data'] = $uploads;
-            if(!$multiple){
-                $this->product->addImage($folder, $uploads['images']);
-                $result['message'] = 'The image saved successfully';
-            }else{
-                $this->product->addImages($folder, $uploads['images']);
-                $result['message'] = 'The images saved successfully';
-            }
         }else{
             $result['message'] = 'No images found for upload';
         }
@@ -224,5 +221,12 @@ class ProductController {
         }else{
             return false;
         }
+    }
+    function deleteFile($file){
+        if (!file_exists($file)){
+           return $file;
+        }
+        unlink($file);
+        return true;
     }
 }
