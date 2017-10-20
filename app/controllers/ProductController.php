@@ -21,8 +21,23 @@ class ProductController {
     }
 
     public function getAll(Request $request, Response $response, $args) {
+        if (isset($args['filter']) && $args['filter'] != ''){
+            $filter = $args['filter'];
+            $filter = explode('/', $filter);
+                if (strcasecmp ($filter[0] , 'DESC' ) === 0 || strcasecmp ($filter[0] , 'ASC' ) === 0) {
+                   //--
+                }else{
+                    $filter[0] = null;
+                }
+                if (!isset($filter[1]) || !is_numeric($filter[1]) || $filter[1] <= 0){
+                    $filter[1] = null;
+                }
+        } else {
+            $filter = null;
+        }
+        // get this time -> round(microtime(true) * 1000)
         $jwt = $request->getAttribute('jwt');
-        $products = $this->product->getAll();
+        $products = $this->product->getAll($filter[0], $filter[1]);
         if($products) {
             return $response->withJson(['status' => true, 'response' => $products, 'jwt' => $jwt]);
         } else {

@@ -9,6 +9,7 @@ $app->group(API_ROUTE, function () use ($app) {
         $app->get('/profile', App\Controllers\AccountController::class . ':get');
         $app->put('/profile',App\Controllers\AccountController::class . ':update');
     })->add(new App\Middleware\AuthMiddleware());
+    $app->get('/statistics', App\Controllers\StatisticsController::class . ':get');
     $app->group('/users', function () use ($app){
         $app->get('/list', App\Controllers\UserController::class . ':getAll');
         $app->get('/get/{id}', App\Controllers\UserController::class . ':get');
@@ -17,7 +18,7 @@ $app->group(API_ROUTE, function () use ($app) {
         $app->delete('/delete/{id}', App\Controllers\UserController::class .':delete');
     })->add(new App\Middleware\AuthMiddleware());
     $app->group('/products', function () use ($app) {
-        $app->get('/list', App\Controllers\ProductController::class . ':getAll');
+        $app->get('/list[/{filter:.*}]', App\Controllers\ProductController::class . ':getAll');
         $app->get('/get/{id}', App\Controllers\ProductController::class . ':get');
         $app->get('/search/{value}', App\Controllers\ProductController::class . ':search');
         $app->post('/add', App\Controllers\ProductController::class . ':add');
