@@ -9,6 +9,7 @@ namespace App\Models;
 
 
 use App\Bin\Database\DB;
+use DateTime;
 
 class Product {
     private $name;
@@ -43,8 +44,8 @@ class Product {
                     'category' =>['id' => $product->category_id, 'name' => $product->category_name, 'icon' => $product->category_icon],
                     'price' => $product->price,
                     'stock' => $product->stock,
-                    'created_at' => $product->created_at,
-                    'updated_at' => $product->updated_at
+                    'created_at' => ['date' => $product->created_at, 'timestamp' => round(strtotime($product->created_at) * 1000)],
+                    'updated_at' => ['date' => $product->updated_at, 'timestamp' =>  round(strtotime($product->updated_at) * 1000)]
                 ];
             }
             return $products;
@@ -213,11 +214,11 @@ class Product {
     }
     public function addImage($folder, $images){
         $dbObj = DB::getInstance();
-            $query = $dbObj->getQuery("UPDATE products SET image = :image WHERE folder = :folder");
-            $query->execute([
-                'folder' => $folder,
-                'image' => $images[0]['name']
-            ]);
+        $query = $dbObj->getQuery("UPDATE products SET image = :image WHERE folder = :folder");
+        $query->execute([
+            'folder' => $folder,
+            'image' => $images[0]['name']
+        ]);
 
         return true;
     }

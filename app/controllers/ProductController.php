@@ -35,7 +35,6 @@ class ProductController {
         } else {
             $filter = null;
         }
-        // get this time -> round(microtime(true) * 1000)
         $jwt = $request->getAttribute('jwt');
         $products = $this->product->getAll($filter[0], $filter[1]);
         if($products) {
