@@ -9,7 +9,7 @@ $app->group(API_ROUTE, function () use ($app) {
         $app->get('/profile', App\Controllers\AccountController::class . ':get');
         $app->put('/profile',App\Controllers\AccountController::class . ':update');
     })->add(new App\Middleware\AuthMiddleware());
-    $app->get('/statistics', App\Controllers\StatisticsController::class . ':get');
+    $app->get('/statistics', App\Controllers\StatisticsController::class . ':get')->add(new App\Middleware\AuthMiddleware());
     $app->group('/users', function () use ($app){
         $app->get('/list', App\Controllers\UserController::class . ':getAll');
         $app->get('/get/{id}', App\Controllers\UserController::class . ':get');
