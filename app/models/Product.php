@@ -21,14 +21,16 @@ class Product {
     private $created_at;
     private $updated_at;
 
-    public function getAll(){
+    public function getAll($order='ASC', $limit = 0){
+        $limit  = $limit ? 'LIMIT ' . $limit : '';
+
         $dbObj = DB::getInstance();
         $query = $dbObj->getQuery("SELECT products.id,products.title,
                                                   categories.id AS category_id,categories.name AS category_name,categories.icon AS category_icon,
                                                     marks.id AS mark_id,marks.name AS mark_name,
                                                     products.price,products.stock,products.created_at,products.updated_at FROM products 
                                                        INNER JOIN marks ON products.mark = marks.id 
-                                                           INNER JOIN categories ON products.category = categories.id ORDER BY products.id ASC");
+                                                           INNER JOIN categories ON products.category = categories.id ORDER BY products.id " .$order. " ". $limit ." ");
         $query->execute();
         $data = $query->fetchAll(\PDO::FETCH_OBJ);
         if($data){
