@@ -4,6 +4,7 @@
 //Show errors
 ini_set('display_errors', true);
 ini_set('display_startup_errors', 1);
+date_default_timezone_set('America/Argentina/Buenos_Aires');
 error_reporting(E_ALL);
 
 chdir(dirname(__DIR__));
