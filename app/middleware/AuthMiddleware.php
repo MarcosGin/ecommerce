@@ -28,7 +28,7 @@ class AuthMiddleware
                 return $response->withJson(['status' => false, 'response' =>'Authorization failed'],401);
             }
         }else{
-            return $response->withJson(['message'=>'UNAUTHORIZED'], 401);
+            return $response->withJson(['status' => false, 'response' =>'Authorization failed'], 401);
         }
         return $response;
     }

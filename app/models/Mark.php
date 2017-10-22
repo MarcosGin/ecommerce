@@ -1,23 +1,16 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: marcos
- * Date: 19/06/17
- * Time: 10:30
- */
+
 namespace App\Models;
 
 use App\Bin\Database\DB;
 
 class Mark {
-    private $name;
     private $product;
 
     public function __construct()
     {
         $this->product = new Product();
     }
-
 
     public function getAll(){
         $dbObj = DB::getInstance();

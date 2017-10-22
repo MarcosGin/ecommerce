@@ -1,15 +1,7 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: bocaj
- * Date: 28/09/2017
- * Time: 8:09
- */
 
 namespace App\Controllers;
 
-
-use App\Bin\Token;
 use App\Models\User;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -49,5 +41,4 @@ class AccountController
             return $response->withJson(['status' => false, 'response' => 'The user was not found','jwt' => $jwt]);
         }
     }
-
 }

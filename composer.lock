@@ -84,64 +84,6 @@
             "time": "2017-06-27T22:17:23+00:00"
         },
         {
-            "name": "kint-php/kint",
-            "version": "2.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/kint-php/kint.git",
-                "reference": "17ec4f2393560ea857f7e72ada106f489cb1e277"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/kint-php/kint/zipball/17ec4f2393560ea857f7e72ada106f489cb1e277",
-                "reference": "17ec4f2393560ea857f7e72ada106f489cb1e277",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.1.2"
-            },
-            "require-dev": {
-                "friendsofphp/php-cs-fixer": "^2.0",
-                "phpunit/phpunit": "^4.0",
-                "symfony/finder": "^2.6"
-            },
-            "type": "library",
-            "autoload": {
-                "files": [
-                    "init.php"
-                ],
-                "classmap": [
-                    "src/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Rokas Šleinius",
-                    "homepage": "https://github.com/raveren"
-                },
-                {
-                    "name": "Jonathan Vollebregt",
-                    "homepage": "https://github.com/jnvsor"
-                },
-                {
-                    "name": "Contributors",
-                    "homepage": "https://github.com/kint-php/kint/graphs/contributors"
-                }
-            ],
-            "description": "Kint - debugging tool for PHP developers",
-            "homepage": "https://kint-php.github.io/kint/",
-            "keywords": [
-                "debug",
-                "kint",
-                "php"
-            ],
-            "time": "2017-05-13T17:24:30+00:00"
-        },
-        {
             "name": "nikic/fast-route",
             "version": "v1.2.0",
             "source": {
@@ -259,50 +201,6 @@
             ],
             "description": "PHPMailer is a full-featured email creation and transfer class for PHP",
             "time": "2017-03-15T19:32:56+00:00"
-        },
-        {
-            "name": "phroute/phroute",
-            "version": "v2.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/mrjgreen/phroute.git",
-                "reference": "dbe2b986f9ee1dd33dc956fcc35d1fa22e8e196c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/mrjgreen/phroute/zipball/dbe2b986f9ee1dd33dc956fcc35d1fa22e8e196c",
-                "reference": "dbe2b986f9ee1dd33dc956fcc35d1fa22e8e196c",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.4.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "*",
-                "satooshi/php-coveralls": "dev-master"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Phroute\\Phroute\\": "src/Phroute"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Joe Green",
-                    "email": "joe.green.0991@gmail.com"
-                }
-            ],
-            "description": "Fast, fully featured restful request router for PHP",
-            "keywords": [
-                "router",
-                "routing"
-            ],
-            "time": "2015-07-22T20:46:43+00:00"
         },
         {
             "name": "pimple/pimple",
@@ -569,65 +467,6 @@
                 "router"
             ],
             "time": "2017-03-19T17:55:20+00:00"
-        },
-        {
-            "name": "symfony/polyfill-mbstring",
-            "version": "v1.4.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/polyfill-mbstring.git",
-                "reference": "f29dca382a6485c3cbe6379f0c61230167681937"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/f29dca382a6485c3cbe6379f0c61230167681937",
-                "reference": "f29dca382a6485c3cbe6379f0c61230167681937",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.3"
-            },
-            "suggest": {
-                "ext-mbstring": "For best performance"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.4-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Symfony\\Polyfill\\Mbstring\\": ""
-                },
-                "files": [
-                    "bootstrap.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Nicolas Grekas",
-                    "email": "p@tchwork.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Symfony polyfill for the Mbstring extension",
-            "homepage": "https://symfony.com",
-            "keywords": [
-                "compatibility",
-                "mbstring",
-                "polyfill",
-                "portable",
-                "shim"
-            ],
-            "time": "2017-06-09T14:24:12+00:00"
         },
         {
             "name": "vlucas/phpdotenv",

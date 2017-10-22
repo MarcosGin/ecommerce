@@ -1,26 +1,11 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: marcos
- * Date: 18/06/17
- * Time: 13:53
- */
+
 namespace App\Models;
 
 
 use App\Bin\Database\DB;
-use DateTime;
 
 class Product {
-    private $name;
-    private $desc;
-    private $price;
-    private $category_id;
-    private $mark_id;
-    private $portada;
-    private $carpet;
-    private $created_at;
-    private $updated_at;
 
     public function getAll($order='ASC', $limit = 0){
         $limit  = $limit ? 'LIMIT ' . $limit : '';

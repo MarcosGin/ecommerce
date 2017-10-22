@@ -2,7 +2,6 @@
 
 namespace App\Controllers;
 
-use App\Bin\Token;
 use Slim\Http\Request;
 use Slim\Http\Response;
 

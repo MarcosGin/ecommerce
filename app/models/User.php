@@ -3,25 +3,10 @@
 namespace App\Models;
 
 use App\Bin\Database\DB;
-use App\Models\Product;
 use App\Bin\Mail\Mail;
 use Sirius\Validation\Validator;
 class User
 {
-
-    private $name;
-    private $lastName;
-    private $email;
-    private $password;
-    private $gender;
-    private $dni;
-    private $phone;
-    private $rank;
-    private $cash;
-    private $dateUser;
-    private $img;
-    private $newLatter;
-
     public function getUser($email)
     {
         $dbObj = DB::getInstance();
