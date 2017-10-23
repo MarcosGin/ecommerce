@@ -11,8 +11,8 @@ $app->group(API_ROUTE, function () use ($app) {
     })->add(new App\Middleware\AuthMiddleware());
     $app->get('/statistics', App\Controllers\StatisticsController::class . ':get')->add(new App\Middleware\AuthMiddleware());
     $app->group('/mistakes', function () use ($app){
-        $app->get('/list', App\Controllers\MistakeController::class . ':getAll');
-    });
+        $app->get('/list[/{filter:.*}]', App\Controllers\MistakeController::class . ':getAll');
+    })->add(new App\Middleware\AuthMiddleware());
     $app->group('/users', function () use ($app){
         $app->get('/list', App\Controllers\UserController::class . ':getAll');
         $app->get('/get/{id}', App\Controllers\UserController::class . ':get');

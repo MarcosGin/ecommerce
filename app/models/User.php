@@ -174,13 +174,11 @@ class User
             }
         return $data;
     }
-    public function downSession($user_id, $jwt){
+    public function downSession($jwt){
         $result = array('result' => false);
         $dbObj = DB::getInstance();
-        $query = $dbObj->getQuery('UPDATE users_sessions SET activate = :activate WHERE user_id = :user_id AND jwt =:jwt');
-
+        $query = $dbObj->getQuery('UPDATE users_sessions SET activate = :activate WHERE jwt =:jwt');
         $data = $query->execute([
-            'user_id' => $user_id,
             'jwt' => $jwt,
             'activate' => 0
         ]);

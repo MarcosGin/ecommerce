@@ -8,21 +8,30 @@
 namespace App\Bin;
 
 use App\Bin\Database\DB;
+use App\Models\User;
 use Firebase\JWT\JWT;
 class Token
 {
-    public static $key = 'Hsadwqq113';
-    public static $algo = 'HS256';
-    public static function newToken(array $data , $expired){
+    private $user;
+    private $key = 'Hsadwqq113';
+    private $algo = 'HS256';
+    private $exp = 40;
+    private $upExp =20;
+    public function __construct() {
+        $this->user = new User();
+    }
+
+
+    public function newToken(array $data){
         $token = array(
-            'aud' => self::Aud(),
+            'aud' => $this->Aud(),
             'iat' => time(),
-            'exp' => time() + ($expired),
+            'exp' => time() + ($this->exp),
             'data' => $data,
         );
-        return  JWT::encode($token, self::$key);
+        return  JWT::encode($token, $this->key);
     }
-    public static function checkToken($token){
+    public function checkToken($token){
         $message = array('result' => false);
         $dbObj = DB::getInstance();
         $query = $dbObj->getQuery('SELECT * FROM users_sessions WHERE jwt =:jwt AND activate = 1');
@@ -35,12 +44,14 @@ class Token
             return $message;
         }
         try{
-            $jwt = JWT::decode($token, self::$key, array(self::$algo));
+            $jwt = JWT::decode($token, $this->key, array($this->algo));
             $realTime = $jwt->exp - time();
-            if($realTime < 1800){
+            if($realTime < $this->upExp){
+                $this->user->downSession($token);
                 $newData = json_decode(json_encode($jwt->data), true);
-                $newJwt = self::newToken($newData, 7200);
+                $newJwt = $this->newToken($newData);
                 $token = $newJwt;
+                $this->user->saveSession($jwt->data->id, $token);
             }
             if($data){
                 $message['result'] = true;
@@ -52,6 +63,7 @@ class Token
                 return $message;
             }
         }catch (\FireBase\JWT\ExpiredException $e) {
+            $this->user->downSession($token);
             $message['response'] = 'Your session has expired! Re login.';
             return $message;
         }catch (\FireBase\JWT\SignatureInvalidException $e){
@@ -62,7 +74,8 @@ class Token
             return $message;
         }
     }
-    private static function Aud()
+
+    private function Aud()
     {
         $aud = '';
         if (!empty($_SERVER['HTTP_CLIENT_IP'])) {

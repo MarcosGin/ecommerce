@@ -8,6 +8,11 @@ use Slim\Http\Response;
 
 class AuthMiddleware
 {
+    private $token;
+    public function __construct() {
+        $this->token = new Token();
+    }
+
     public function __invoke(Request $request, Response $response, $next)
     {
         if($request->hasHeader('Authorization')){
@@ -15,7 +20,7 @@ class AuthMiddleware
             $jwt = $request->getHeader('Authorization');
 
             if ($jwt){
-                $jwt = Token::checkToken($jwt[0]);
+                $jwt = $this->token->checkToken($jwt[0]);
                 if($jwt['result']){
                     $request = $request->withAttribute('user', $jwt['jwt']);
                     $request = $request->withAttribute('jwt', $jwt['token']);

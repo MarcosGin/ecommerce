@@ -10,8 +10,11 @@ use App\Bin\Token;
 
 class AuthController {
     private $user;
+    private $token;
     public function __construct(){
         $this->user = new User();
+        $this->token = new Token();
+
     }
 
     public function login(Request $request, Response $response, $args){
@@ -21,11 +24,11 @@ class AuthController {
             $user = $this->user->getLogin($params['email']);
             if( $user && password_verify($params['password'], $user[0]->password)){
                 if(!$this->user->getUserActivate($user[0]->id, 'id')){
-                    $jwt = Token::newToken(['id' => $user[0]->id,
+                    $jwt = $this->token->newToken(['id' => $user[0]->id,
                         'device' => $_SERVER['HTTP_USER_AGENT'],
                         'ip' => $_SERVER['REMOTE_ADDR'],
                         'email' => $user[0]->email,
-                        'admin' => $user[0]->rank], 7200);
+                        'admin' => $user[0]->rank]);
                     $saveJwt = $this->user->saveSession($user[0]->id, $jwt);
                     if($saveJwt){
                         return $response->withJson(['status' => true,'response' =>'You are logged in', 'jwt' => $jwt]);
