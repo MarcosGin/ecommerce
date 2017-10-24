@@ -50,7 +50,7 @@ class AuthController {
         $user = $request->getAttribute('user');
         $jwt = $request->getAttribute('jwt');
 
-        $downSession = $this->user->downSession($user->id, $jwt);
+        $downSession = $this->user->downSession($jwt);
         if($downSession['result']){
             return $response->withJson(['status' => true,'response' =>'The session was closed']);
         }else{

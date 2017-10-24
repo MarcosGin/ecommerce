@@ -15,8 +15,8 @@ class Token
     private $user;
     private $key = 'Hsadwqq113';
     private $algo = 'HS256';
-    private $exp = 40;
-    private $upExp =20;
+    private $exp = 7889250;
+    private $upExp = 2629750;
     public function __construct() {
         $this->user = new User();
     }
@@ -40,37 +40,41 @@ class Token
         ]);
         $data = $query->fetchAll(\PDO::FETCH_ASSOC);
         if(!$token){
-            $message['response'] = 'Token empty!.';
+            $message['response'] = 'Verification failed.';
             return $message;
         }
         try{
             $jwt = JWT::decode($token, $this->key, array($this->algo));
-            $realTime = $jwt->exp - time();
-            if($realTime < $this->upExp){
-                $this->user->downSession($token);
-                $newData = json_decode(json_encode($jwt->data), true);
-                $newJwt = $this->newToken($newData);
-                $token = $newJwt;
-                $this->user->saveSession($jwt->data->id, $token);
-            }
             if($data){
-                $message['result'] = true;
-                $message['jwt'] = $jwt->data;
-                $message['token'] = $token;
-                return $message;
+                if($jwt->aud === $this->Aud()){
+                    $realTime = $jwt->exp - time();
+                    if($realTime < $this->upExp){
+                        $this->user->downSession($token);
+                        $token = $this->newToken(json_decode(json_encode($jwt->data), true));
+                        $this->user->saveSession($jwt->data->id, $token);
+                    }
+                    $message['result'] = true;
+                    $message['jwt'] = $jwt->data;
+                    $message['token'] = $token;
+                    return $message;
+                }else{
+                    $this->user->downSession($token);
+                    $message['response'] = 'Verification failed.';
+                    return $message;
+                }
             }else{
-                $message['response'] = 'You must log in again.';
+                $message['response'] = 'Your session has expired! Re login.';
                 return $message;
             }
         }catch (\FireBase\JWT\ExpiredException $e) {
             $this->user->downSession($token);
-            $message['response'] = 'Your session has expired! Re login.';
+            $message['response'] =  'Your session has expired! Re login.';
             return $message;
         }catch (\FireBase\JWT\SignatureInvalidException $e){
             $message['response'] =  'Verification failed.';
             return $message;
         }catch (\UnexpectedValueException $e){
-            $message['response'] =  'You must be logged in.';
+            $message['response'] =  'Verification failed.';
             return $message;
         }
     }
