@@ -8,6 +8,7 @@ $app->group(API_ROUTE, function () use ($app) {
     $app->group('/account', function () use ($app) {
         $app->get('/profile', App\Controllers\AccountController::class . ':get');
         $app->put('/profile',App\Controllers\AccountController::class . ':update');
+        $app->get('/history', App\Controllers\AccountController::class . ':getHistory');
     })->add(new App\Middleware\AuthMiddleware());
     $app->get('/statistics', App\Controllers\StatisticsController::class . ':get')->add(new App\Middleware\AuthMiddleware());
     $app->group('/mistakes', function () use ($app){

@@ -4,6 +4,7 @@
 //Show errors
 ini_set('display_errors', true);
 ini_set('display_startup_errors', 1);
+ini_set('memory_limit', '156M');
 date_default_timezone_set('America/Argentina/Buenos_Aires');
 error_reporting(E_ALL);
 

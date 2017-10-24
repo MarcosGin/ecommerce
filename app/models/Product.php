@@ -7,6 +7,7 @@ use App\Bin\Database\DB;
 
 class Product {
 
+
     public function getAll($order='ASC', $limit = 0){
         $limit  = $limit ? 'LIMIT ' . $limit : '';
 

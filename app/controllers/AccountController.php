@@ -24,6 +24,16 @@ class AccountController
             return $response->withJson(['status' => false,'response' => 'fail', 'jwt' => $jwt]);
         }
     }
+    public function getHistory(Request $request, Response $response, $args) {
+        $user = $request->getAttribute('user');
+        $jwt = $request->getAttribute('jwt');
+        $history = $this->user->getHistory($user->id);
+        if($history) {
+            return $response->withJson(['status' => true,'response' => $history, 'jwt' => $jwt]);
+        } else {
+            return $response->withJson(['status' => false,'response' => 'fail', 'jwt' => $jwt]);
+        }
+    }
     public function update(Request $request, Response $response, $args) {
         $user = $request->getAttribute('user');
         $jwt = $request->getAttribute('jwt');
