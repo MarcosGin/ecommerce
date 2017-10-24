@@ -39,10 +39,6 @@ class Token
             'jwt' => $token,
         ]);
         $data = $query->fetchAll(\PDO::FETCH_ASSOC);
-        if(!$token){
-            $message['response'] = 'Verification failed.';
-            return $message;
-        }
         try{
             $jwt = JWT::decode($token, $this->key, array($this->algo));
             if($data){
@@ -76,6 +72,9 @@ class Token
         }catch (\UnexpectedValueException $e){
             $message['response'] =  'Verification failed.';
             return $message;
+        }catch (\DomainException $e){
+            $message['response'] =  'Verification failed.';
+            return $message;
         }
     }
 
@@ -105,10 +104,8 @@ class Token
                 $jwt = JWT::decode($session['jwt'], $this->key, array($this->algo));
                 if ($jwt->aud === $this->Aud()){
                     $this->user->downSession($session['jwt']);
-                    return false;
                 }
             }
         }
-        return true;
     }
 }
