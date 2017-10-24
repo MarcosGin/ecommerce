@@ -29,6 +29,7 @@ class AuthController {
                         'ip' => $_SERVER['REMOTE_ADDR'],
                         'email' => $user[0]->email,
                         'admin' => $user[0]->rank]);
+                    $this->token->checkAud($user[0]->id);
                     $saveJwt = $this->user->saveSession($user[0]->id, $jwt);
                     if($saveJwt){
                         return $response->withJson(['status' => true,'response' =>'You are logged in', 'jwt' => $jwt]);

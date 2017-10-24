@@ -93,4 +93,22 @@ class Token
         $aud .= gethostname();
         return sha1($aud);
     }
+    public function checkAud($id){
+        $dbObj = DB::getInstance();
+        $query = $dbObj->getQuery('SELECT * FROM users_sessions WHERE user_id = :user AND activate = 1');
+        $query->execute([
+            'user' => $id,
+        ]);
+        $sessions = $query->fetchAll(\PDO::FETCH_ASSOC);
+        foreach ($sessions as $session){
+            if($session['activate']){
+                $jwt = JWT::decode($session['jwt'], $this->key, array($this->algo));
+                if ($jwt->aud === $this->Aud()){
+                    $this->user->downSession($session['jwt']);
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 }
