@@ -101,7 +101,6 @@ class Token
         ]);
         $sessions = $query->fetchAll(\PDO::FETCH_ASSOC);
         foreach ($sessions as $session){
-                $jwt = JWT::decode($session['jwt'], $this->key, array($this->algo));
                 $this->user->downSession($session['jwt']);
         }
     }
