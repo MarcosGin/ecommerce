@@ -126,10 +126,10 @@ class User
 
         return $result;
     }
-    public function saveSession($user_id, $jwt, $device='', $ip=''){
+    public function saveSession($user_id, $jwt, $device='', $ip='', $aud){
         $result = array('result' => false);
         $dbObj = DB::getInstance();
-        $query = $dbObj->getQuery('INSERT INTO users_sessions (user_id, jwt, device, ip, created_at, activate) VALUES(:user_id, :jwt, :device, :ip, :created_at, :activate)');
+        $query = $dbObj->getQuery('INSERT INTO users_sessions (user_id, jwt, device, ip, created_at, activate, aud) VALUES(:user_id, :jwt, :device, :ip, :created_at, :activate, :aud)');
 
         $data = $query->execute([
             'user_id' => $user_id,
@@ -137,6 +137,7 @@ class User
             'device' => $device,
             'ip' => $ip,
             'created_at' => date("Y-m-d H:i:s"),
+            'aud' => $aud,
             'activate' => 1
         ]);
         if($data){
