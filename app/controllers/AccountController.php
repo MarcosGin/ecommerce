@@ -29,7 +29,7 @@ class AccountController
         $jwt = $request->getAttribute('jwt');
         $history = $this->user->getHistory($user->id);
         if($history) {
-            return $response->withJson(['status' => true,'response' => $history, 'jwt' => $jwt]);
+            return $response->withJson(['status' => true,'response' => ['sessions' => $history, 'actions' => []] , 'jwt' => $jwt]);
         } else {
             return $response->withJson(['status' => false,'response' => 'fail', 'jwt' => $jwt]);
         }

@@ -50,20 +50,12 @@ class User
     }
     public function getHistory($id){
         $dbObj = DB::getInstance();
-        $query = $dbObj->getQuery("SELECT * FROM users_sessions WHERE user_id = :id");
+        $query = $dbObj->getQuery("SELECT device,ip,created_at,activate FROM users_sessions WHERE user_id = :id");
         $query->execute([
             'id' => $id
         ]);
         $data = $query->fetchAll(\PDO::FETCH_OBJ);
-        if ($data){
-            $history = [];
-            foreach ($data as $his){
-                $history[] = [];
-            }
-            return $history;
-        } else{
-                return $data;
-        }
+        return $data;
     }
     public function searchUsers($value)
     {

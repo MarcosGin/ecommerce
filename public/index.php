@@ -11,6 +11,7 @@ chdir(dirname(__DIR__));
 require_once 'vendor/autoload.php';
 require_once 'app/bin/config.php';
 require_once 'app/bin/database/DB.php';
+require_once 'app/bin/detect.php';
 
 
 CONST API_ROUTE = '/api';

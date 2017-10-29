@@ -24,12 +24,12 @@ class AuthController {
             $user = $this->user->getLogin($params['email']);
             if( $user && password_verify($params['password'], $user[0]->password)){
                     $jwt = $this->token->newToken(['id' => $user[0]->id,
-                        'device' => $_SERVER['HTTP_USER_AGENT'],
-                        'ip' => $_SERVER['REMOTE_ADDR'],
+                        'device' => \Detect::os() . ' - ' . \Detect::browser(),
+                        'ip' => @\Detect::ip(),
                         'email' => $user[0]->email,
                         'admin' => $user[0]->rank,]);
                     $this->token->checkAud($user[0]->id);
-                    $saveJwt = $this->user->saveSession($user[0]->id, $jwt, $_SERVER['HTTP_USER_AGENT'], $_SERVER['REMOTE_ADDR'], $this->token->Aud());
+                    $saveJwt = $this->user->saveSession($user[0]->id, $jwt, \Detect::os() . ' - ' . \Detect::browser(), @\Detect::ip(), $this->token->Aud());
                     if($saveJwt){
                         return $response->withJson(['status' => true,'response' =>'You are logged in', 'jwt' => $jwt]);
                     }else{

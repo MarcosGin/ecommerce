@@ -80,17 +80,7 @@ class Token
 
     public function Aud()
     {
-        $aud = '';
-        if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
-            $aud = $_SERVER['HTTP_CLIENT_IP'];
-        } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-            $aud = $_SERVER['HTTP_X_FORWARDED_FOR'];
-        } else {
-            $aud = $_SERVER['REMOTE_ADDR'];
-        }
-        $aud .= @$_SERVER['HTTP_USER_AGENT'];
-        $aud .= gethostname();
-        return sha1($aud);
+        return sha1(@\Detect::ip().@\Detect::ipCountry().@\Detect::os().@\Detect::browser().@\Detect::deviceType());
     }
     public function checkAud($id){
         $dbObj = DB::getInstance();
