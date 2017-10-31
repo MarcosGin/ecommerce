@@ -4,51 +4,35 @@
 //Show errors
 ini_set('display_errors', true);
 ini_set('display_startup_errors', 1);
+date_default_timezone_set('America/Argentina/Buenos_Aires');
 error_reporting(E_ALL);
 
-session_start();
+chdir(dirname(__DIR__));
+require_once 'vendor/autoload.php';
+require_once 'app/bin/config.php';
+require_once 'app/bin/database/DB.php';
+require_once 'app/bin/detect.php';
 
-require_once '../vendor/autoload.php';
-require_once '../app/bin/config.php';
-require_once '../app/bin/database/DB.php';
 
-use Phroute\Phroute\RouteCollector;
+CONST API_ROUTE = '/api';
+CONST ROOT_IMAGES = 'public/images/';
+$api_config = [
+    'settings' => [
+        'displayErrorDetails' => true,
+        'addContentLengthHeader' => false
+    ],
+];
+$container = new \Slim\Container($api_config);
+$app = new \Slim\App($container);
 
-//Url directory
-$baseDir = str_replace(basename($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']);
-$baseUrl = 'http://' . $_SERVER['HTTP_HOST'] . $baseDir;
-$baseImage = $baseUrl . 'assets/img/products/';
-define('BASE_URL', $baseUrl);
-define('BASE_IMAGE', $baseImage);
-define('SECRET_KEY', 'mysecretkey');
-define('ALGORITHM', 'HS256');
 
-//Routes
-$route = $_GET['route'] ?? '/';
-$router = new RouteCollector();
-
-$router->filter('auth', function () {
-    if(isset($_COOKIE['__token'])) {
-        header('Location: ' . BASE_URL . 'index');
-        return false;
-    }
+$app->add(function ($req, $res, $next) {
+    $response = $next($req, $res);
+    return $response
+        ->withHeader('Access-Control-Allow-Origin', '*')
+        ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization, Upload-Content-Type')
+        ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
 });
-$router->filter('user', function () {
-    if(!isset($_COOKIE['__token'])) {
-        header('Location: ' . BASE_URL . 'index');
-        return false;
-    }
-});
-$router->controller('/', App\Controllers\IndexController::class);
-$router->controller('/products', App\Controllers\ProductController::class);
-$router->controller('/cart', App\Controllers\CartController::class);
-$router->group(['after' => 'auth'], function($router){
-    $router->controller('/account', App\Controllers\AuthController::class);
-});
-$router->group(['before' => 'user'], function($router) {
-    $router->controller('/profile', App\Controllers\ProfileController::class);
-});
-$dispatcher = new Phroute\Phroute\Dispatcher($router->getData());
-$response = $dispatcher->dispatch($_SERVER['REQUEST_METHOD'], $route);
 
-echo $response;
+require_once 'app/routes.php';
+$app->run();
