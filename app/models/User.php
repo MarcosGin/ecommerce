@@ -50,7 +50,7 @@ class User
     }
     public function getHistory($id){
         $dbObj = DB::getInstance();
-        $query = $dbObj->getQuery("SELECT device,ip,created_at,activate FROM users_sessions WHERE user_id = :id");
+        $query = $dbObj->getQuery("SELECT device,ip,created_at,activate FROM users_sessions WHERE user_id = :id ORDER BY created_at DESC");
         $query->execute([
             'id' => $id
         ]);
