@@ -21,24 +21,19 @@ class ProductController {
     }
 
     public function getAll(Request $request, Response $response, $args) {
-        if (isset($args['filter']) && $args['filter'] != ''){
-            $filter = $args['filter'];
-            $filter = explode('/', $filter);
-                if (strcasecmp ($filter[0] , 'DESC' ) === 0 || strcasecmp ($filter[0] , 'ASC' ) === 0) {
-                   //--
-                }else{
-                    $filter[0] = null;
-                }
-                if (!isset($filter[1]) || !is_numeric($filter[1]) || $filter[1] <= 0){
-                    $filter[1] = null;
-                }
-        } else {
-            $filter = null;
-        }
+        $paramPage = $request->getQueryParam("page", $default = null);
+        $paramLimit = $request->getQueryParam("limit", $default = null);
+        $paramSorter = $request->getQueryParam("sorter", $default = null);
+        $paramTitle =  $request->getQueryParam("title", $default = null);
+        $paramMark =  $request->getQueryParam("mark", $default = null);
+        $paramCategory =  $request->getQueryParam("category", $default = null);
+
+        $offset = ($paramPage - 1 )* $paramLimit;
+
         $jwt = $request->getAttribute('jwt');
-        $products = $this->product->getAll($filter[0], $filter[1]);
+        $products = $this->product->getAll($paramSorter, ["title" => $paramTitle,"mark" => $paramMark, "category" => $paramCategory]);
         if($products) {
-            return $response->withJson(['status' => true, 'response' => $products, 'jwt' => $jwt]);
+            return $response->withJson(['status' => true, 'response' => ["list" => array_slice($products, $offset,$paramLimit), "pagination" => ["total" => count($products), "pageSize" => (int) ($paramLimit), "current" => (int )($paramPage) ]], 'jwt' => $jwt]);
         } else {
             return $response->withJson(['status' => false, 'response' => 'The products was not found', 'jwt' => $jwt]);
         }
@@ -69,7 +64,7 @@ class ProductController {
         if($add['result']){
             return $response->withJson(['status' => true, 'response' => ['message' => $add['response']], 'jwt' => $jwt]);
         }else{
-            return $response->withJson(['status' => false, 'response' => $add['response'], 'jwt' => $jwt]);
+            return $response->withJson(['status' => false, 'response' => $add['response'], 'jwt' => $jwt], 400);
         }
     }
     public function update(Request $request, Response $response, $args) {

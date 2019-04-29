@@ -42,7 +42,7 @@ class Token
         try{
             $jwt = JWT::decode($token, $this->key, array($this->algo));
             if($data){
-                if($jwt->aud === $this->Aud()){
+                //if($jwt->aud === $this->Aud()){
                     $realTime = $jwt->exp - time();
                     if($realTime < $this->upExp){
                         $this->user->downSession($token);
@@ -53,11 +53,11 @@ class Token
                     $message['jwt'] = $jwt->data;
                     $message['token'] = $token;
                     return $message;
-                }else{
+                /*}else{
                     $this->user->downSession($token);
                     $message['response'] = 'Verification failed.';
                     return $message;
-                }
+                }*/
             }else{
                 $message['response'] = 'Your session has expired! Re login.';
                 return $message;

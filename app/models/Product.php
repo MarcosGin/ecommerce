@@ -8,17 +8,40 @@ use App\Bin\Database\DB;
 class Product {
 
 
-    public function getAll($order='ASC', $limit = 0){
-        $limit  = $limit ? 'LIMIT ' . $limit : '';
+    public function getAll($order = null, $filters = []){
 
+        $where = "WHERE 1=1 ";
+        $params = [];
+        if($filters){
+            foreach($filters as $key => $value){
+                if($value){
+                    if($key === "title"){
+                        $params[$key] = "%".$value."%";
+                        $where .= " AND UPPER(products.".$key.") LIKE UPPER(:".$key.") ";           
+                    }else{
+                        $where .= " AND products.".$key." IN (".$value.") ";       
+                    }
+
+                }
+                
+            }
+        }
+        if($order){
+            $attr = explode("_",$order);
+
+            $attr[1] = $attr[1] === "ascend" ? "ASC" : "DESC";
+            $order = "ORDER BY products.". $attr[0] ." ". $attr[1];
+        }else{
+            $order = "ORDER BY products.id ASC";
+        }
         $dbObj = DB::getInstance();
         $query = $dbObj->getQuery("SELECT products.id,products.title,
                                                   categories.id AS category_id,categories.name AS category_name,categories.icon AS category_icon,
                                                     marks.id AS mark_id,marks.name AS mark_name,
-                                                    products.price,products.stock,products.created_at,products.updated_at FROM products 
+                                                    products.price,products.stock,products.createdAt,products.updated_at FROM products 
                                                        INNER JOIN marks ON products.mark = marks.id 
-                                                           INNER JOIN categories ON products.category = categories.id ORDER BY products.id " .$order. " ". $limit ." ");
-        $query->execute();
+                                                           INNER JOIN categories ON products.category = categories.id ".$where." " .$order. "");
+        $query->execute($params);
         $data = $query->fetchAll(\PDO::FETCH_OBJ);
         if($data){
             $products = [];
@@ -30,7 +53,7 @@ class Product {
                     'category' =>['id' => $product->category_id, 'name' => $product->category_name, 'icon' => $product->category_icon],
                     'price' => $product->price,
                     'stock' => $product->stock,
-                    'created_at' => ['date' => $product->created_at, 'timestamp' => round(strtotime($product->created_at) * 1000)],
+                    'createdAt' => ['date' => $product->createdAt, 'timestamp' => round(strtotime($product->createdAt) * 1000)],
                     'updated_at' => ['date' => $product->updated_at, 'timestamp' =>  round(strtotime($product->updated_at) * 1000)]
                 ];
             }
@@ -44,7 +67,7 @@ class Product {
         $query = $dbObj->getQuery("SELECT products.id,products.title,products.description,products.image,products.folder,
                                                   categories.id AS category_id,categories.name AS category_name,categories.icon AS category_icon,
                                                     marks.id AS mark_id,marks.name AS mark_name,
-                                                    products.price,products.stock,products.created_at,products.updated_at FROM products 
+                                                    products.price,products.stock,products.createdAt,products.updated_at FROM products 
                                                        INNER JOIN marks ON products.mark = marks.id 
                                                            INNER JOIN categories ON products.category = categories.id WHERE products.id = :id ORDER BY products.id");
         $query->execute(['id'=>$id]);
@@ -60,11 +83,11 @@ class Product {
                     'mark' => ['id' => $product->mark_id, 'name' => $product->mark_name],
                     'category' =>['id' => $product->category_id, 'name' => $product->category_name, 'icon' => $product->category_icon],
                     'price' => $product->price,
-                    'folder' => $product->folder,
-                    'image' => ['name' => $product->image, 'url' => $image],
+                   // 'folder' => $product->folder,
+                   // 'image' => ['name' => $product->image, 'url' => $image],
                     'stock' => $product->stock,
-                    'created_at' => $product->created_at,
-                    'updated_at' => $product->updated_at
+                   // 'createdAt' => $product->createdAt,
+                   // 'updated_at' => $product->updated_at
                 ];
             }
             return $products;
@@ -163,17 +186,19 @@ class Product {
     public function addProduct($data){
         $result = array('result' => false);
         if(isset($data['title']) && isset($data['description']) && isset($data['category'])
-            && isset($data['mark']) && isset($data['price']) && isset($data['stock'])){
+            && isset($data['mark']) && isset($data['price'])){
+
+            $stock = isset($data['stock']) ? $data['stock'] : 0;
             $dbObj = DB::getInstance();
-            $query = $dbObj->getQuery("INSERT INTO products (title,description,category,mark,price,stock,created_at) VALUES(:title,:description,:category,:mark,:price,:stock,:created_at)");
+            $query = $dbObj->getQuery("INSERT INTO products (title,description,category,mark,price,stock,createdAt) VALUES(:title,:description,:category,:mark,:price,:stock,:createdAt)");
             $data = $query->execute([
                 'title' => $data['title'],
                 'description' => $data['description'],
                 'category' => $data['category'],
                 'mark' => $data['mark'],
                 'price' => $data['price'],
-                'stock' => $data['stock'],
-                'created_at' => date("Y-m-d H:i:s")
+                'stock' => $stock,
+                'createdAt' => date("Y-m-d H:i:s")
             ]);
             if ($data) {
                 $result['result'] = true;
@@ -190,7 +215,7 @@ class Product {
         $dbObj = DB::getInstance();
         foreach ($images as $image){
             $query = $dbObj->getQuery("INSERT INTO products_imgs (folder,title,sizes) VALUES(:folder,:title,:sizes)");
-            $query->execute([
+            $query->execute([ 
                 'folder' => $folder,
                 'title' => $image['name'],
                 'sizes' => 'normal'

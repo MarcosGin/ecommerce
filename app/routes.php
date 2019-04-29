@@ -1,5 +1,16 @@
 <?php
 $app->group(API_ROUTE, function () use ($app) {
+    $app->get('/images/{data}', function($request, $response, $args) {    
+        $data = $args['data'];
+        $image = @file_get_contents(ROOT_IMAGES.$data.".png");
+       if($image === FALSE) {
+           $handler = $this->notFoundHandler;
+           return $handler($request, $response);    
+        }
+    
+        $response->write($image);
+        return $response->withHeader('Content-Type', FILEINFO_MIME_TYPE);
+    });
     $app->get('/', App\Controllers\indexController::class . ':home');
     $app->group('/auth', function () use ($app) {
         $app->post('/login', App\Controllers\AuthController::class . ':login');

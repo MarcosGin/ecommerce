@@ -40,7 +40,7 @@ class User
     public function getLogin($email)
     {
         $dbObj = DB::getInstance();
-        $query = $dbObj->getQuery("SELECT id, email, rank, password FROM users WHERE email = :email");
+        $query = $dbObj->getQuery("SELECT id, email,firstname,lastname, rank, password FROM users WHERE email = :email");
         $query->execute([
             'email' => $email
         ]);
@@ -118,7 +118,7 @@ class User
 
         return $result;
     }
-    public function saveSession($user_id, $jwt, $device='', $ip='', $aud){
+    public function saveSession($user_id, $jwt, $device='', $ip='', $aud = ''){
         $result = array('result' => false);
         $dbObj = DB::getInstance();
         $query = $dbObj->getQuery('INSERT INTO users_sessions (user_id, jwt, device, ip, created_at, activate, aud) VALUES(:user_id, :jwt, :device, :ip, :created_at, :activate, :aud)');

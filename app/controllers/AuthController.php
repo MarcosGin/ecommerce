@@ -23,23 +23,27 @@ class AuthController {
         if (isset($params['email']) && isset($params['password'])) {
             $user = $this->user->getLogin($params['email']);
             if( $user && password_verify($params['password'], $user[0]->password)){
-                    $jwt = $this->token->newToken(['id' => $user[0]->id,
+                    $jwt = $this->token->newToken([
+                    'id' => $user[0]->id,
+                    'firstName' => $user[0]->firstname,
+                    'lastName' => $user[0]->lastname,
+                    'email' => $user[0]->email,
+                    'avatar' => "https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png",
                         'device' => \Detect::os() . ' - ' . \Detect::browser(),
                         'ip' => @\Detect::ip(),
-                        'email' => $user[0]->email,
                         'admin' => $user[0]->rank,]);
                     $this->token->checkAud($user[0]->id);
                     $saveJwt = $this->user->saveSession($user[0]->id, $jwt, \Detect::os() . ' - ' . \Detect::browser(), @\Detect::ip(), $this->token->Aud());
                     if($saveJwt){
                         return $response->withJson(['status' => true,'response' =>'You are logged in', 'jwt' => $jwt]);
                     }else{
-                        return $response->withJson(['status' => false,'response' =>'Could not log in, try again']);
+                        return $response->withJson(['status' => false,'response' =>'Could not log in, try again'], 400);
                     }
             }else{
-                return $response->withJson(['status' => false,'response' =>'Your email address and / or your password is incorrect']);
+                return $response->withJson(['status' => false,'response' =>'Your email address and / or your password is incorrect'], 400);
             }
         }else {
-            return $response->withJson(['status' => false,'response' =>'You must complete all the fields', 'params' => $params]);
+            return $response->withJson(['status' => false,'response' =>'You must complete all the fields', 'params' => $params], 400);
         }
 
     }
